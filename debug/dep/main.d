@@ -1,1 +1,1 @@
-./debug/obj/main.o debug/dep/main.d : main.c Test.h
+./debug/obj/main.o debug/dep/main.d : src/main.c src/Test.h

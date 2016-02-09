@@ -10,9 +10,9 @@ done
 # names of files and directories
 SRC_DIR=./src
 OBJ_DIR=./debug/obj
-BIN_DIR=./debug/bin
+BIN_DIR=./bin
 DEP_DIR=./debug/dep
-INC_DIR=$(SRC_DIR)
+INC_DIR=./include
 SRC=$(wildcard $(SRC_DIR)/*.c)
 OBJ=$(addprefix $(OBJ_DIR)/,$(notdir $(SRC:.c=.o)))
 DEP=$(addprefix $(DEP_DIR)/,$(notdir $(SRC:.c=.d)))
@@ -36,13 +36,13 @@ $(BIN):$(OBJ)
 	$(CC) $(LFLAGS) $(CFLAGS) -o $(BIN) $(OBJ)
 
 $(OBJ):$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 $(DEP):$(DEP_DIR)/%.d:$(SRC_DIR)/%.c
 	$(call RM,$@)
 	$(CC) $(DFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
 
-$(TEST):$(GENTEST) Test.c
+$(TEST):$(GENTEST) $(SRC_DIR)/Test.c
 	$(PYTHON) $<
 
 -include $(DEP)
