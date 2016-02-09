@@ -3,8 +3,8 @@
 
 #include <stdlib.h>
 #include <math.h>
-#include "NumericalRecipes.h"
-#include "LibFunction.h"
+#include <NumericalRecipes.h>
+#include <LibFunction.h>
 /*
 传入插值点个数N，插值点坐标a[N]，对应插值点的函数值f[N]，对应插值点的函数导数值df[N]，和自变量x，
 返回用厄米插值多项式求得的函数近似值

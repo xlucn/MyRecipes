@@ -3,8 +3,8 @@
 
 #include <math.h>
 #include <stdlib.h>
-#include "NumericalRecipes.h"
-#include "LibFunction.h"
+#include <NumericalRecipes.h>
+#include <LibFunction.h>
 
 double DividedDiff(double f(double), double *x, int N)
 {

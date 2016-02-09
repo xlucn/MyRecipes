@@ -3,8 +3,8 @@
 //Solving Ordinary differential equations
 #include <stdlib.h>
 #include <math.h>
-#include "NumericalRecipes.h"
-#include "LibFunction.h"
+#include <NumericalRecipes.h>
+#include <LibFunction.h>
 
 /*
 Euler Method to solve ODE. y0:initial value, f(t, y) = dy/dt

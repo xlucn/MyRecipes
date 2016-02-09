@@ -5,9 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "NumericalRecipes.h"
-#include "LibFunction.h"
-#include "TestInfo.h"
+#include <NumericalRecipes.h>
+#include <LibFunction.h>
+#include <TestInfo.h>
 
 int testall()
 {

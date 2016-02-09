@@ -4,7 +4,7 @@
     #ifndef _TESTINFO_H_
     #define _TESTINFO_H_
 
-    #include "Test.h"
+    #include <Test.h>
 
     int (*tests[])() = {
     	testAdaptiveSimpson,
