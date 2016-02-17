@@ -21,19 +21,19 @@ TEST=$(SRC_DIR)/Test.h $(SRC_DIR)/TestInfo.h
 GENTEST=$(SRC_DIR)/GenerateTest.py
 
 # compiler and parameters
-CC=gcc
+CC=/usr/bin/gcc
 CFLAGS=-Wall -std=c11
+IFLAGS=-I $(INC_DIR)
 DFLAGS=-MM
 LFLAGS=-lm
-IFLAGS=-I $(INC_DIR)
-PYTHON=python
+PYTHON=/usr/bin/python
 
 .PHONY:all clean remove help backup
 
 all:$(TEST) $(DEP) $(BIN)
 
 $(BIN):$(OBJ)
-	$(CC) $(LFLAGS) $(CFLAGS) -o $(BIN) $(OBJ)
+	$(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(LFLAGS)
 
 $(OBJ):$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@

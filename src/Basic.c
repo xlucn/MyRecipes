@@ -1,8 +1,8 @@
 ﻿//Author LuXu
 //Basic functions used by more than one task
 
-#include <math.h>
 #include <stdlib.h>
+#include <math.h>
 #include <NumericalRecipes.h>
 #include <LibFunction.h>
 
