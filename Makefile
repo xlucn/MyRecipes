@@ -10,7 +10,7 @@ done
 # names of files and directories
 SRC_DIR=./src
 OBJ_DIR=./debug/obj
-BIN_DIR=./bin
+BIN_DIR=./
 DEP_DIR=./debug/dep
 INC_DIR=./include
 SRC=$(wildcard $(SRC_DIR)/*.c)
@@ -22,7 +22,7 @@ GENTEST=$(SRC_DIR)/GenerateTest.py
 
 # compiler and parameters
 CC=/usr/bin/gcc
-CFLAGS=-Wall -std=c11
+CFLAGS=-Wall -g -std=c11
 IFLAGS=-I $(INC_DIR)
 DFLAGS=-MM
 LFLAGS=-lm
