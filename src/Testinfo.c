@@ -46,3 +46,4 @@ char *names[] = {
 	"testNewtonMethod",
 	"testRomberg"
 };
+int num = sizeof(tests) / sizeof(int (*)());

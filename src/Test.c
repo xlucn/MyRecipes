@@ -6,12 +6,11 @@
 #include <stdlib.h>
 #include <math.h>
 #include <NumericalRecipes.h>
-#include <LibFunction.h>
-#include <TestInfo.h>
+#include "LibFunction.h"
+#include "Test.h"
 
 int testall()
 {
-    int num = sizeof(tests) / sizeof(int (*)());    // number of testfunctions
     int* result = (int*)malloc_s(num * sizeof(int));  // record the test results
 
     for(int i = 0; i < num; i ++)

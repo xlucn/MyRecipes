@@ -4,7 +4,7 @@
 #ifndef _NR_H_
 #define _NR_H_
 
-#define MAXLOOP 1000
+#define MAXLOOP 1000 
 
 /*****************************************************************************
  *********************LinearEquation.c****************************************
@@ -118,7 +118,7 @@ double **SODERungeKutta(double (*f[])(double, double*), double a, double b, doub
 /*
 ** N number of Interpolation points, a[N] the Interpolation points,
 ** f[N] function, df[N] derivative function, variable x,
-** return approximate value using Hermite polynomial 
+** return approximate value using Hermite polynomial
 */
 double Hermite(int N, double *a, double *f, double *df, double x);
 /*

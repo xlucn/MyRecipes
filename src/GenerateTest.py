@@ -18,6 +18,7 @@ def readfuncs(testfile):
             if len(words[1]) > 4 and words[1][:4] == 'test':
                 funcs.append(words[1].split('(')[0])
     funcs = list(set(funcs))
+    funcs.sort()
     funcs.remove('testall')
     source.close()
     return funcs
@@ -40,6 +41,7 @@ def gentest(funcs):
 
 extern int (*tests[])();
 extern char *names[];
+extern int num;
 
 '''
     )
@@ -77,6 +79,7 @@ int (*tests[])() = {
             cfile.write(',')
         cfile.write('\n')
     cfile.write('};\n')
+    cfile.write('int num = sizeof(tests) / sizeof(int (*)());')
     cfile.close()
 
 def main():

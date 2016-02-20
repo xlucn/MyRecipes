@@ -10,6 +10,7 @@
 
 extern int (*tests[])();
 extern char *names[];
+extern int num;
 
 int testAdaptiveSimpson();
 int testSODERungeKutta();

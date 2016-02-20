@@ -39,7 +39,7 @@ $(OBJ):$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 $(DEP):$(DEP_DIR)/%.d:$(SRC_DIR)/%.c
-	#$(call RM,$@)
+	$(call RM,$@)
 	$(CC) $(DFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
 
 $(TEST):$(GENTEST) $(SRC_DIR)/Test.c
