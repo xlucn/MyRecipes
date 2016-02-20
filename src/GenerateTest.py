@@ -4,7 +4,7 @@
 
 testc = './src/Test.c'
 testh = './include/Test.h'
-testinfo = './src/Testinfo.h'
+testinfo = './src/Testinfo.c'
 
 def readfuncs(testfile):
     '''
@@ -83,11 +83,13 @@ int (*tests[])() = {
     cfile.close()
 
 def main():
-    funclist = readfuncs(testh)
-    if cmp(funclist, readfuncs(testc)):
+    funclist = readfuncs(testc)
+    funclist2 = readfuncs(testh)
+    if cmp(funclist, funclist2):
         gentest(funclist)
         gentestinfo(funclist)
-        print 'File ' + testh + ' and ' + testinfo + 'regenerated.'
+        print funclist, funclist2
+        print 'File ' + testh + ' and ' + testinfo + ' regenerated.'
     
 if __name__ == '__main__':
     main()
