@@ -7,25 +7,29 @@
 
 #define PASSED 0
 #define FAILED 1
+
+extern int (*tests[])();
+extern char *names[];
+
 int testAdaptiveSimpson();
-int testRomberg();
-int testChasing();
-int testSplineIpl();
-int testHermiteIpl();
-int testGaussianEli();
-int testClassicRK();
-int testAdamsPECE();
-int testRKF();
 int testSODERungeKutta();
-int testLeastSq();
-int testQR();
+int testMuller();
+int testClassicRK();
+int testHermiteIpl();
+int testRKF();
 int testBisection();
+int testSecent();
+int testLeastSq();
 int testPicardRecurtion();
+int testGaussianEli();
+int testSplineIpl();
+int testDividedDiff();
+int testAdamsPECE();
+int testQR();
+int testChasing();
 int testSteffensen();
 int testNewtonMethod();
-int testSecent();
-int testDividedDiff();
-int testMuller();
+int testRomberg();
 int testall();
 
 #endif
