@@ -10,14 +10,14 @@ done
 # names of files and directories
 SRC_DIR=./src
 OBJ_DIR=./debug/obj
-BIN_DIR=./
+BIN_DIR=./bin
 DEP_DIR=./debug/dep
 INC_DIR=./include
 SRC=$(wildcard $(SRC_DIR)/*.c)
 OBJ=$(addprefix $(OBJ_DIR)/,$(notdir $(SRC:.c=.o)))
 DEP=$(addprefix $(DEP_DIR)/,$(notdir $(SRC:.c=.d)))
 BIN=$(BIN_DIR)/MyRecipes
-TEST=$(SRC_DIR)/Test.h $(SRC_DIR)/TestInfo.h
+TEST=$(SRC_DIR)/Test.h
 GENTEST=$(SRC_DIR)/GenerateTest.py
 
 # compiler and parameters
@@ -39,7 +39,7 @@ $(OBJ):$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 $(DEP):$(DEP_DIR)/%.d:$(SRC_DIR)/%.c
-	$(call RM,$@)
+	#$(call RM,$@)
 	$(CC) $(DFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
 
 $(TEST):$(GENTEST) $(SRC_DIR)/Test.c
