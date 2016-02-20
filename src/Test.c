@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <NumericalRecipes.h>
+#include "NumericalRecipes.h"
 #include "LibFunction.h"
 #include "Test.h"
 

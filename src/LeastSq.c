@@ -1,7 +1,7 @@
 #include <math.h>
 #include <stdlib.h>
-#include <NumericalRecipes.h>
-#include <LibFunction.h>
+#include "NumericalRecipes.h"
+#include "LibFunction.h"
 
 /*
 solve the leastsquare solution for a system of linear equations.

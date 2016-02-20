@@ -36,11 +36,11 @@ $(BIN):$(OBJ)
 	$(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(LFLAGS)
 
 $(OBJ):$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
 $(DEP):$(DEP_DIR)/%.d:$(SRC_DIR)/%.c
 	$(call RM,$@)
-	$(CC) $(DFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
+	$(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
 
 $(TEST):$(GENTEST) $(SRC_DIR)/Test.c
 	$(PYTHON) $<
