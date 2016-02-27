@@ -39,9 +39,9 @@ def gentest(funcs):
 #define PASSED 0
 #define FAILED 1
 
-extern int (*tests[])();
-extern char *names[];
-extern int num;
+extern int (*tests[])();    //the list of test functions which are listed below
+extern char *names[];       //the list of test functions' names
+extern int num;	            //the number of test functions
 
 '''
     )
@@ -88,7 +88,6 @@ def main():
     if cmp(funclist, funclist2):
         gentest(funclist)
         gentestinfo(funclist)
-        print funclist, funclist2
         print 'File ' + testh + ' and ' + testinfo + ' regenerated.'
 
 if __name__ == '__main__':

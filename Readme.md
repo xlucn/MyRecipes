@@ -1,8 +1,4 @@
-Algorithms for numerical computation.
-Author: LuXu(Oliver Lew)
-email: oliver_lew@outlook.com
+# Algorithms for numerical computation.
 
-**********************************************************************
-INSTALL
-You can use "make" to build the whole project.
-You can use "make help" to find out what else you can do.
+* Author: LuXu(Oliver Lew)
+* email: oliver_lew@outlook.com

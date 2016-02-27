@@ -8,29 +8,29 @@
 #define PASSED 0
 #define FAILED 1
 
-extern int (*tests[])();
-extern char *names[];
-extern int num;
+extern int (*tests[])();    //the list of test functions which are listed below
+extern char *names[];       //the list of test functions' names
+extern int num;	            //the number of test functions
 
-int testAdaptiveSimpson();
-int testSODERungeKutta();
-int testMuller();
-int testClassicRK();
-int testHermiteIpl();
-int testRKF();
-int testBisection();
-int testSecent();
-int testLeastSq();
-int testPicardRecurtion();
-int testGaussianEli();
-int testSplineIpl();
-int testDividedDiff();
 int testAdamsPECE();
-int testQR();
+int testAdaptiveSimpson();
+int testBisection();
 int testChasing();
-int testSteffensen();
+int testClassicRK();
+int testDividedDiff();
+int testGaussianEli();
+int testHermiteIpl();
+int testLeastSq();
+int testMuller();
 int testNewtonMethod();
+int testPicardRecurtion();
+int testQR();
+int testRKF();
 int testRomberg();
+int testSODERungeKutta();
+int testSecent();
+int testSplineIpl();
+int testSteffensen();
 int testall();
 
 #endif

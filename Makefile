@@ -62,8 +62,5 @@ remove:
 clean:
 	$(call RM,$(wildcard $(OBJ_DIR)/*))
 
-backup:
-	tar zcvf ./debug/src.tar.gz $(SRC)/*
-
 count:
 	python ./debug/count.py
