@@ -1,7 +1,7 @@
 #! /usr/env/bin python
 # Generate the header files including all the declarations of test functions,
 # a array of pointers pointing to these functions and a array of function names.
-
+ 
 testc = './src/Test.c'
 testh = './include/Test.h'
 testinfo = './src/Testinfo.c'

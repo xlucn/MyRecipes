@@ -18,7 +18,8 @@ SRC=$(wildcard $(SRC_DIR)/*.c)
 OBJ=$(addprefix $(OBJ_DIR)/,$(notdir $(SRC:.c=.o)))
 DEP=$(addprefix $(DEP_DIR)/,$(notdir $(SRC:.c=.d)))
 BIN=$(BIN_DIR)/MyRecipes
-TEST=$(INC_DIR)/Test.h
+TESTH=$(INC_DIR)/Test.h
+TESTC=$(SRC_DIR)/Test.c
 GENTEST=$(SRC_DIR)/GenerateTest.py
 
 # compiler and parameters
@@ -31,7 +32,7 @@ PYTHON=/usr/bin/python
 
 .PHONY:all clean remove help
 
-all:$(DEP) $(TEST) $(BIN)
+all:$(DEP) $(TESTH) $(BIN)
 
 $(BIN):$(OBJ)
 	$(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(LFLAGS)
@@ -39,13 +40,11 @@ $(BIN):$(OBJ)
 $(OBJ):$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
-depend:$(DEP)
-
 $(DEP):$(DEP_DIR)/%.d:$(SRC_DIR)/%.c
-	$(call RM,$@)
+	$(call RM,$@);\
 	$(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
 
-$(TEST):$(GENTEST) $(SRC_DIR)/Test.c
+$(TESTH):$(GENTEST) $(TESTC)
 	$(PYTHON) $<
 
 -include $(DEP)
@@ -65,5 +64,6 @@ remove:
 clean:
 	$(call RM,$(wildcard $(OBJ_DIR)/*))
 	$(call RMDEP)
+
 count:
 	python ./debug/count.py
