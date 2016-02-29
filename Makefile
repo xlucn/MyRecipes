@@ -1,10 +1,11 @@
 # function to remove files in $(1) list
 RM=@for i in $(1);do \
-	if test -e $$i;then rm $$i; echo "[removing]"$$i; fi;\
+	rm $$i 2> /dev/null && echo "[removing]"$$i;\
 done
 # function to delete the outdated dependance files.
-RMDEP=@for i in $(DEP_DIR)/*.d	;do \
-	if ! test -e $(SRC_DIR)/`basename $$i .d`.c;then rm $$i;fi;\
+RMDEP=@\
+for i in `ls $(DEP_DIR)`;do \
+	[ -e $(SRC_DIR)/`basename $$i .d`.c ] || rm $(DEP_DIR)/$$i && echo "[removing]"$(DEP_DIR)/$$i;\
 done
 
 # names of files and directories
@@ -17,7 +18,7 @@ SRC=$(wildcard $(SRC_DIR)/*.c)
 OBJ=$(addprefix $(OBJ_DIR)/,$(notdir $(SRC:.c=.o)))
 DEP=$(addprefix $(DEP_DIR)/,$(notdir $(SRC:.c=.d)))
 BIN=$(BIN_DIR)/MyRecipes
-TEST=$(SRC_DIR)/Test.h
+TEST=$(INC_DIR)/Test.h
 GENTEST=$(SRC_DIR)/GenerateTest.py
 
 # compiler and parameters
@@ -28,15 +29,17 @@ DFLAGS=-MM
 LFLAGS=-lm
 PYTHON=/usr/bin/python
 
-.PHONY:all clean remove help backup
+.PHONY:all clean remove help
 
-all:$(TEST) $(DEP) $(BIN)
+all:$(DEP) $(TEST) $(BIN)
 
 $(BIN):$(OBJ)
 	$(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(LFLAGS)
 
 $(OBJ):$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
+
+depend:$(DEP)
 
 $(DEP):$(DEP_DIR)/%.d:$(SRC_DIR)/%.c
 	$(call RM,$@)
@@ -61,6 +64,6 @@ remove:
 
 clean:
 	$(call RM,$(wildcard $(OBJ_DIR)/*))
-
+	$(call RMDEP)
 count:
 	python ./debug/count.py
