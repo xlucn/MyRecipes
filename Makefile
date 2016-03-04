@@ -23,29 +23,33 @@ TESTC=$(SRC_DIR)/Test.c
 GENTEST=$(SRC_DIR)/GenerateTest.py
 
 # compiler and parameters
-CC=/usr/bin/gcc
+CC=gcc
 CFLAGS=-Wall -g -std=c11
 IFLAGS=-I $(INC_DIR)
 DFLAGS=-MM
 LFLAGS=-lm
-PYTHON=/usr/bin/python
+PYTHON=python
 
-.PHONY:all clean remove help
+.PHONY:all clean remove help dir
 
 all:$(DEP) $(TESTH) $(BIN)
 
-$(BIN):$(OBJ)
+$(BIN):dir $(OBJ)
 	$(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(LFLAGS)
 
 $(OBJ):$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
 $(DEP):$(DEP_DIR)/%.d:$(SRC_DIR)/%.c
-	$(call RM,$@);\
-	$(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
+	rm -f $@; $(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
 
 $(TESTH):$(GENTEST) $(TESTC)
 	$(PYTHON) $<
+
+dir:
+	@if [ -d $(BIN_DIR) ]; then continue; else mkdir -p $(BIN_DIR); fi;\
+	if [ -d $(DEP_DIR) ]; then continue; else mkdir -p $(DEP_DIR); fi;\
+	if [ -d $(OBJ_DIR) ]; then continue; else mkdir -p $(OBJ_DIR); fi;
 
 -include $(DEP)
 
