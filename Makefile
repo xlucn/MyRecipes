@@ -1,11 +1,17 @@
 # function to remove files in $(1) list
 RM=@for i in $(1);do \
-	rm $$i 2> /dev/null && echo "[removing]"$$i;\
+	if [ -e $$i ];\
+	then\
+		rm -f $$i > /dev/null 2>&1; echo "[removing]"$$i;\
+	fi;\
 done
 # function to delete the outdated dependance files.
 RMDEP=@\
 for i in `ls $(DEP_DIR)`;do \
-	[ -e $(SRC_DIR)/`basename $$i .d`.c ] || rm $(DEP_DIR)/$$i && echo "[removing]"$(DEP_DIR)/$$i;\
+	if ! [ -e $(SRC_DIR)/`basename $$i .d`.c ];\
+	then\
+		rm $(DEP_DIR)/$$i; echo "[removing]"$(DEP_DIR)/$$i;\
+	fi;\
 done
 
 # names of files and directories
@@ -41,7 +47,6 @@ $(OBJ):$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
 $(DEP):$(DEP_DIR)/%.d:$(SRC_DIR)/%.c
-	$(call RM,$@);\
 	$(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
 
 $(TESTH):$(GENTEST) $(TESTC)
@@ -59,11 +64,22 @@ remove	:	remove the binary file.\n\
 backup	:	tar the source file into a tar file named src.tar.gz"
 
 remove:
-	$(call RM,$(wildcard $(BIN_DIR)/*))
+	$(call RM,$(BIN))
 
 clean:
-	$(call RM,$(wildcard $(OBJ_DIR)/*))
+	$(call RM,$(OBJ) $(DEP))
+
+cleanall:
+	$(call RM,$(BIN) $(OBJ) $(DEP))
+
+rebuild:
+	$(call RM,$(BIN) $(OBJ) $(DEP)) && make all
+
+cleandep:
 	$(call RMDEP)
 
 count:
 	python ./debug/count.py
+
+test:
+	@echo 'a'
