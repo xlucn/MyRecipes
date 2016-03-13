@@ -38,9 +38,9 @@ PYTHON=python
 
 .PHONY:all clean remove help dir
 
-all:$(DEP) $(TESTH) $(BIN)
+all:dir $(DEP) $(TESTH) $(BIN)
 
-$(BIN):dir $(OBJ)
+$(BIN):$(OBJ)
 	$(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(LFLAGS)
 
 $(OBJ):$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
@@ -49,23 +49,24 @@ $(OBJ):$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 $(DEP):$(DEP_DIR)/%.d:$(SRC_DIR)/%.c
 	rm -f $@; $(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
 
-$(TESTH):$(GENTEST) $(TESTC)
-	$(PYTHON) $<
+$(TESTH):$(TESTC)
+	$(PYTHON) $(GENTEST)
 
 dir:
-	@if [ -d $(BIN_DIR) ]; then continue; else mkdir -p $(BIN_DIR); fi;\
-	if [ -d $(DEP_DIR) ]; then continue; else mkdir -p $(DEP_DIR); fi;\
-	if [ -d $(OBJ_DIR) ]; then continue; else mkdir -p $(OBJ_DIR); fi;
+	@mkdir -p $(BIN_DIR) $(DEP_DIR) $(OBJ_DIR)
 
 -include $(DEP)
 
 help:
-	@echo -e \
+	@echo \
 "Usage:\n\
 (all)	:	build the whole project.\n\
-count   :   \n\
-clean	:	remove the object files.\n\
+count   :	count the lines, words and bytes of source files.\n\
+clean	:	remove the object files and the dependancy files.\n\
+cleandep:	clean the useless dependancy files.\n\
 remove	:	remove the binary file.\n\
+cleanall:	remove all the files created by make.\n\
+rebuild :	clean all the files and rebuild the whole project.\n\
 backup	:	tar the source file into a tar file named src.tar.gz"
 
 remove:
@@ -74,17 +75,15 @@ remove:
 clean:
 	$(call RM,$(OBJ) $(DEP))
 
-cleanall:
-	$(call RM,$(BIN) $(OBJ) $(DEP))
+cleanall:clean remove
 
-rebuild:
-	$(call RM,$(BIN) $(OBJ) $(DEP)) && make all
+rebuild: cleanall all
 
 cleandep:
 	$(call RMDEP)
 
 count:
-	python ./debug/count.py
+	echo -n `date`"\t" >> ./.count && cat $(SRC_DIR)/* $(INC_DIR)/* | wc >> ./.count
 
 test:
 	@echo 'a'
