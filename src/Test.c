@@ -23,7 +23,7 @@ int testall()
 
     for (int i = 0; i < num; i++)
     {
-        printf("%s %s\n", (result[i]) ? "*[failed]" : " [passed]", names[i]);
+        printf("%s No.%3d %s\n", (result[i]) ? "*[failed]" : " [passed]", i + 1, names[i]);
     }
 
     return PASSED;
@@ -253,17 +253,22 @@ static double f6(double t, double y)
     return - y + t * t + 1;
 }
 
+static double y6(double t)
+{
+    return - 2 / exp(t) + 3 - 2 * t + t * t;
+}
+
 int testRKF()
 {
     double a = 0;
     double b = 1;
-    double TOL = 1e-7;
-    double hmax = 1e-1;
-    double hmin = 1e-3;
+    double TOL = 1e-5;
+    double hmax = 1e-2;
+    double hmin = 1e-6;
     double y0 = 1;
     double *result;
 
-    result = RKF(f6, a, b, y0, TOL, hmax, hmin);
+    result = RKF78(f6, a, b, y0, TOL, hmax, hmin);
 
     printf("Testing RKF Method\n");
     printf("t\t\th\t\ty\n");
@@ -274,6 +279,10 @@ int testRKF()
             printf("%lf\t", result[i * 3 + j + 1]);
         }
         printf("\n");
+        if (fabs(result[i * 3 + 3] - y6(result[i * 3 + 1])) > 1e-5)
+        {
+            return FAILED;
+        }
     }
     return PASSED;
 }

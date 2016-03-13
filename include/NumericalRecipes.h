@@ -97,6 +97,9 @@ double *ClassicRungeKutta(double f(double, double), double a, double b, double y
 /*
 ** Runge-Kutta-Fehlberg Method
 */
+double *RKF78(double f(double,double), double a, double b, double y0, double TOL, double hmax, double hmin);
+double *RKF45(double f(double,double), double a, double b, double y0, double TOL, double hmax, double hmin);
+double *RKFmn(double f(double,double), double a, double b, double y0, double TOL, double hmax, double hmin, double** A, double* B, double* Bstar, double* C, int n);
 double *RKF(double f(double,double), double a, double b, double y0, double TOL, double hmax, double hmin);
 /*
 ** Adams显式和隐式方法的PECE模式校正方法，这里k=1，用经典Runge-Kutta方法提供初值
