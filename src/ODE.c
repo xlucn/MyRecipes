@@ -2,6 +2,7 @@
 //卢旭
 //Solving Ordinary differential equations
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 #include "NumericalRecipes.h"
 #include "LibFunction.h"
@@ -145,27 +146,7 @@ static double Bstar45[6] = {16.0/135.0, 0, 6656.0/12825.0, 28561.0/56430.0, -9.0
 static double C45[6] = {0, 1.0/4.0, 3.0/8.0, 12.0/13.0, 1, 1.0/2.0};
 
 
-double *RKF78(double f(double,double), double a, double b, double y0, double TOL, double hmax, double hmin)
-{
-    double **A = (double**)malloc_s(13 * sizeof(double*));
-    for(int i = 0; i < 13; i++)
-    {
-        A[i]=A78[i];
-    }
-    return RKFmn(f, a, b, y0, TOL, hmax, hmin, A, B78, Bstar78, C78, 13);
-}
-
-double *RKF45(double f(double,double), double a, double b, double y0, double TOL, double hmax, double hmin)
-{
-    double **A = (double**)malloc_s(6 * sizeof(double*));
-    for(int i = 0; i < 6; i++)
-    {
-        A[i]=A45[i];
-    }
-    return RKFmn(f, a, b, y0, TOL, hmax, hmin, A, B45, Bstar45, C45, 6);
-}
-
-double *RKFmn(double f(double,double), double a, double b, double y0, double TOL, double hmax, double hmin,
+static double *RKFmn(double f(double,double), double a, double b, double y0, double TOL, double hmax, double hmin,
     double** A, double* B, double* Bstar, double* C, int n)
 {
     int step = 0; //the total steps
@@ -220,6 +201,7 @@ double *RKFmn(double f(double,double), double a, double b, double y0, double TOL
         }
         if (h < hmin)
         {
+            printf("h is smaller than hmin\n");
             return NULL;
         }
     }
@@ -227,82 +209,26 @@ double *RKFmn(double f(double,double), double a, double b, double y0, double TOL
     return result;
 }
 
-/*
-Runge-Kutta-Fehlberg Method, one of the adaptive Runge-Kutta methods.
-*/
-double *RKF(double f(double,double), double a, double b, double y0, double TOL, double hmax, double hmin)
+double *RKF78(double f(double,double), double a, double b, double y0, double TOL, double hmax, double hmin)
 {
-    static double A[6][6] =
+    double **A = (double**)malloc_s(13 * sizeof(double*));
+    for(int i = 0; i < 13; i++)
     {
-        {0},
-        {1.0/4.0, 0},
-        {3.0/32.0, 9.0/32.0, 0},
-        {1932.0/2197.0, -7200.0/2197.0, 7296.0/2197.0, 0},
-        {439.0/216.0, -8.0, 3680.0/513.0, -845.0/4104.0, 0},
-        {-8.0/27.0, 2.0, -3544.0/2565.0, 1859.0/4104.0, -11.0/40.0, 0}
-    };
-    static double B[6] = {25.0/216.0, 0, 1408.0/2565.0, 2197.0/4104.0, -1.0/5.0, 0};
-    static double Bstar[6] = {16.0/135.0, 0, 6656.0/12825.0, 28561.0/56430.0, -9.0/50.0, 2.0/55.0};
-    static double C[6] = {0, 1.0/4.0, 3.0/8.0, 12.0/13.0, 1, 1.0/2.0};
-
-    int step = 0; //the total steps
-    double t = a;
-    double y = y0;
-    double h = hmax;
-    double *k = malloc_s(6 * sizeof(double));
-    double R = 0;
-    double delta;
-    double *result;
-    step++;
-    result = (double*)malloc_s((step * 3 + 1) * sizeof(double));
-    result[1] = t;
-    result[2] = h;
-    result[3] = y;
-
-    while (t < b)
-    {
-        for(int i = 0; i < 6; i++)
-        {
-            y = result[3 * step];
-            for(int j = 0; j < i; j++)
-            {
-                y += A[i][j] * k[j];
-            }
-            k[i] = h * f(t + C[i] * h, y);
-            R += (B[i] - Bstar[i]) * k[i] / h;
-        }
-        y = result[3 * step];
-        R = fabs(R);
-        delta = pow((TOL / R / 2.0), 0.25);
-
-        if (R <= TOL)
-        {
-            t += h;
-            for(int i = 0; i < 6; i++)
-            {
-                y += B[i] * k[i];
-            }
-            step++;
-            result = (double*)realloc(result, (step * 3 + 1) * sizeof(double));
-            result[step * 3 - 2] = t;
-            result[step * 3 - 1] = h;
-            result[step * 3] = y;
-        }
-
-        h = delta < 0.1 ? 0.1 * h : (delta > 4 ? 4 * h: delta * h);
-
-        if (h >= hmax)
-        {
-            h = hmax;
-        }
-        if (h < hmin)
-        {
-            return NULL;
-        }
+        A[i]=A78[i];
     }
-    result[0] = step;
-    return result;
+    return RKFmn(f, a, b, y0, TOL, hmax, hmin, A, B78, Bstar78, C78, 13);
 }
+
+double *RKF45(double f(double,double), double a, double b, double y0, double TOL, double hmax, double hmin)
+{
+    double **A = (double**)malloc_s(6 * sizeof(double*));
+    for(int i = 0; i < 6; i++)
+    {
+        A[i]=A45[i];
+    }
+    return RKFmn(f, a, b, y0, TOL, hmax, hmin, A, B45, Bstar45, C45, 6);
+}
+
 
 /*
 Adams显式和隐式方法的PECE模式校正方法，这里k=1，用经典Runge-Kutta方法提供初值
