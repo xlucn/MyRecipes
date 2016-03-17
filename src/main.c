@@ -1,6 +1,6 @@
 #include "Test.h"
 int main(int argc, char *argv[])
 {
-    testall();
+    testSODERungeKutta();
     return 0;
 }

@@ -301,3 +301,85 @@ double **SODERungeKutta(double (**f)(double, double*), double a, double b, doubl
     }
     return y;
 }
+
+
+// m: number of functions or ODEs,
+// n: number of ks, order of RKF method matrix
+double **SODERKF(double (**f)(double, double*), double *y0, double a, double b, int m,
+    double TOL, double hmax, double hmin, int n)
+{
+    int step = 0;
+    double h = 100;
+    double t = a;
+    double *w = (double *)malloc_s(m * sizeof(double)); // a vector for temporary use
+    double *R = (double *)malloc_s(m * sizeof(double));
+    double **y = (double**)malloc_s((10 + 1) * sizeof(double*));
+    for(int i = 0; i < 10 + 1; i++)
+    {
+        *(y + i) = (double*)malloc_s(m * sizeof(double));
+    }
+    double **k = (double**)malloc_s(n * sizeof(double*));
+    for(int i = 0; i < n; i++)
+    {
+        *(k + i) = (double*)malloc_s(m * sizeof(double));
+    }
+
+    // initialization
+    for(int i = 0; i < m; i++)
+    {
+        w[i] = y0[i];
+        y[0][i] = w[i];
+    }
+
+    while(t < b)
+    {
+        // a brief on RK method:
+        // y[n+1]-y[n]=delta_y=sum(b[i]*k[i],{i,0,numberofk})
+        //     notice that the y and k are vectors, the functions f are also vectors
+        // where:
+        // k1=h*f(t[n]+c1*h,y[n])
+        // k2=h*f(t[n]+c2*h,y[n]+a21*k1)
+        // k3=h*f(t[n]+c3*h,y[n]+a31*k1+a32*k2)
+        // ... ...
+
+        // j, n is for each k variable
+        // first we calculate the jth vectork
+        for(int j = 0; j < n; j++)
+        {
+            // the temporary vector parameter w to be passed to functions
+            // w = sum(a[j][n]*vectork[n],{n,0,j})
+            for(int icomponent = 0; icomponent < m; icomponent++)
+            {
+                w[icomponent] = y[step][icomponent];
+                for(int indexofks = 0; indexofks < j; indexofks++)
+                {
+                    w[icomponent] += A78[j][indexofks] * k[indexofks][icomponent];
+                }
+            }
+            // the temporary time parameter t to be passed
+            // t=nth_t+c[j]*h
+
+            // i, m is for each component of a variable, the same number as the number of ODEs
+            for(int i = 0; i < m; i++)
+            {
+                // the ith component of vectork corresponding to the ith function
+                // The_jth_vectork[i] = h*ith_function(t, w)
+                k[j][i] = h * f[i](t + C78[j], w);
+            }
+        }
+
+        // use the temporary vector w to temporarily assign the result
+        for(int icomponent = 0; icomponent < m; icomponent++)
+        {
+            w[icomponent] = y[step][icomponent];
+            for(int indexofks = 0; indexofks < n; indexofks++)
+            {
+                w[icomponent] += B78[indexofks] * k[indexofks][icomponent];
+            }
+        }
+        // increase the time t by interval h
+        t += h;
+        step++;
+    }
+    return y;
+}

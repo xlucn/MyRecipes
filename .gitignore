@@ -2,4 +2,4 @@
 *.d
 bin/
 debug/
-./count
+.count

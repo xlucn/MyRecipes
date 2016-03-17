@@ -287,25 +287,37 @@ int testRKF()
     return PASSED;
 }
 
-static double f7(double t, double *y)
+static double SODEf1(double t, double *y)
 {
     return -4 * y[0] - 2 * y[1] + cos(t) + 4 * sin(t);
 }
 
-static double f8(double t, double *y)
+static double SODEf2(double t, double *y)
 {
     return 3 * y[0] + y[1] - 3 * sin(t);
 }
 
+static double SODEy1(double t)
+{
+    return 0;
+}
+
+static double SODEy2(double t)
+{
+    return 0;
+}
+
+
 int testSODERungeKutta()
 {
-    double (*f[2])(double,double*) = {f7, f8};
+    double (*f[2])(double,double*) = {SODEf1, SODEf2};
     double a = 0;
     double b = 1;
     double y0[] = {0, -1};
     int N = 10;
     int m = 2;
-    double **result = SODERungeKutta(f, a, b, y0, m, N);
+    // double **result = SODERungeKutta(f, a, b, y0, m, N);
+    double **result = SODERKF(f, y0, a, b, m, 1e-8, 1e4, 1e-4, 13);
 
     printf("Testing Runge-Kutta Method for a System of ODEs\n");
     printf("%8s%16s%16s\n", "t", "y1", "y2");

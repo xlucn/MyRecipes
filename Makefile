@@ -36,12 +36,12 @@ DFLAGS=-MM
 LFLAGS=-lm
 PYTHON=python
 
-.PHONY:all clean remove help dir
+.PHONY:all clean remove help dir count
 
 all:dir $(DEP) $(TESTH) $(BIN)
 
 $(BIN):$(OBJ)
-	$(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(LFLAGS)
+	$(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(LFLAGS); chmod a+x $(BIN)
 
 $(OBJ):$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
@@ -69,6 +69,9 @@ cleanall:	remove all the files created by make.\n\
 rebuild :	clean all the files and rebuild the whole project.\n\
 backup	:	tar the source file into a tar file named src.tar.gz"
 
+count:
+	echo -n `date`"\t" >> ./.count && cat $(SRC_DIR)/* $(INC_DIR)/* | wc >> ./.count
+
 remove:
 	$(call RM,$(BIN))
 
@@ -81,9 +84,6 @@ rebuild: cleanall all
 
 cleandep:
 	$(call RMDEP)
-
-count:
-	echo -n `date`"\t" >> ./.count && cat $(SRC_DIR)/* $(INC_DIR)/* | wc >> ./.count
 
 test:
 	@echo 'a'
