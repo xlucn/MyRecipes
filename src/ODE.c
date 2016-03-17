@@ -306,15 +306,17 @@ double **SODERungeKutta(double (**f)(double, double*), double a, double b, doubl
 // m: number of functions or ODEs,
 // n: number of ks, order of RKF method matrix
 double **SODERKF(double (**f)(double, double*), double *y0, double a, double b, int m,
-    double TOL, double hmax, double hmin, int n)
+    double h0, double TOL, double hmax, double hmin, int n)
 {
+    int templength = (b - a)/hmin;
     int step = 0;
-    double h = 100;
+    double h = h0;
     double t = a;
+    double *delta = (double *)malloc_s(m * sizeof(double));
     double *w = (double *)malloc_s(m * sizeof(double)); // a vector for temporary use
     double *R = (double *)malloc_s(m * sizeof(double));
-    double **y = (double**)malloc_s((10 + 1) * sizeof(double*));
-    for(int i = 0; i < 10 + 1; i++)
+    double **y = (double**)malloc_s((templength + 1) * sizeof(double*));
+    for(int i = 0; i < templength + 1; i++)
     {
         *(y + i) = (double*)malloc_s(m * sizeof(double));
     }
@@ -364,7 +366,7 @@ double **SODERKF(double (**f)(double, double*), double *y0, double a, double b, 
             {
                 // the ith component of vectork corresponding to the ith function
                 // The_jth_vectork[i] = h*ith_function(t, w)
-                k[j][i] = h * f[i](t + C78[j], w);
+                k[j][i] = h * f[i](t + C78[j] * h, w);
             }
         }
 
@@ -376,10 +378,24 @@ double **SODERKF(double (**f)(double, double*), double *y0, double a, double b, 
             {
                 w[icomponent] += B78[indexofks] * k[indexofks][icomponent];
             }
+            y[step+1][icomponent] = w[icomponent];
         }
+
+        // calculate the residual R
+        for(int icomponent = 0; icomponent < m; icomponent++)
+        {
+            R[icomponent] = 0;
+            for(int indexofks = 0; indexofks < n; indexofks++)
+            {
+                R[icomponent] += (B78[indexofks] - Bstar78[indexofks]) * k[indexofks][icomponent] / h;
+            }
+            delta[icomponent] = pow(TOL / R / 2, 1.0 / 7);
+        }
+
         // increase the time t by interval h
         t += h;
         step++;
+
     }
     return y;
 }

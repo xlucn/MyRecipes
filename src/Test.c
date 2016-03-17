@@ -297,36 +297,37 @@ static double SODEf2(double t, double *y)
     return 3 * y[0] + y[1] - 3 * sin(t);
 }
 
-static double SODEy1(double t)
+static double SODEy1(double x)
 {
-    return 0;
+    return exp(-2 * x) * (-2 + 2 * exp(x) + exp(2 * x) * sin(x));
 }
 
-static double SODEy2(double t)
+static double SODEy2(double x)
 {
-    return 0;
+    return -exp(-2 * x) * (3 * exp(x) - 2);
 }
 
 
 int testSODERungeKutta()
 {
     double (*f[2])(double,double*) = {SODEf1, SODEf2};
+    double (*y[2])(double) = {SODEy1, SODEy2};
     double a = 0;
     double b = 1;
     double y0[] = {0, -1};
     int N = 10;
     int m = 2;
-    // double **result = SODERungeKutta(f, a, b, y0, m, N);
-    double **result = SODERKF(f, y0, a, b, m, 1e-8, 1e4, 1e-4, 13);
+    double **result = SODERungeKutta(f, a, b, y0, m, N);
+    SODERKF(f, y0, a, b, m, 0.1, 1e-8, 1e4, 1e-4, 13);
 
     printf("Testing Runge-Kutta Method for a System of ODEs\n");
-    printf("%8s%16s%16s\n", "t", "y1", "y2");
+    printf("%8s%16s%16s%16s%16s\n", "t", "result1", "y1", "result2", "y2");
     for(int i = 0; i < N + 1; i ++)
     {
         printf("%8.2lf", a + i * (b - a) / N);
         for(int j = 0 ; j < m; j++)
         {
-            printf("%16lf", result[i][j]);
+            printf("%16lf%16lf", result[i][j], y[j](a + i * (b - a) / N));
         }
         printf("\n");
     }

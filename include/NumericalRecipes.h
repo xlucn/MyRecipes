@@ -110,8 +110,11 @@ double *AdamsPECE(double f(double, double), double a, double b, double dy0, doub
 ** retur** n a 2D array of values of all functions in all steps.
 */
 double **SODERungeKutta(double (*f[])(double, double*), double a, double b, double *y0, int m, int N);
+/*
+ * RKF method to solve system of ODEs
+ */
 double **SODERKF(double (**f)(double, double*), double *y0, double a, double b, int m,
-    double TOL, double hmax, double hmin, int n);
+    double h0, double TOL, double hmax, double hmin, int n);
 
 
 /*****************************************************************************

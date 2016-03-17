@@ -1,5 +1,6 @@
 *.o
 *.d
+*.a
 bin/
 debug/
 .count

@@ -85,5 +85,10 @@ rebuild: cleanall all
 cleandep:
 	$(call RMDEP)
 
+lib:
+	ar crv libNR.a $(OBJ_DIR)/Basic.o $(OBJ_DIR)/Integral.o $(OBJ_DIR)/Interpolation.o \
+	 $(OBJ_DIR)/LeastSq.o $(OBJ_DIR)/LibFunction.o $(OBJ_DIR)/LinearEquations.o \
+	 $(OBJ_DIR)/ODE.o $(OBJ_DIR)/Solve.o
+
 test:
 	@echo 'a'
