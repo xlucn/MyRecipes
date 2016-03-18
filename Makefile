@@ -14,16 +14,22 @@ for i in `ls $(DEP_DIR)`;do \
 	fi;\
 done
 
-# names of files and directories
+# names of directories
 SRC_DIR=./src
-OBJ_DIR=./debug/obj
 BIN_DIR=./bin
-DEP_DIR=./debug/dep
 INC_DIR=./include
+LIB_DIR=./lib
+DBG_DIR=./debug
+OBJ_DIR=$(DBG_DIR)/obj
+DEP_DIR=$(DBG_DIR)/dep
+DIRS=$(BIN_DIR) $(LIB_DIR) $(DBG_DIR) $(OBJ_DIR) $(DEP_DIR)
+# names of files
 SRC=$(wildcard $(SRC_DIR)/*.c)
 OBJ=$(addprefix $(OBJ_DIR)/,$(notdir $(SRC:.c=.o)))
 DEP=$(addprefix $(DEP_DIR)/,$(notdir $(SRC:.c=.d)))
 BIN=$(BIN_DIR)/MyRecipes
+# names of test-related files
+TEST_DIR=./test
 TESTH=$(INC_DIR)/Test.h
 TESTC=$(SRC_DIR)/Test.c
 GENTEST=$(SRC_DIR)/GenerateTest.py
@@ -53,7 +59,7 @@ $(TESTH):$(TESTC)
 	$(PYTHON) $(GENTEST)
 
 dir:
-	@mkdir -p $(BIN_DIR) $(DEP_DIR) $(OBJ_DIR)
+	@mkdir -p $(DIRS)
 
 -include $(DEP)
 
@@ -85,10 +91,8 @@ rebuild: cleanall all
 cleandep:
 	$(call RMDEP)
 
-lib:
-	ar crv libNR.a $(OBJ_DIR)/Basic.o $(OBJ_DIR)/Integral.o $(OBJ_DIR)/Interpolation.o \
-	 $(OBJ_DIR)/LeastSq.o $(OBJ_DIR)/LibFunction.o $(OBJ_DIR)/LinearEquations.o \
-	 $(OBJ_DIR)/ODE.o $(OBJ_DIR)/Solve.o
+lib:$(OBJ_DIR)/Basic.o $(OBJ_DIR)/Integral.o $(OBJ_DIR)/Interpolation.o $(OBJ_DIR)/LeastSq.o $(OBJ_DIR)/LibFunction.o $(OBJ_DIR)/LinearEquations.o $(OBJ_DIR)/ODE.o $(OBJ_DIR)/Solve.o
+	ar crv libNR.a $?
 
 test:
 	@echo 'a'

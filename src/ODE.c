@@ -310,6 +310,7 @@ double **SODERKF(double (**f)(double, double*), double *y0, double a, double b, 
 {
     int templength = (b - a)/hmin;
     int step = 0;
+    int TOLflag; // to record if all the residuals are smaller than recosponding TOL
     double h = h0;
     double t = a;
     double *delta = (double *)malloc_s(m * sizeof(double));
@@ -318,7 +319,7 @@ double **SODERKF(double (**f)(double, double*), double *y0, double a, double b, 
     double **y = (double**)malloc_s((templength + 1) * sizeof(double*));
     for(int i = 0; i < templength + 1; i++)
     {
-        *(y + i) = (double*)malloc_s(m * sizeof(double));
+        *(y + i) = (double*)malloc_s((m) * sizeof(double));
     }
     double **k = (double**)malloc_s(n * sizeof(double*));
     for(int i = 0; i < n; i++)
@@ -370,32 +371,53 @@ double **SODERKF(double (**f)(double, double*), double *y0, double a, double b, 
             }
         }
 
-        // use the temporary vector w to temporarily assign the result
-        for(int icomponent = 0; icomponent < m; icomponent++)
-        {
-            w[icomponent] = y[step][icomponent];
-            for(int indexofks = 0; indexofks < n; indexofks++)
-            {
-                w[icomponent] += B78[indexofks] * k[indexofks][icomponent];
-            }
-            y[step+1][icomponent] = w[icomponent];
-        }
 
+        TOLflag = 0;
         // calculate the residual R
-        for(int icomponent = 0; icomponent < m; icomponent++)
+        // for(int icomponent = 0; icomponent < m; icomponent++)
+        // {
+        //     R[icomponent] = 0;
+        //     for(int indexofks = 0; indexofks < n; indexofks++)
+        //     {
+        //         printf("B-B*: %f k: %f h: %f\n",B78[indexofks] - Bstar78[indexofks], k[indexofks][icomponent], h);
+        //         R[icomponent] += (B78[indexofks] - Bstar78[indexofks]) * k[indexofks][icomponent] / h;
+        //         printf("The R is %f\n",R[icomponent]);
+        //     }
+        //
+        //     delta[icomponent] = pow(TOL / R[icomponent] / 2, 1.0 / 7);
+        //
+        //     if(R[icomponent] > TOL)
+        //     {
+        //         h = h * delta[icomponent];
+        //         printf("The R is %f, changing step length: %f\n",R[icomponent], h);
+        //         if(h < hmin)
+        //         {
+        //             printf("step length h exceed minimal limit! lower minimal limit required.\n");
+        //             exit(1);
+        //         }
+        //         TOLflag = 1;
+        //         break;
+        //     }
+        // }
+
+        // the residuals are all smaller than the TOL, so record the result to array
+        if(TOLflag == 0)
         {
-            R[icomponent] = 0;
-            for(int indexofks = 0; indexofks < n; indexofks++)
+            // use the temporary vector w to temporarily assign the result
+            for(int icomponent = 0; icomponent < m; icomponent++)
             {
-                R[icomponent] += (B78[indexofks] - Bstar78[indexofks]) * k[indexofks][icomponent] / h;
+                w[icomponent] = y[step][icomponent];
+                for(int indexofks = 0; indexofks < n; indexofks++)
+                {
+                    w[icomponent] += B78[indexofks] * k[indexofks][icomponent];
+                }
+                y[step+1][icomponent] = w[icomponent];
             }
-            delta[icomponent] = pow(TOL / R / 2, 1.0 / 7);
+
+            // increase the time t by interval h
+            t += h;
+            step++;
         }
-
-        // increase the time t by interval h
-        t += h;
-        step++;
-
     }
     return y;
 }
