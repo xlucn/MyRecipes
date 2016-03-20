@@ -5,9 +5,9 @@
 
 import os
 
-testc = './src/Test.c'
+testc = './test/Test.c'
 testh = './test/Test.h'
-testinfo = './src/TestFunctions.c'
+testinfo = './test/TestFunctions.c'
 
 def readfuncs(testfile):
     '''
