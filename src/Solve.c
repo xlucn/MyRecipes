@@ -83,7 +83,7 @@ double MullerMethod(double f(double), double x0, double x1, double x2, double ep
     double f12 = (f2 - f1) / (x2 - x1);
     double f012  = (f12 - f01) / (x2 - x0);
 
-    for(int i = 0; i < MAXLOOP; i++)
+    for(int i = 0; i < 1000; i++)
     {
         b = f12 + f012 * (x2 - x1);
         d = sqrt(b * b - 4 * f2 * f012);

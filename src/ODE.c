@@ -374,31 +374,29 @@ double **SODERKF(double (**f)(double, double*), double *y0, double a, double b, 
 
         TOLflag = 0;
         // calculate the residual R
-        // for(int icomponent = 0; icomponent < m; icomponent++)
-        // {
-        //     R[icomponent] = 0;
-        //     for(int indexofks = 0; indexofks < n; indexofks++)
-        //     {
-        //         printf("B-B*: %f k: %f h: %f\n",B78[indexofks] - Bstar78[indexofks], k[indexofks][icomponent], h);
-        //         R[icomponent] += (B78[indexofks] - Bstar78[indexofks]) * k[indexofks][icomponent] / h;
-        //         printf("The R is %f\n",R[icomponent]);
-        //     }
-        //
-        //     delta[icomponent] = pow(TOL / R[icomponent] / 2, 1.0 / 7);
-        //
-        //     if(R[icomponent] > TOL)
-        //     {
-        //         h = h * delta[icomponent];
-        //         printf("The R is %f, changing step length: %f\n",R[icomponent], h);
-        //         if(h < hmin)
-        //         {
-        //             printf("step length h exceed minimal limit! lower minimal limit required.\n");
-        //             exit(1);
-        //         }
-        //         TOLflag = 1;
-        //         break;
-        //     }
-        // }
+        for(int icomponent = 0; icomponent < m; icomponent++)
+        {
+            R[icomponent] = 0;
+            for(int indexofks = 0; indexofks < n; indexofks++)
+            {
+                R[icomponent] += (B78[indexofks] - Bstar78[indexofks]) * k[indexofks][icomponent] / h;
+            }
+
+            delta[icomponent] = pow(TOL / R[icomponent] / 2, 1.0 / 7);
+
+            if(R[icomponent] > TOL)
+            {
+                h = h * delta[icomponent];
+                // printf("The R is %f, changing step length: %f\n",R[icomponent], h);
+                if(h < hmin)
+                {
+                    printf("step length h exceeds minimal limit! lower minimal limit required.\n");
+                    exit(1);
+                }
+                TOLflag = 1;
+                break;
+            }
+        }
 
         // the residuals are all smaller than the TOL, so record the result to array
         if(TOLflag == 0)
@@ -417,6 +415,21 @@ double **SODERKF(double (**f)(double, double*), double *y0, double a, double b, 
             // increase the time t by interval h
             t += h;
             step++;
+
+            double mindelta = 1;
+            // raise the step length to a suitable value since all the R are below TOL
+            for(int icomponent = 0; icomponent < m; icomponent++)
+            {
+                if(delta[icomponent] < mindelta)
+                {
+                    mindelta = delta[icomponent];
+                }
+            }
+            if(mindelta > 1)
+            {
+                h = h * mindelta;
+                // printf("The delta is %f, changing step length: %f\n",mindelta, h);
+            }
         }
     }
     return y;
