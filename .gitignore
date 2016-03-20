@@ -1,8 +1,5 @@
 *.o
 *.d
-*.a
-*.so
 bin/
 debug/
-lib/
 .count
