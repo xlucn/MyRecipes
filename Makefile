@@ -15,39 +15,50 @@ for i in `ls $(DEP_DIR)`;do \
 done
 
 # names of directories
-SRC_DIR=./src
-BIN_DIR=./bin
-INC_DIR=./include
-LIB_DIR=./lib
-DBG_DIR=./debug
+SRC_DIR=src
+BIN_DIR=bin
+INC_DIR=include
+LIB_DIR=lib
+DBG_DIR=debug
 OBJ_DIR=$(DBG_DIR)/obj
 DEP_DIR=$(DBG_DIR)/dep
-DIRS=$(BIN_DIR) $(LIB_DIR) $(DBG_DIR) $(OBJ_DIR) $(DEP_DIR)
+DIRS=$(BIN_DIR) $(LIB_DIR) $(OBJ_DIR) $(DEP_DIR)
+
 # names of files
 SRC=$(wildcard $(SRC_DIR)/*.c)
 OBJ=$(addprefix $(OBJ_DIR)/,$(notdir $(SRC:.c=.o)))
 DEP=$(addprefix $(DEP_DIR)/,$(notdir $(SRC:.c=.d)))
 BIN=$(BIN_DIR)/MyRecipes
+LIB=$(LIB_DIR)/libNR.a
+
 # names of test-related files
 TEST_DIR=./test
-TESTH=$(INC_DIR)/Test.h
-TESTC=$(SRC_DIR)/Test.c
-GENTEST=$(SRC_DIR)/GenerateTest.py
+TESTH=$(TEST_DIR)/Test.h
+TESTC=$(TEST_DIR)/Test.c
+TESTSRC=$(wildcard $(TEST_DIR)/*.c)
+TESTOBJ=$(addprefix $(OBJ_DIR)/,$(notdir $(TESTSRC:.c=.o)))
+TESTDEP=$(addprefix $(DEP_DIR)/,$(notdir $(TESTSRC:.c=.d)))
+GENTEST=$(TEST_DIR)/GenerateTest.py
+TESTIFLAGS=-I $(TEST_DIR)
 
 # compiler and parameters
 CC=gcc
 CFLAGS=-Wall -g -std=c11
 IFLAGS=-I $(INC_DIR)
 DFLAGS=-MM
-LFLAGS=-lm
+LFLAGS=-lm -lNR -L $(LIB_DIR)
 PYTHON=python
+
 
 .PHONY:all clean remove help dir count
 
-all:dir $(DEP) $(TESTH) $(BIN)
+all:$(BIN) $(DEP)
 
-$(BIN):$(OBJ)
-	$(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(LFLAGS); chmod a+x $(BIN)
+$(BIN):$(LIB) $(TESTOBJ)
+	$(CC) $(CFLAGS) -o $(BIN) $(TESTOBJ) $(LFLAGS)
+
+$(LIB):$(OBJ)
+	ar crv $@ $?
 
 $(OBJ):$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
@@ -55,13 +66,17 @@ $(OBJ):$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 $(DEP):$(DEP_DIR)/%.d:$(SRC_DIR)/%.c
 	rm -f $@; $(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
 
+$(TESTOBJ):$(OBJ_DIR)/%.o:$(TEST_DIR)/%.c $(TESTH)
+	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
+
+$(TESTDEP):$(DEP_DIR)/%.d:$(TEST_DIR)/%.c $(TESH)
+	rm -f $@; $(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
+
 $(TESTH):$(TESTC)
 	$(PYTHON) $(GENTEST)
 
-dir:
-	@mkdir -p $(DIRS)
-
 -include $(DEP)
+-include $(TESTDEP)
 
 help:
 	@echo \
@@ -76,13 +91,16 @@ rebuild :	clean all the files and rebuild the whole project.\n\
 backup	:	tar the source file into a tar file named src.tar.gz"
 
 count:
-	echo -n `date`"\t" >> ./.count && cat $(SRC_DIR)/* $(INC_DIR)/* | wc >> ./.count
+	echo -n `date`"\t" >> ./.count && cat $(SRC_DIR)/* $(INC_DIR)/* $(TEST_DIR)/* | wc >> ./.count
+
+dir:
+	mkdir -p $(DIRS)
 
 remove:
 	$(call RM,$(BIN))
 
 clean:
-	$(call RM,$(OBJ) $(DEP))
+	$(call RM,$(OBJ) $(DEP) $(TESTDEP) $(TESTOBJ))
 
 cleanall:clean remove
 
@@ -90,9 +108,6 @@ rebuild: cleanall all
 
 cleandep:
 	$(call RMDEP)
-
-lib:$(OBJ_DIR)/Basic.o $(OBJ_DIR)/Integral.o $(OBJ_DIR)/Interpolation.o $(OBJ_DIR)/LeastSq.o $(OBJ_DIR)/LibFunction.o $(OBJ_DIR)/LinearEquations.o $(OBJ_DIR)/ODE.o $(OBJ_DIR)/Solve.o
-	ar crv libNR.a $?
 
 test:
 	@echo 'a'
