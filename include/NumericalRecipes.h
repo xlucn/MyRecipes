@@ -120,9 +120,22 @@ double *AdamsPECE(double f(double, double), double a, double b, double dy0, doub
  */
 double **SODERungeKutta(double (*f[])(double, double*), double a, double b, double *y0, int m, int N);
 /**
- * RKF method to solve system of ODEs
+ * RKF method to solve a system of ODEs
+ * @param t the address of a pointer to double type
+ * @param y the address of a 2-rank pointer to double type
+ * @param f an array of pointers to right-functions
+ * @param y0 an array of initial values
+ * @param a,b interval
+ * @param m number of equations
+ * @param h0 the initial step size
+ * @param TOL the required tolerance
+ * @param hmin, hmax the minimun and maximum step size allowed
+ * @param n temporarily use this to indivate which method to use
+ * @return the number of steps use by RKF method to solve the equations, the
+ *  pointer *t will be a array of time in every step, and the pointer *y will be
+ *  a 2-rank array of all function values in all steps.
  */
- int SODERKF(double** t, double*** y, double (**f)(double, double*), double *y0,
+ int SODERKF(double **t, double ***y, double (*f[])(double, double*), double *y0,
      double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n);
 
 

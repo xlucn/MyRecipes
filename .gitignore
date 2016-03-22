@@ -6,3 +6,5 @@ bin/
 debug/
 lib/
 .count
+Test.h
+TestFunctions.c

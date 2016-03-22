@@ -29,6 +29,9 @@ int testall()
     return PASSED;
 }
 
+/**
+ * testing integration
+ */
 static double integrand1(double x)
 {
     return x * sqrt(1 + x * x);
@@ -37,6 +40,16 @@ static double integrand1(double x)
 static double integral1(double x)
 {
     return  pow(1 + x * x, 1.5) / 3;
+}
+
+static double integrand2(double x)
+{
+    return 1 / (1 + x);
+}
+
+static double integral2(double x)
+{
+    return log(x + 1);
 }
 
 int testAdaptiveSimpson()
@@ -50,17 +63,6 @@ int testAdaptiveSimpson()
         res, ans, fabs(res - ans));
 
     return fabs(res - ans) < TOL ? PASSED : FAILED;
-}
-
-
-static double integrand2(double x)
-{
-    return 1 / (1 + x);
-}
-
-static double integral2(double x)
-{
-    return log(x + 1);
 }
 
 int testRomberg()
@@ -77,19 +79,24 @@ int testRomberg()
     return fabs(res - ans) < TOL ? PASSED : FAILED;
 }
 
+/**
+ * testing solving linear equations
+ */
+
+static int N = 5;
+static double a[] = {0, 1, 1, 1, 1};
+static double b[] = {1, -2, 2, -2, 3};
+static double c[] = {1, 1, 1, 1, 0};
+static double d[] = {2, 4, 4, 4, 4};
+static double ans[] = {1, -1, 1, -1, 1};
 
 int testChasing()
 {
-    int N = 5;
-    double a[] = {0, 1, 1, 1, 1};
-    double b[] = {1, -2, 2, -2, 3};
-    double c[] = {1, 1, 1, 1, 0};
-    double d[] = {2, 4, 4, 4, 4};
     double *x;
 
     x = Chasing(N, d, c, a, b);
 
-    if(x == 0)
+    if(x == NULL)
     {
         printf("testChasing: Method failed.");
         return FAILED;
@@ -99,13 +106,87 @@ int testChasing()
         for(int i = 0; i < N; i++)
         {
             printf("%f\n", x[i]);
+            if(fabs(x[i] - ans[i]) > 1e-8)
+            {
+                return FAILED;
+            }
         }
     }
     return PASSED;
 }
 
+static double LinEqA1[3][3] = {{21, -38, 23},{-38, 70, -43},{23, -43, 27}};
+static double LinEqb1[3] = {-26,49,-28};
+static double LinEqans[] = {10.7143,12.5714,9.85714};
+static int LinEqN = 3;
+
+int testGaussianEli()
+{
+    int N = LinEqN;
+    double eps = 1e-3;
+    double **A = (double **)malloc_s(N * sizeof(double *));
+    for(int i = 0; i < N; i++)
+    {
+        A[i] = (double*)malloc_s(N * sizeof(double));
+        for (int j = 0; j < N; j++)
+        {
+            A[i][j] = LinEqA1[i][j];
+        }
+    }
 
 
+    double *x1 = GaussEli(N, A, LinEqb1);
+    for(int i = 0; i < N; i++)
+    {
+        printf("%lf\t", x1[i]);
+    }
+    printf("\n");
+    for(int i = 0; i < N; i++)
+    {
+        if (fabs(x1[i] - LinEqans[i]) > eps)
+        {
+            printf("Gauss elimination method failed\n");
+            return FAILED;
+        }
+    }
+    return PASSED;
+}
+
+int testGaussianEliPP()
+{
+    int N = LinEqN;
+    static double eps = 1e-4;
+    double **Ae = (double**)malloc_s(N * sizeof(double*));
+    for (int i = 0; i < N; i++)
+    {
+        Ae[i] = (double*)malloc_s((N + 1) * sizeof(double));
+        for (int j = 0; j < N; j++)
+        {
+            Ae[i][j] = LinEqA1[i][j];
+        }
+        Ae[i][N] = b[i];
+    }
+    double *x2 = GaussEliPP(LinEqN, Ae);
+    for(int i = 0; i < N; i++)
+    {
+        printf("%lf\t", x2[i]);
+    }
+    printf("\n");
+
+    for(int i = 0; i < N; i ++)
+    {
+        if (fabs(x2[i] - LinEqans[i]) > eps)
+        {
+            printf("Gauss elimination method with partial pivoting failed\n");
+            return FAILED;
+        }
+    }
+    return PASSED;
+}
+
+/**
+ * testing interpolation
+ */
 static double f3(double x)
 {
     return 1 / (1 + x * x);
@@ -146,61 +227,9 @@ int testHermiteIpl()
 }
 
 
-int testGaussianEli()
-{
-    int N = 3;
-    double eps = 1e-3;
-    double AA[3][3] = {{21, -38, 23},{-38, 70, -43},{23, -43, 27}};
-    double b[3] = {-26,49,-28};
-    double **A = (double **)malloc_s(N * sizeof(double *));
-    for(int i = 0; i < N; i++)
-    {
-        A[i] = (double*)malloc_s(N * sizeof(double));
-        for (int j = 0; j < N; j++)
-        {
-            A[i][j] = AA[i][j];
-        }
-    }
-    double **Ae = (double**)malloc_s(N * sizeof(double*));
-    for (int i = 0; i < N; i++)
-    {
-        Ae[i] = (double*)malloc_s((N + 1) * sizeof(double));
-        for (int j = 0; j < N; j++)
-        {
-            Ae[i][j] = AA[i][j];
-        }
-        Ae[i][N] = b[i];
-    }
-    double answer[] = {10.7143,12.5714,9.85714};
-
-    double *x1 = GaussEli(N, A, b);
-    double *x2 = GaussEliPPP(N, Ae);
-    for(int i = 0; i < N; i++)
-    {
-        printf("%lf\t", x1[i]);
-    }
-    printf("\n");
-    for(int i = 0; i < N; i++)
-    {
-        printf("%lf\t", x2[i]);
-    }
-    printf("\n");
-    for(int i = 0; i < N; i++)
-    {
-        if (fabs(x1[i] - answer[i]) > eps)
-        {
-            printf("Gauss elimination method failed\n");
-            return FAILED;
-        }
-        else if (fabs(x2[i] - answer[i]) > eps)
-        {
-            printf("Gauss elimination method with partial pivoting failed\n");
-            return FAILED;
-        }
-    }
-    return PASSED;
-}
-
+/**
+ * testing solving ODEs
+ */
 
 static double f4(double t, double y)
 {
@@ -318,7 +347,7 @@ int testSODERungeKutta()
     int N = 10;
     int m = 2;
     double **result = SODERungeKutta(f, a, b, y0, m, N);
-    SODERKF(f, y0, a, b, m, 0.1, 1e-8, 1e4, 1e-4, 13);
+    // SODERKF(f, y0, a, b, m, 0.1, 1e-8, 1e4, 1e-4, 13);
 
     printf("Testing Runge-Kutta Method for a System of ODEs\n");
     printf("%8s%16s%16s%16s%16s\n", "t", "result1", "y1", "result2", "y2");
@@ -334,6 +363,10 @@ int testSODERungeKutta()
     return PASSED;
 }
 
+
+/**
+ * testing orthogonal decomposition
+ */
 
 int testLeastSq()
 {
@@ -403,6 +436,11 @@ int testQR()
     }
     return PASSED;
 }
+
+
+/**
+ * testing solving a equations
+ */
 
 static double f9(double x)
 {

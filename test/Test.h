@@ -19,6 +19,7 @@ int testChasing();
 int testClassicRK();
 int testDividedDiff();
 int testGaussianEli();
+int testGaussianEliPP();
 int testHermiteIpl();
 int testLeastSq();
 int testMuller();

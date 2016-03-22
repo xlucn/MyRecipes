@@ -108,6 +108,3 @@ rebuild: cleanall all
 
 cleandep:
 	$(call RMDEP)
-
-test:
-	@echo 'a'

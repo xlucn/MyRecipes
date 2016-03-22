@@ -368,11 +368,11 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
 
             delta[icomponent] = pow(TOL / R[icomponent] / 2, 1.0 / 7);
 
-            // lower the step length if the accuracy is not enough
+            // lower the step size if the accuracy is not enough
             if(R[icomponent] > TOL)
             {
                 h = h * delta[icomponent];
-                // printf("The R is %f, changing step length: %f\n",R[icomponent], h);
+                // printf("The R is %f, changing step size: %f\n",R[icomponent], h);
                 if(h < hmin)
                 {
                     printf("minimal limit exceeds! lower minimal limit required.\n");
@@ -406,7 +406,7 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
             (*t)[step] = T;
 
             double mindelta = 1;
-            // raise the step length to a suitable value since all the R are below TOL
+            // raise the step size to a suitable value since all the R are below TOL
             for(int icomponent = 0; icomponent < m; icomponent++)
             {
                 if(delta[icomponent] < mindelta)
@@ -417,7 +417,7 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
             if(mindelta > 1)
             {
                 h = h * mindelta;
-                // printf("The delta is %f, changing step length: %f\n",mindelta, h);
+                // printf("The delta is %f, changing step size: %f\n",mindelta, h);
             }
         }
     }
