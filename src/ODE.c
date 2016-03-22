@@ -305,46 +305,35 @@ double **SODERungeKutta(double (**f)(double, double*), double a, double b, doubl
 
 // m: number of functions or ODEs,
 // n: number of ks, order of RKF method matrix
-double **SODERKF(double (**f)(double, double*), double *y0, double a, double b, int m,
-    double h0, double TOL, double hmax, double hmin, int n)
+int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
+    double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n)
 {
-    int templength = (b - a)/hmin;
-    int step = 0;
+    long templength = (b - a)/hmin + 1;
+    long step = 0;
     int TOLflag; // to record if all the residuals are smaller than recosponding TOL
     double h = h0;
-    double t = a;
-    double *delta = (double *)malloc_s(m * sizeof(double));
+    double T = a;
+    double *delta = (double *)malloc_s(m * sizeof(double)); // a variable related to the ratio of residuals and TOL
     double *w = (double *)malloc_s(m * sizeof(double)); // a vector for temporary use
-    double *R = (double *)malloc_s(m * sizeof(double));
-    double **y = (double**)malloc_s((templength + 1) * sizeof(double*));
-    for(int i = 0; i < templength + 1; i++)
-    {
-        *(y + i) = (double*)malloc_s((m) * sizeof(double));
-    }
-    double **k = (double**)malloc_s(n * sizeof(double*));
+    double *R = (double *)malloc_s(m * sizeof(double)); // the residuals
+    double **k = (double**)malloc_s(n * sizeof(double*)); // the internal variables
     for(int i = 0; i < n; i++)
     {
         *(k + i) = (double*)malloc_s(m * sizeof(double));
     }
-
+    *t = (double*)malloc_s(templength * sizeof(double)); // the values of variable
+    *y = (double**)malloc_s(templength * sizeof(double*)); // the values of the functions
+    (*y)[0] = (double*)malloc_s(m * sizeof(double));
     // initialization
+    (*t)[0] = T;
     for(int i = 0; i < m; i++)
     {
         w[i] = y0[i];
-        y[0][i] = w[i];
+        (*y)[0][i] = w[i];
     }
-
-    while(t < b)
+    printf("initialization done, temp:%ld\n", templength);
+    while(T < b)
     {
-        // a brief on RK method:
-        // y[n+1]-y[n]=delta_y=sum(b[i]*k[i],{i,0,numberofk})
-        //     notice that the y and k are vectors, the functions f are also vectors
-        // where:
-        // k1=h*f(t[n]+c1*h,y[n])
-        // k2=h*f(t[n]+c2*h,y[n]+a21*k1)
-        // k3=h*f(t[n]+c3*h,y[n]+a31*k1+a32*k2)
-        // ... ...
-
         // j, n is for each k variable
         // first we calculate the jth vectork
         for(int j = 0; j < n; j++)
@@ -353,25 +342,20 @@ double **SODERKF(double (**f)(double, double*), double *y0, double a, double b, 
             // w = sum(a[j][n]*vectork[n],{n,0,j})
             for(int icomponent = 0; icomponent < m; icomponent++)
             {
-                w[icomponent] = y[step][icomponent];
+                w[icomponent] = (*y)[step][icomponent];
                 for(int indexofks = 0; indexofks < j; indexofks++)
                 {
                     w[icomponent] += A78[j][indexofks] * k[indexofks][icomponent];
                 }
             }
-            // the temporary time parameter t to be passed
-            // t=nth_t+c[j]*h
-
             // i, m is for each component of a variable, the same number as the number of ODEs
             for(int i = 0; i < m; i++)
             {
                 // the ith component of vectork corresponding to the ith function
                 // The_jth_vectork[i] = h*ith_function(t, w)
-                k[j][i] = h * f[i](t + C78[j] * h, w);
+                k[j][i] = h * f[i](T + C78[j] * h, w);
             }
         }
-
-
         TOLflag = 0;
         // calculate the residual R
         for(int icomponent = 0; icomponent < m; icomponent++)
@@ -384,13 +368,14 @@ double **SODERKF(double (**f)(double, double*), double *y0, double a, double b, 
 
             delta[icomponent] = pow(TOL / R[icomponent] / 2, 1.0 / 7);
 
+            // lower the step length if the accuracy is not enough
             if(R[icomponent] > TOL)
             {
                 h = h * delta[icomponent];
                 // printf("The R is %f, changing step length: %f\n",R[icomponent], h);
                 if(h < hmin)
                 {
-                    printf("step length h exceeds minimal limit! lower minimal limit required.\n");
+                    printf("minimal limit exceeds! lower minimal limit required.\n");
                     exit(1);
                 }
                 TOLflag = 1;
@@ -401,20 +386,24 @@ double **SODERKF(double (**f)(double, double*), double *y0, double a, double b, 
         // the residuals are all smaller than the TOL, so record the result to array
         if(TOLflag == 0)
         {
+            (*y)[step+1] = (double*)malloc_s(m * sizeof(double));
             // use the temporary vector w to temporarily assign the result
             for(int icomponent = 0; icomponent < m; icomponent++)
             {
-                w[icomponent] = y[step][icomponent];
+                w[icomponent] = (*y)[step][icomponent];
                 for(int indexofks = 0; indexofks < n; indexofks++)
                 {
+                    // printf("Here:%ld:%f:%d:%d\n",step,h,icomponent,indexofks);
                     w[icomponent] += B78[indexofks] * k[indexofks][icomponent];
                 }
-                y[step+1][icomponent] = w[icomponent];
+                // printf("%f\n", (*y)[step][0]);
+                (*y)[step+1][icomponent] = w[icomponent];
             }
 
             // increase the time t by interval h
-            t += h;
+            T += h;
             step++;
+            (*t)[step] = T;
 
             double mindelta = 1;
             // raise the step length to a suitable value since all the R are below TOL
@@ -432,5 +421,10 @@ double **SODERKF(double (**f)(double, double*), double *y0, double a, double b, 
             }
         }
     }
-    return y;
+    *y = (double**)realloc(*y, step * sizeof(double*));
+    *t = (double*)realloc(*t, step * sizeof(double));
+    // for (int i = 0; i <= step; i++) {
+    //     printf("%f %f %f %f %f %f %f\n", (*t)[i], (*y)[i][0], (*y)[i][1], (*y)[i][2], (*y)[i][3], (*y)[i][4], (*y)[i][5]);
+    // }
+    return step;
 }

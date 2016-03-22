@@ -122,8 +122,8 @@ double **SODERungeKutta(double (*f[])(double, double*), double a, double b, doub
 /**
  * RKF method to solve system of ODEs
  */
-double **SODERKF(double (**f)(double, double*), double *y0, double a, double b, int m,
-    double h0, double TOL, double hmax, double hmin, int n);
+ int SODERKF(double** t, double*** y, double (**f)(double, double*), double *y0,
+     double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n);
 
 
 /*****************************************************************************
