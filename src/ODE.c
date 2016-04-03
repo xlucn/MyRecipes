@@ -187,7 +187,7 @@ static double *RKFmn(double f(double,double), double a, double b, double y0, dou
                 y += B[i] * k[i];
             }
             step++;
-            result = (double*)realloc(result, (step * 3 + 1) * sizeof(double));
+            result = (double*)realloc_s(result, (step * 3 + 1) * sizeof(double));
             result[step * 3 - 2] = t;
             result[step * 3 - 1] = h;
             result[step * 3] = y;
@@ -308,7 +308,7 @@ double **SODERungeKutta(double (**f)(double, double*), double a, double b, doubl
 int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
     double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n)
 {
-    long templength = (b - a)/hmin + 1;
+    long length = 1000;
     long step = 0;
     int TOLflag; // to record if all the residuals are smaller than recosponding TOL
     double h = h0;
@@ -321,9 +321,10 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
     {
         *(k + i) = (double*)malloc_s(m * sizeof(double));
     }
-    *t = (double*)malloc_s(templength * sizeof(double)); // the values of variable
-    *y = (double**)malloc_s(templength * sizeof(double*)); // the values of the functions
+    *t = (double*)malloc_s(length * sizeof(double)); // the values of variable
+    *y = (double**)malloc_s(length * sizeof(double*)); // the values of the functions
     (*y)[0] = (double*)malloc_s(m * sizeof(double));
+
     // initialization
     (*t)[0] = T;
     for(int i = 0; i < m; i++)
@@ -331,7 +332,7 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
         w[i] = y0[i];
         (*y)[0][i] = w[i];
     }
-    printf("initialization done, temp:%ld\n", templength);
+
     while(T < b)
     {
         // j, n is for each k variable
@@ -339,7 +340,7 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
         for(int j = 0; j < n; j++)
         {
             // the temporary vector parameter w to be passed to functions
-            // w = sum(a[j][n]*vectork[n],{n,0,j})
+            // w = sum( a[j][n]*vectork[n], {n,0,j} )
             for(int icomponent = 0; icomponent < m; icomponent++)
             {
                 w[icomponent] = (*y)[step][icomponent];
@@ -368,11 +369,11 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
 
             delta[icomponent] = pow(TOL / R[icomponent] / 2, 1.0 / 7);
 
-            // lower the step size if the accuracy is not enough
+            // lower the step length if the accuracy is not enough
             if(R[icomponent] > TOL)
             {
                 h = h * delta[icomponent];
-                // printf("The R is %f, changing step size: %f\n",R[icomponent], h);
+                // printf("The R is %f, changing step length: %f\n",R[icomponent], h);
                 if(h < hmin)
                 {
                     printf("minimal limit exceeds! lower minimal limit required.\n");
@@ -386,6 +387,14 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
         // the residuals are all smaller than the TOL, so record the result to array
         if(TOLflag == 0)
         {
+            // lengthen the array if the current space is not enough.
+            if((step + 1) == length)
+            {
+                length += 1000;
+                (*t) = (double*)realloc_s(*t, length * sizeof(double));
+                (*y) = (double**)realloc_s(*y, length * sizeof(double*));
+            }
+            // allocate a new line in y.
             (*y)[step+1] = (double*)malloc_s(m * sizeof(double));
             // use the temporary vector w to temporarily assign the result
             for(int icomponent = 0; icomponent < m; icomponent++)
@@ -393,10 +402,8 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
                 w[icomponent] = (*y)[step][icomponent];
                 for(int indexofks = 0; indexofks < n; indexofks++)
                 {
-                    // printf("Here:%ld:%f:%d:%d\n",step,h,icomponent,indexofks);
                     w[icomponent] += B78[indexofks] * k[indexofks][icomponent];
                 }
-                // printf("%f\n", (*y)[step][0]);
                 (*y)[step+1][icomponent] = w[icomponent];
             }
 
@@ -406,7 +413,7 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
             (*t)[step] = T;
 
             double mindelta = 1;
-            // raise the step size to a suitable value since all the R are below TOL
+            // raise the step length to a suitable value since all the R are below TOL
             for(int icomponent = 0; icomponent < m; icomponent++)
             {
                 if(delta[icomponent] < mindelta)
@@ -417,14 +424,13 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
             if(mindelta > 1)
             {
                 h = h * mindelta;
-                // printf("The delta is %f, changing step size: %f\n",mindelta, h);
+                // printf("The delta is %f, changing step length: %f\n",mindelta, h);
             }
         }
     }
-    *y = (double**)realloc(*y, step * sizeof(double*));
-    *t = (double*)realloc(*t, step * sizeof(double));
-    // for (int i = 0; i <= step; i++) {
-    //     printf("%f %f %f %f %f %f %f\n", (*t)[i], (*y)[i][0], (*y)[i][1], (*y)[i][2], (*y)[i][3], (*y)[i][4], (*y)[i][5]);
-    // }
+
+
+    *y = (double**)realloc_s(*y, step * sizeof(double*));
+    *t = (double*)realloc_s(*t, step * sizeof(double));
     return step;
 }
