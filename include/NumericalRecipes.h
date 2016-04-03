@@ -1,6 +1,9 @@
-﻿//encoding : utf-8
-//Lu Xu
-//这里是根据林成森《数值计算方法》一书编写的计算程序。
+﻿/**
+ * @file NumericalRecipes.h
+ * @note encoding : utf-8
+ * @author Lu Xu(oliver_lew@outlook.com)
+ * @brief 这里是根据林成森《数值计算方法》一书编写的计算程序。
+ */
 #ifndef _NR_H_
 #define _NR_H_
 
@@ -121,8 +124,10 @@ double *AdamsPECE(double f(double, double), double a, double b, double dy0, doub
 double **SODERungeKutta(double (*f[])(double, double*), double a, double b, double *y0, int m, int N);
 /**
  * RKF method to solve a system of ODEs
- * @param t the address of a pointer to double type
- * @param y the address of a 2-rank pointer to double type
+ * @param t the address of a pointer to double type, this function will modify
+ *  the pointer to point to a one-dimension array.
+ * @param y the address of a 2-rank pointer to double type, this function will
+ *  modify the pointer to point to a two-dimension array.
  * @param f an array of pointers to right-functions
  * @param y0 an array of initial values
  * @param a,b interval

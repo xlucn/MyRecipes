@@ -155,7 +155,7 @@ int testGaussianEli()
 int testGaussianEliPP()
 {
     int N = LinEqN;
-    static double eps = 1e-4;
+    double eps = 1e-4;
     double **Ae = (double**)malloc_s(N * sizeof(double*));
     for (int i = 0; i < N; i++)
     {
