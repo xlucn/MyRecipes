@@ -12,7 +12,24 @@ void* malloc_s(size_t size)
     void* new_mem = malloc(size);
     if (new_mem == NULL)
     {
-        printf("Out of memory!\n");
+        printf("Allocation of memory failed!\n");
+        exit(1);
+    }
+    return new_mem;
+}
+
+#undef realloc
+void* realloc_s(void* ptr, size_t size)
+{
+    if(size < 0)
+    {
+        printf("allocated space size is negative\n");
+        exit(1);
+    }
+    void* new_mem = realloc(ptr, size);
+    if (new_mem == NULL)
+    {
+        printf("Allocation of memory failed!\n");
         exit(1);
     }
     return new_mem;
