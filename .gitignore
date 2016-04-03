@@ -4,7 +4,8 @@
 *.a
 *.so
 /bin
-/lib
+libNR.a
+lib/libNR.a
 .count
 Test.h
 TestFunctions.c
