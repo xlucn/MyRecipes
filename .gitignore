@@ -1,8 +1,10 @@
+.gitignore
 *.o
 *.d
 *.a
 *.so
-bin/
+/bin
+/lib
 .count
 Test.h
 TestFunctions.c
