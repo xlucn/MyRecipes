@@ -1,5 +1,5 @@
 #include "Test.h"
-int main(int argc, char *argv[])
+int main()
 {
     testall();
     return 0;

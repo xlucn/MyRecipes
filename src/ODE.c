@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include "NumericalRecipes.h"
+#include "NR.h"
 #include "LibFunction.h"
 
 /*
@@ -308,9 +308,15 @@ double **SODERungeKutta(double (**f)(double, double*), double a, double b, doubl
 int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
     double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n)
 {
+	if (a > b)
+	{
+		fprintf(stderr, "the integration region (a,b) not illegal\n");
+		exit(1);
+	}
+
     long length = 1000;
     long step = 0;
-    int TOLflag; // to record if all the residuals are smaller than recosponding TOL
+    int TOLflag; // to record if all the residuals are smaller than coresponding TOL
     double h = h0;
     double T = a;
     double *delta = (double *)malloc_s(m * sizeof(double)); // a variable related to the ratio of residuals and TOL
@@ -334,7 +340,8 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
     }
 
     while(T < b)
-    {
+    {if(T>62)
+		printf("now is t=%f, b=%f, length=%ld\n", T, b, length);
         // j, n is for each k variable
         // first we calculate the jth vectork
         for(int j = 0; j < n; j++)
@@ -347,6 +354,7 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
                 for(int indexofks = 0; indexofks < j; indexofks++)
                 {
                     w[icomponent] += A78[j][indexofks] * k[indexofks][icomponent];
+                    //printf("looping1");
                 }
             }
             // i, m is for each component of a variable, the same number as the number of ODEs
@@ -365,6 +373,7 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
             for(int indexofks = 0; indexofks < n; indexofks++)
             {
                 R[icomponent] += (B78[indexofks] - Bstar78[indexofks]) * k[indexofks][icomponent] / h;
+                    // printf("looping2");
             }
 
             delta[icomponent] = pow(TOL / R[icomponent] / 2, 1.0 / 7);
@@ -373,7 +382,7 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
             if(R[icomponent] > TOL)
             {
                 h = h * delta[icomponent];
-                // printf("The R is %f, changing step length: %f\n",R[icomponent], h);
+                 printf("The R is %f, changing step length: %f\n",R[icomponent], h);
                 if(h < hmin)
                 {
                     printf("minimal limit exceeds! lower minimal limit required.\n");
@@ -403,6 +412,7 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
                 for(int indexofks = 0; indexofks < n; indexofks++)
                 {
                     w[icomponent] += B78[indexofks] * k[indexofks][icomponent];
+                 //   printf("looping3");
                 }
                 (*y)[step+1][icomponent] = w[icomponent];
             }
@@ -416,6 +426,7 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
             // raise the step length to a suitable value since all the R are below TOL
             for(int icomponent = 0; icomponent < m; icomponent++)
             {
+                 //   printf("looping4");
                 if(delta[icomponent] < mindelta)
                 {
                     mindelta = delta[icomponent];
@@ -429,7 +440,17 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
         }
     }
 
+    // free the spaces allocated before
+    free(delta);
+    free(w);
+    free(R);
+    for(int i = 0; i < n; i++)
+    {
+        free(k[i]);
+    }
+    free(k);
 
+    // resize the arrays to specific size--number of steps
     *y = (double**)realloc_s(*y, step * sizeof(double*));
     *t = (double*)realloc_s(*t, step * sizeof(double));
     return step;

@@ -1,6 +1,6 @@
 #include <math.h>
 #include <stdlib.h>
-#include "NumericalRecipes.h"
+#include "NR.h"
 #include "LibFunction.h"
 
 /*

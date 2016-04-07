@@ -1,5 +1,5 @@
 ﻿/**
- * @file NumericalRecipes.h
+ * @file NR.h
  * @note encoding : utf-8
  * @author Lu Xu(oliver_lew@outlook.com)
  * @brief 这里是根据林成森《数值计算方法》一书编写的计算程序。
@@ -41,7 +41,7 @@ double *GaussJordanEli(int N, double **a);
 
 
 /*****************************************************************************
- *********************Integral.c**********************************************
+ *********************Integral**********************************************
  *****************************************************************************/
 /**
  * Trapezoidal integration
@@ -71,7 +71,7 @@ double AdaptiveSimpsonInt(double f(double), double a, double b, double TOL);
 
 
 /*****************************************************************************
- *********************ODE.c***************************************************
+ *********************ODE*****************************************************
  *****************************************************************************/
 /**
  * Euler method to solve initial value problem(IVP) of ODE
@@ -139,13 +139,17 @@ double **SODERungeKutta(double (*f[])(double, double*), double a, double b, doub
  * @return the number of steps use by RKF method to solve the equations, the
  *  pointer *t will be a array of time in every step, and the pointer *y will be
  *  a 2-rank array of all function values in all steps.
+ * Example Usage:
+ * @code
+ *
+ * @endcode
  */
- int SODERKF(double **t, double ***y, double (*f[])(double, double*), double *y0,
+ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
      double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n);
 
 
 /*****************************************************************************
- *********************Interpolation.c*****************************************
+ *********************Interpolation*****************************************
  *****************************************************************************/
 /**
  * Hermite polynomial Interpolation
@@ -189,7 +193,7 @@ double LagrangeCubicSplineIpl(double f(double), double x, int N, double *a);
 
 
 /*****************************************************************************
- *********************Basic.c*************************************************
+ *********************Basic*************************************************
  *****************************************************************************/
 /**
  * Divided difference of function f on nodes x[n]
@@ -220,7 +224,7 @@ double Chebyshev(int n, double x);
 
 
 /******************************************************************************
-**********************LeastSq.c************************************************
+**********************LeastSq************************************************
 ******************************************************************************/
 /**
  * solve the leastsquare solution for a system of linear equations.
@@ -240,7 +244,7 @@ double ***ImprovedGramSchmidtQR(int m, int n, double **A);
 
 
 /*****************************************************************************
- *********************Solve.c*************************************************
+ *********************Solve*************************************************
  *****************************************************************************/
 /**
  * Bisection method to find the root of a equation

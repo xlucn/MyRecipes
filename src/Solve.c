@@ -2,7 +2,7 @@
 //Solving an equation
 #include <stdlib.h>
 #include <math.h>
-#include "NumericalRecipes.h"
+#include "NR.h"
 #include "LibFunction.h"
 
 double Bisection(double f(double), double a, double b, double eps)

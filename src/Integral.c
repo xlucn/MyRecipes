@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 #include <math.h>
-#include "NumericalRecipes.h"
+#include "NR.h"
 #include "LibFunction.h"
 
 double TrapezoidalInt(double f(double), double a, double b)

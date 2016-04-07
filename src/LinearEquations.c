@@ -4,7 +4,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "NumericalRecipes.h"
+#include "NR.h"
 #include "LibFunction.h"
 
 double *GaussEli(int N, double **A, double *b)

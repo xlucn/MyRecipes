@@ -1,32 +1,37 @@
-//LuXu
-//test functions
-//functions needed by each testfunction is defined right before it.
+/**
+ * LuXu
+ * test functions
+ * functions needed by each testfunction is defined right before it.
+ *
+ * note: if a function is declared as "int test...()", it will be collected by
+ *       GenerateTest.py and regarded as a test function.
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "NumericalRecipes.h"
+#include "NR.h"
 #include "LibFunction.h"
 #include "Test.h"
 
-int testall()
+void testall()
 {
+    // the num is defined in "Test.h", which is the number of test functions.
     int* result = (int*)malloc_s(num * sizeof(int));  // record the test results
 
+    // the tests is defined in "Test.h", which is the list of test functions.
     for(int i = 0; i < num; i ++)
     {
         printf("=========================================\n");
-        printf("* * * * * * * *testing No.%d* * * * * * *\n", i + 1);
+        printf("* * * * * * * *testing No.%d* * * * * * *\n", i);
         result[i] = tests[i]();
         printf("=========================================\n\n");
     }
 
     for (int i = 0; i < num; i++)
     {
-        printf("%s No.%3d %s\n", (result[i]) ? "*[failed]" : " [passed]", i + 1, names[i]);
+        printf("%s No.%3d %s\n", (result[i]) ? "*[failed]" : " [passed]", i, names[i]);
     }
-
-    return PASSED;
 }
 
 /**
