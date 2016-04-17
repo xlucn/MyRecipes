@@ -103,7 +103,7 @@ int testChasing()
 
     if(x == NULL)
     {
-        printf("testChasing: Method failed.");
+        fprintf(stderr, "testChasing: Method failed.");
         return FAILED;
     }
     else
@@ -241,6 +241,11 @@ static double f4(double t, double y)
     return (y * y + y) / t;
 }
 
+static double y4(double t)
+{
+    return 2 * t / (1 - 2 * t);
+}
+
 int testClassicRK()
 {
     double t;
@@ -253,7 +258,7 @@ int testClassicRK()
     for(int i = 0; i < N + 1; i ++)
     {
         t = a + i * (b - a) / N;
-        printf("%lf\t%lf\n", result[i], 2 * t / (1 - 2 * t));
+        printf("%lf\t%lf\n", result[i], y4(t));
     }
     return PASSED;
 }
@@ -264,20 +269,32 @@ static double f5(double t, double y)
     return -y + t + 1;
 }
 
+static double y5(double t)
+{
+    return exp(-t) + t;
+}
+
 int testAdamsPECE()
 {
     double a = 0;
     double b = 1;
     int N = 5;
-    double t;
-    double y0 = 1;
-    double dy0 = f4(a, y0);
+    double y0 = y5(a);
+    double dy0 = f5(a, y0);
+    double *ans = (double*)malloc_s((N + 1) * sizeof(double));
+    for(int i = 0; i < N + 1; i++)
+    {
+        ans[i] = y5(a + (b - a) * i / N);
+    }
 
     double *result = AdamsPECE(f5, a, b, dy0, y0, N);
     for(int i = 0; i < N + 1; i ++)
     {
-        t = i * (b - a) / N;
-        printf("%lf\t%lf\n", result[i], exp(-t) + t);
+        printf("%lf\t%lf\n", result[i], ans[i]);
+        if(fabs(result[i] - ans[i]) > 0.01)
+        {
+            return FAILED;
+        }
     }
     return PASSED;
 }
@@ -313,6 +330,8 @@ int testRKF()
             printf("%lf\t", result[i * 3 + j + 1]);
         }
         printf("\n");
+
+        // Check the results
         if (fabs(result[i * 3 + 3] - y6(result[i * 3 + 1])) > 1e-5)
         {
             return FAILED;
@@ -352,7 +371,10 @@ int testSODERungeKutta()
     int N = 10;
     int m = 2;
     double **result = SODERungeKutta(f, a, b, y0, m, N);
-    // SODERKF(f, y0, a, b, m, 0.1, 1e-8, 1e4, 1e-4, 13);
+
+    double *t;
+    double **res;
+    SODERKF(&t, &res, f, y0, a, b, m, 0.1, 1e-8, 1e4, 1e-4, 13);
 
     printf("Testing Runge-Kutta Method for a System of ODEs\n");
     printf("%8s%16s%16s%16s%16s\n", "t", "result1", "y1", "result2", "y2");

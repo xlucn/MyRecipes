@@ -58,7 +58,7 @@ extern int (*tests[])();    //the list of test functions which are listed below
 extern char *names[];       //the list of test functions' names
 extern int num;	            //the number of test functions
 
-//s declarations of testfunctions
+//declarations of testfunctions
 %s
 
 void testall();

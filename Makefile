@@ -44,10 +44,10 @@ TESTIFLAGS=-I $(TEST_DIR)
 
 # compiler and parameters
 CC=gcc
-CFLAGS=-Wall -g -std=c11
+CFLAGS=-Wall -std=c11
 IFLAGS=-I $(INC_DIR)
 DFLAGS=-MM
-LFLAGS=-lm -lNR -L $(LIB_DIR)
+LFLAGS=-lm
 PYTHON=python
 
 
@@ -64,8 +64,8 @@ dirs:$(DIRS)
 files:$(DEP) $(TESTDEP) $(BIN)
 
 
-$(BIN):$(LIB) $(TESTOBJ)
-	$(CC) $(CFLAGS) -o $(BIN) $(TESTOBJ) $(LFLAGS)
+$(BIN):$(LIB) $(TESTOBJ) $(OBJ)
+	$(CC) $(CFLAGS) -o $(BIN) $(TESTOBJ) $(OBJ) $(LFLAGS)
 	@echo \
 "**************************************************\
 \nThank you for using MyRecipes!\n\
@@ -76,13 +76,13 @@ $(LIB):$(OBJ)
 	ar crv $@ $?
 
 $(OBJ):$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
+	$(CC) $(CFLAGS) -g -c $< -o $@ $(IFLAGS)
 
 $(DEP):$(DEP_DIR)/%.d:$(SRC_DIR)/%.c
 	rm -f $@; $(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
 
 $(TESTOBJ):$(OBJ_DIR)/%.o:$(TEST_DIR)/%.c $(TESTH)
-	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
+	$(CC) $(CFLAGS) -g -c $< -o $@ $(IFLAGS)
 
 $(TESTDEP):$(DEP_DIR)/%.d:$(TEST_DIR)/%.c $(TESTH)
 	rm -f $@; $(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@

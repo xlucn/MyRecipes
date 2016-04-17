@@ -1,5 +1,5 @@
 ﻿//2015.11.27
-//卢旭
+//Xu Lu(Oliver Lew)
 //Solving Ordinary differential equations
 #include <stdlib.h>
 #include <stdio.h>
@@ -7,9 +7,9 @@
 #include "NR.h"
 #include "LibFunction.h"
 
-/*
-Euler Method to solve ODE. y0:initial value, f(t, y) = dy/dt
-*/
+/**
+ * Euler Method to solve ODE. y0:initial value, f(t, y) = dy/dt
+ */
 double* Euler(double f(double, double), double a, double b, double y0, int N)
 {
     double h = (b - a) / N;
@@ -25,9 +25,9 @@ double* Euler(double f(double, double), double a, double b, double y0, int N)
     return y;
 }
 
-/*
-2阶方法的一般步骤
-*/
+/**
+ * Two stage Runge Kutta method
+ */
 static double* TwoStageRungeKutta(int N, double y0, double a, double b, double f(double, double), double para)
 {
     double c1 = 1 -  0.5 / para;
@@ -49,47 +49,47 @@ static double* TwoStageRungeKutta(int N, double y0, double a, double b, double f
     }
     return result;
 }
-/*
-改善的欧拉方法
-*/
+/**
+ * Improved Euler Method
+ */
 double* ImprovedEuler(double f(double, double), double a, double b, double y0, int N)
 {
     return TwoStageRungeKutta(N, y0, a, b, f, 1);
 }
-/*
-中点方法或变形的欧拉方法
-*/
+/**
+ * Mid-point method
+ */
 double* MID(double f(double, double), double a, double b, double y0, int N)
 {
     return TwoStageRungeKutta(N, y0, a, b, f, 1 / 2);
 }
-/*
-Heun方法
-*/
+/**
+ * Heun method
+ */
 double* Heun(double f(double, double), double a, double b, double y0, int N)
 {
     return TwoStageRungeKutta(N, y0, a, b, f, 2 / 3);
 }
 
-/*
-三阶Heun方法
-*/
+/**
+ * Three stage
+ */
 double *ThreeStageHeun(int N, double y0, double a, double b, double f(double, double))
 {
     return 0;
 }
 
-/*
-ThreeStageRungeKuttaMathod
-*/
+/**
+ * ThreeStageRungeKuttaMathod
+ */
 double *ThreeStageRungeKuttaMathod(double f(double, double), double a, double b, double y0, int N)
 {
     return 0;
 }
 
-/*
-Classic Runge-Kutta Method
-*/
+/**
+ * Classic Runge-Kutta Method
+ */
 double *ClassicRungeKutta(double f(double, double), double a, double b, double y0, int N)
 {
     double k[4];
@@ -131,6 +131,7 @@ static double A78[13][13] = {
 static double B78[13] = {41.0/840.0, 0, 0, 0, 0, 34.0/105.0, 9.0/35.0, 9.0/35.0, 9.0/280.0, 9.0/280.0, 41.0/840.0, 0, 0};
 static double Bstar78[13] = {0, 0, 0, 0, 0, 34.0/105.0, 9.0/35.0, 9.0/35.0, 9.0/280.0, 9.0/280.0, 0, 41.0/840.0, 41.0/840.0};
 static double C78[13] = {0, 2.0/27.0, 1.0/9.0, 1.0/6.0, 5.0/12.0, 1.0/2.0, 5.0/6.0, 1.0/6.0, 2.0/3.0, 1.0/3.0, 1.0, 0, 1.0};
+
 
 static double A45[6][6] =
 {
@@ -229,7 +230,6 @@ double *RKF45(double f(double,double), double a, double b, double y0, double TOL
     return RKFmn(f, a, b, y0, TOL, hmax, hmin, A, B45, Bstar45, C45, 6);
 }
 
-
 /*
 Adams显式和隐式方法的PECE模式校正方法，这里k=1，用经典Runge-Kutta方法提供初值
 */
@@ -299,6 +299,13 @@ double **SODERungeKutta(double (**f)(double, double*), double a, double b, doubl
         }
         t += h;
     }
+    free(w);
+    for(int i = 0; i < 4; i ++)
+    {
+        free(k[i]);
+    }
+    free(k);
+
     return y;
 }
 
@@ -308,15 +315,17 @@ double **SODERungeKutta(double (**f)(double, double*), double a, double b, doubl
 int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
     double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n)
 {
-	if (a > b)
-	{
-		fprintf(stderr, "the integration region (a,b) not illegal\n");
-		exit(1);
-	}
+    //TODO:Integrate backwards: if a > b then integrate from b to a
+    //TODO:make the TOL a array
+    if (a > b)
+    {
+        fprintf(stderr, "the integration region (a,b) not legal\n");
+        exit(1);
+    }
 
-    long length = 1000;
+    long length = 1000; //length of the result, increase by 1000 every time
     long step = 0;
-    int TOLflag; // to record if all the residuals are smaller than coresponding TOL
+    int TOLflag; // to record if all the residuals are smaller than corresponding TOL
     double h = h0;
     double T = a;
     double *delta = (double *)malloc_s(m * sizeof(double)); // a variable related to the ratio of residuals and TOL
@@ -340,8 +349,8 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
     }
 
     while(T < b)
-    {if(T>62)
-		printf("now is t=%f, b=%f, length=%ld\n", T, b, length);
+    {
+    	// calculate Ks
         // j, n is for each k variable
         // first we calculate the jth vectork
         for(int j = 0; j < n; j++)
@@ -354,7 +363,6 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
                 for(int indexofks = 0; indexofks < j; indexofks++)
                 {
                     w[icomponent] += A78[j][indexofks] * k[indexofks][icomponent];
-                    //printf("looping1");
                 }
             }
             // i, m is for each component of a variable, the same number as the number of ODEs
@@ -365,6 +373,7 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
                 k[j][i] = h * f[i](T + C78[j] * h, w);
             }
         }
+
         TOLflag = 0;
         // calculate the residual R
         for(int icomponent = 0; icomponent < m; icomponent++)
@@ -373,7 +382,6 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
             for(int indexofks = 0; indexofks < n; indexofks++)
             {
                 R[icomponent] += (B78[indexofks] - Bstar78[indexofks]) * k[indexofks][icomponent] / h;
-                    // printf("looping2");
             }
 
             delta[icomponent] = pow(TOL / R[icomponent] / 2, 1.0 / 7);
@@ -382,10 +390,10 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
             if(R[icomponent] > TOL)
             {
                 h = h * delta[icomponent];
-                 printf("The R is %f, changing step length: %f\n",R[icomponent], h);
+                // printf("The R is %f, changing step length: %f\n",R[icomponent], h);
                 if(h < hmin)
                 {
-                    printf("minimal limit exceeds! lower minimal limit required.\n");
+                    fprintf(stderr, "T = %f, minimal limit exceeds! lower minimal limit required.\n", T);
                     exit(1);
                 }
                 TOLflag = 1;
@@ -405,14 +413,13 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
             }
             // allocate a new line in y.
             (*y)[step+1] = (double*)malloc_s(m * sizeof(double));
-            // use the temporary vector w to temporarily assign the result
+            // calculate the new numbers
             for(int icomponent = 0; icomponent < m; icomponent++)
             {
                 w[icomponent] = (*y)[step][icomponent];
                 for(int indexofks = 0; indexofks < n; indexofks++)
                 {
                     w[icomponent] += B78[indexofks] * k[indexofks][icomponent];
-                 //   printf("looping3");
                 }
                 (*y)[step+1][icomponent] = w[icomponent];
             }
@@ -422,20 +429,18 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
             step++;
             (*t)[step] = T;
 
-            double mindelta = 1;
+            double mindelta = 1.5;
             // raise the step length to a suitable value since all the R are below TOL
             for(int icomponent = 0; icomponent < m; icomponent++)
             {
-                 //   printf("looping4");
                 if(delta[icomponent] < mindelta)
                 {
                     mindelta = delta[icomponent];
                 }
             }
-            if(mindelta > 1)
+            if(mindelta > 1.5)
             {
                 h = h * mindelta;
-                // printf("The delta is %f, changing step length: %f\n",mindelta, h);
             }
         }
     }
@@ -450,7 +455,7 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
     }
     free(k);
 
-    // resize the arrays to specific size--number of steps
+    // resize the arrays to suitable size--number of steps
     *y = (double**)realloc_s(*y, step * sizeof(double*));
     *t = (double*)realloc_s(*t, step * sizeof(double));
     return step;
