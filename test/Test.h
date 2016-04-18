@@ -10,8 +10,8 @@
 #ifndef _TESTDECLARATION_H_
 #define _TESTDECLARATION_H_
 
-#define PASSED 0
-#define FAILED 1
+#define PASSED 1
+#define FAILED 0
 
 extern int (*tests[])();    //the list of test functions which are listed below
 extern char *names[];       //the list of test functions' names

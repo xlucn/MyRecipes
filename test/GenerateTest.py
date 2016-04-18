@@ -1,7 +1,9 @@
 #! /usr/env/bin python
-# Author: Lu Xu
-# Generate the header files including all the declarations of test functions,
-# a array of functions, a array of function names and the number of functions.
+'''
+Author: Lu Xu
+Generate the header files including all the declarations of test functions,
+a array of functions, a array of function names and the number of functions.
+'''
 
 import os, re
 

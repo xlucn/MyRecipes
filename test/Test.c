@@ -1,9 +1,10 @@
 /**
- * LuXu
- * test functions
- * functions needed by each testfunction is defined right before it.
+ * @file Test.c
+ * @author Lu Xu
+ * @brief test functions
+ * @note functions needed by each test function is defined right before it.
  *
- * note: if a function is declared as "int test...()", it will be collected by
+ * @note if a function is declared as "int test...()", it will be collected by
  *       GenerateTest.py and regarded as a test function.
  */
 
@@ -14,29 +15,42 @@
 #include "LibFunction.h"
 #include "Test.h"
 
+/**
+ * @brief Test all the functions in this project
+ * 
+ * This testall() function will test all the functions in this project. The list
+ * of the test functions are extracted from functions below in this file matching
+ * the pattern "int test...()". Each test function will test one function for a
+ * perticular algorithm, returning PASSED(1) or FAILED(0). At last, a report will
+ * be printed after everything is finished.
+ */
 void testall()
 {
-    // the num is defined in "Test.h", which is the number of test functions.
-    int* result = (int*)malloc_s(num * sizeof(int));  // record the test results
+    /* the num is defined in "Test.h", which is the number of test functions. */
+    int* result = (int*)malloc_s(num * sizeof(int));  /* record the test results */
 
-    // the tests is defined in "Test.h", which is the list of test functions.
+    /* the tests is defined in "Test.h", which is an array of test functions.*/
     for(int i = 0; i < num; i ++)
     {
-        printf("=========================================\n");
-        printf("* * * * * * * *testing No.%d* * * * * * *\n", i);
+        printf("===================================================\n");
+        printf("* * * * * * * * * *testing No.%2d* * * * * * * * * *\n", i);
+        printf("Function name: %s\n", names[i]);
         result[i] = tests[i]();
-        printf("=========================================\n\n");
+        printf("===================================================\n\n");
     }
 
     for (int i = 0; i < num; i++)
     {
-        printf("%s No.%3d %s\n", (result[i]) ? "*[failed]" : " [passed]", i, names[i]);
+        printf("%s No.%02d %s\n", result[i] ? " [passed]" : "*[failed]", i, names[i]);
     }
+
+    free(result);
 }
 
 /**
  * testing integration
  */
+ 
 static double integrand1(double x)
 {
     return x * sqrt(1 + x * x);
@@ -57,31 +71,75 @@ static double integral2(double x)
     return log(x + 1);
 }
 
+static double (*integrals[])(double) = {integral1, integral2};
+
+static double (*integrands[])(double) = {integrand1, integrand2};
+
+static int integratecount = 2;
+
+/**
+ * @brief test adaptive Simpson method
+ * @returns 
+ * 
+ * 
+ */
 int testAdaptiveSimpson()
 {
     double a = 0;
     double b = 3;
     double TOL = 1e-4;
-    double res = AdaptiveSimpsonInt(integrand1, a, b, TOL);
-    double ans = integral1(b) - integral1(a);
-    printf("T\t\t = %.12lf\nI\t\t = %.12lf\ndelta\t = %.12lf\n",
-        res, ans, fabs(res - ans));
 
-    return fabs(res - ans) < TOL ? PASSED : FAILED;
+    double res;
+    double ans;
+    double (*integrand)(double);
+    double (*integral)(double);
+    for(int i = 0; i < integratecount; i ++)
+    {
+        integrand = integrands[i];
+        integral = integrals[i];
+        res = AdaptiveSimpsonInt(integrand, a, b, TOL);
+        ans = integral(b) - integral(a);
+        printf("T=%.12f\nI=%.12f\ndelta=%.12f\n", res, ans, fabs(res - ans));
+        if(fabs(res - ans) > TOL)
+        {
+            return FAILED;
+        }
+    }
+
+    return PASSED;
 }
 
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
 int testRomberg()
 {
     int N = 100;
     double a = 0;
     double b = 1.5;
     double TOL = 1e-10;
-    double res = RombergInt(integrand2, a, b, N, TOL);
-    double ans = integral2(b) - integral2(a);
-    printf("T\t = %.12lf\nI\t = %.12lf\ndelta\t = %.12lf\n",
-        res, ans, fabs(res - ans));
 
-    return fabs(res - ans) < TOL ? PASSED : FAILED;
+    double res;
+    double ans;
+    double (*integrand)(double);
+    double (*integral)(double);
+    for(int i = 0; i < integratecount; i ++)
+    {
+        integrand = integrands[i];
+        integral = integrals[i];
+        res = RombergInt(integrand, a, b, N, TOL);
+        ans = integral(b) - integral(a);
+        printf("T=%.12f\nI=%.12f\ndelta=%.12f\n", res, ans, fabs(res - ans));
+        if(fabs(res - ans) > TOL)
+        {
+            return FAILED;
+        }
+    }
+
+    return PASSED;
 }
 
 /**
@@ -95,6 +153,12 @@ static double c[] = {1, 1, 1, 1, 0};
 static double d[] = {2, 4, 4, 4, 4};
 static double ans[] = {1, -1, 1, -1, 1};
 
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
 int testChasing()
 {
     double *x;
@@ -106,15 +170,12 @@ int testChasing()
         fprintf(stderr, "testChasing: Method failed.");
         return FAILED;
     }
-    else
+    for(int i = 0; i < N; i++)
     {
-        for(int i = 0; i < N; i++)
+        printf("%lf\n", x[i]);
+        if(fabs(x[i] - ans[i]) > 1e-8)
         {
-            printf("%f\n", x[i]);
-            if(fabs(x[i] - ans[i]) > 1e-8)
-            {
-                return FAILED;
-            }
+            return FAILED;
         }
     }
     return PASSED;
@@ -125,6 +186,12 @@ static double LinEqb1[3] = {-26,49,-28};
 static double LinEqans[] = {10.7143,12.5714,9.85714};
 static int LinEqN = 3;
 
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
 int testGaussianEli()
 {
     int N = LinEqN;
@@ -157,6 +224,12 @@ int testGaussianEli()
     return PASSED;
 }
 
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
 int testGaussianEliPP()
 {
     int N = LinEqN;
@@ -192,11 +265,18 @@ int testGaussianEliPP()
 /**
  * testing interpolation
  */
+
 static double f3(double x)
 {
     return 1 / (1 + x * x);
 }
 
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
 int testSplineIpl()
 {
     double x;
@@ -215,6 +295,12 @@ int testSplineIpl()
 }
 
 
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
 int testHermiteIpl()
 {
     int N = 3;
@@ -236,108 +322,192 @@ int testHermiteIpl()
  * testing solving ODEs
  */
 
-static double f4(double t, double y)
+static double ODEf1(double t, double y)
 {
     return (y * y + y) / t;
 }
 
-static double y4(double t)
+static double ODEy1(double t)
 {
     return 2 * t / (1 - 2 * t);
 }
 
-int testClassicRK()
-{
-    double t;
-    int N = 4;
-    double y0 = -2;
-    double a = 1;
-    double b = 3;
-
-    double *result = ClassicRungeKutta(f4, a, b, y0, N);
-    for(int i = 0; i < N + 1; i ++)
-    {
-        t = a + i * (b - a) / N;
-        printf("%lf\t%lf\n", result[i], y4(t));
-    }
-    return PASSED;
-}
-
-
-static double f5(double t, double y)
+static double ODEf2(double t, double y)
 {
     return -y + t + 1;
 }
 
-static double y5(double t)
+static double ODEy2(double t)
 {
     return exp(-t) + t;
 }
 
-int testAdamsPECE()
+static double ODEf3(double t, double y)
 {
-    double a = 0;
-    double b = 1;
-    int N = 5;
-    double y0 = y5(a);
-    double dy0 = f5(a, y0);
-    double *ans = (double*)malloc_s((N + 1) * sizeof(double));
-    for(int i = 0; i < N + 1; i++)
-    {
-        ans[i] = y5(a + (b - a) * i / N);
-    }
+    return - y + t * t + 1;
+}
 
-    double *result = AdamsPECE(f5, a, b, dy0, y0, N);
+static double ODEy3(double t)
+{
+    return - 2 / exp(t) + 3 - 2 * t + t * t;
+}
+
+//static double (*ODEfs[])(double, double) = {ODEf1, ODEf2, ODEf3};
+//
+//static double (*ODEys[])(double) = {ODEy1, ODEy2, ODEy3};
+//
+//static int ODEfcount = 3;
+
+/**
+ * @brief 
+ * @param a 
+ * @param b 
+ * @param N 
+ * @param ODEf 
+ * @param ODEy 
+ * @param eps 
+ * @returns 
+ * 
+ * 
+ */
+static int _testClassicRK(double a, double b, int N, double ODEf(double, double), double ODEy(double), double eps)
+{
+    double t, real_y;
+    double y0 = ODEy(a);
+
+    double *result = ClassicRungeKutta(ODEf, a, b, y0, N);
+    printf("Testing Classic Runge-Kutta method\n");
     for(int i = 0; i < N + 1; i ++)
     {
-        printf("%lf\t%lf\n", result[i], ans[i]);
-        if(fabs(result[i] - ans[i]) > 0.01)
+        t = a + i * (b - a) / N;
+        real_y = ODEy(t);
+        printf("%lf\t%lf\n", result[i], real_y);
+        if (fabs(result[i] - real_y) > eps)
         {
+            fprintf(stderr, "Classic Runge-Kutta method accuracy not enough\n");
             return FAILED;
         }
     }
     return PASSED;
 }
 
-static double f6(double t, double y)
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
+int testClassicRK()
 {
-    return - y + t * t + 1;
+    double eps = 0.01;
+    return _testClassicRK(1, 3, 4, ODEf1, ODEy1, eps)
+        & _testClassicRK(1, 2, 5, ODEf2, ODEy2, eps)
+        & _testClassicRK(0, 1, 5, ODEf3, ODEy3, eps);
 }
 
-static double y6(double t)
+
+/**
+ * @brief 
+ * @param a 
+ * @param b 
+ * @param N 
+ * @param ODEf 
+ * @param ODEy 
+ * @param eps 
+ * @returns 
+ * 
+ * 
+ */
+static int _testAdamsPECE(double a, double b, int N, double ODEf(double, double), double ODEy(double), double eps)
 {
-    return - 2 / exp(t) + 3 - 2 * t + t * t;
+    double y0 = ODEy(a);
+    double dy0 = ODEf(a, y0);
+    double *ans = (double*)malloc_s((N + 1) * sizeof(double));
+    for(int i = 0; i < N + 1; i++)
+    {
+        ans[i] = ODEy(a + (b - a) * i / N);
+    }
+
+    double *result = AdamsPECE(ODEf, a, b, dy0, y0, N);
+    printf("Testing Adams PECE\n");
+    for(int i = 0; i < N + 1; i ++)
+    {
+        printf("%lf\t%lf\n", result[i], ans[i]);
+        if(fabs(result[i] - ans[i]) > eps)
+        {
+            fprintf(stderr, "Adams PECE method accuracy not enough\n");
+            return FAILED;
+        }
+    }
+    return PASSED;
 }
 
-int testRKF()
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
+int testAdamsPECE()
 {
-    double a = 0;
-    double b = 1;
-    double TOL = 1e-5;
-    double hmax = 1e-2;
-    double hmin = 1e-6;
-    double y0 = 1;
+    double eps = 1e-3;
+    return _testAdamsPECE(0, 1, 10, ODEf2, ODEy2, eps)
+        & _testAdamsPECE(1, 2, 20, ODEf1, ODEy1, eps)
+        & _testAdamsPECE(0, 1, 10, ODEf3, ODEy3, eps);
+}
+
+/**
+ * @brief 
+ * @param a 
+ * @param b 
+ * @param TOL 
+ * @param hmax 
+ * @param hmin 
+ * @param ODEf 
+ * @param ODEy 
+ * @returns 
+ * 
+ * 
+ */
+static int _testRKF(double a, double b, double TOL, double hmax, double hmin, double ODEf(double, double), double ODEy(double))
+{
+    double y0 = ODEy(a);
     double *result;
 
-    result = RKF78(f6, a, b, y0, TOL, hmax, hmin);
-
     printf("Testing RKF Method\n");
-    printf("t\t\th\t\ty\n");
+    result = RKF78(ODEf, a, b, y0, TOL, hmax, hmin);
+    if(result == NULL)
+    {
+        fprintf(stderr, "RKF method got NULL result.\n");
+        return FAILED;
+    }
+    printf("t\t\th\t\ty\t\treal_y\n");
     for(int i = 0; i < result[0]; i ++)
     {
         for(int j = 0; j < 3; j++)
         {
             printf("%lf\t", result[i * 3 + j + 1]);
         }
-        printf("\n");
+        printf("%lf\n", ODEy(result[i * 3 + 1]));
 
         // Check the results
-        if (fabs(result[i * 3 + 3] - y6(result[i * 3 + 1])) > 1e-5)
+        if (fabs(result[i * 3 + 3] - ODEy(result[i * 3 + 1])) > 1e-5)
         {
             return FAILED;
         }
     }
     return PASSED;
+}
+
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
+int testRKF()
+{
+    return _testRKF(0, 1, 1e-5, 1e-2, 1e-6, ODEf3, ODEy3);
 }
 
 static double SODEf1(double t, double *y)
@@ -361,6 +531,12 @@ static double SODEy2(double x)
 }
 
 
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
 int testSODERungeKutta()
 {
     double (*f[2])(double,double*) = {SODEf1, SODEf2};
@@ -395,6 +571,12 @@ int testSODERungeKutta()
  * testing orthogonal decomposition
  */
 
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
 int testLeastSq()
 {
     int m = 4;
@@ -416,6 +598,12 @@ int testLeastSq()
     return PASSED;
 }
 
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
 int testQR()
 {
     int m = 4;
@@ -474,6 +662,12 @@ static double f9(double x)
     return x * x * x - x - 1;
 }
 
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
 int testBisection()
 {
     double a = 1;
@@ -494,11 +688,18 @@ static double f10(double x)
 {
     return (x + 2) * x * x - 4;
 }
+
 static double g10(double x)
 {
     return x - f10(x) / (3 * x + 4) / x;
 }
 
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
 int testPicardRecurtion()
 {
     double x = 1;
@@ -519,6 +720,12 @@ static double g11(double x)
     return sqrt(4 / (2 + x));
 }
 
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
 int testSteffensen()
 {
     double x = 1.5;
@@ -544,6 +751,12 @@ static double df12(double x)
     return (3 * x + 4) * x + 10;
 }
 
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
 int testNewtonMethod()
 {
     double x = 1;
@@ -564,6 +777,12 @@ double f13(double x)
     return (2 * x * x - 5) * x - 1;
 }
 
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
 int testSecent()
 {
     double x0 = 2;
@@ -580,11 +799,24 @@ int testSecent()
     return PASSED;
 }
 
+/**
+ * @brief 
+ * @param x 
+ * @returns 
+ * 
+ * 
+ */
 double f14(double x)
 {
     return exp(x);
 }
 
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
 int testDividedDiff()
 {
     int N = 7;
@@ -629,6 +861,12 @@ int testDividedDiff()
     return PASSED;
 }
 
+/**
+ * @brief 
+ * @returns 
+ * 
+ * 
+ */
 int testMuller()
 {
     return PASSED;

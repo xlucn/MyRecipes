@@ -5,7 +5,7 @@
 #include "NR.h"
 #include "LibFunction.h"
 
-double Bisection(double f(double), double a, double b, double eps)
+double Bisection(double(*f)(double), double a, double b, double eps)
 {
     double p;
     while(fabs(b - a) > eps)
@@ -16,7 +16,7 @@ double Bisection(double f(double), double a, double b, double eps)
     return p;
 }
 
-double PicardIteration(double g(double), double x, double eps)
+double PicardIteration(double(*g)(double), double x, double eps)
 {
     double p = g(x);
     while(fabs(p - x) > eps)
@@ -27,7 +27,7 @@ double PicardIteration(double g(double), double x, double eps)
     return p;
 }
 
-double SteffensenIteration(double g(double), double x, double eps)
+double SteffensenIteration(double(*g)(double), double x, double eps)
 {
     double y = g(x);
     double z = g(y);
@@ -42,7 +42,7 @@ double SteffensenIteration(double g(double), double x, double eps)
     return p;
 }
 
-double NewtonMethod(double f(double), double df(double), double x, double eps)
+double NewtonMethod(double(*f)(double), double df(double), double x, double eps)
 {
     double p = x - f(x) / df(x);
     while(fabs(p - x) > eps)
@@ -53,7 +53,7 @@ double NewtonMethod(double f(double), double df(double), double x, double eps)
     return p;
 }
 
-double SecentMethod(double f(double), double x0, double x1, double eps)
+double SecentMethod(double(*f)(double), double x0, double x1, double eps)
 {
     double y0 = f(x0);
     double y1 = f(x1);
@@ -69,7 +69,7 @@ double SecentMethod(double f(double), double x0, double x1, double eps)
     return p;
 }
 
-double MullerMethod(double f(double), double x0, double x1, double x2, double eps)
+double MullerMethod(double(*f)(double), double x0, double x1, double x2, double eps)
 {
     double b;
     double d;

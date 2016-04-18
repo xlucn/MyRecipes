@@ -10,7 +10,7 @@
 /**
  * Euler Method to solve ODE. y0:initial value, f(t, y) = dy/dt
  */
-double* Euler(double f(double, double), double a, double b, double y0, int N)
+double* Euler(double(*f)(double, double), double a, double b, double y0, int N)
 {
     double h = (b - a) / N;
     double x = a;
@@ -28,7 +28,7 @@ double* Euler(double f(double, double), double a, double b, double y0, int N)
 /**
  * Two stage Runge Kutta method
  */
-static double* TwoStageRungeKutta(int N, double y0, double a, double b, double f(double, double), double para)
+static double* TwoStageRungeKutta(int N, double y0, double a, double b, double(*f)(double, double), double para)
 {
     double c1 = 1 -  0.5 / para;
     double c2 = 1 - c1;
@@ -52,21 +52,21 @@ static double* TwoStageRungeKutta(int N, double y0, double a, double b, double f
 /**
  * Improved Euler Method
  */
-double* ImprovedEuler(double f(double, double), double a, double b, double y0, int N)
+double* ImprovedEuler(double(*f)(double, double), double a, double b, double y0, int N)
 {
     return TwoStageRungeKutta(N, y0, a, b, f, 1);
 }
 /**
  * Mid-point method
  */
-double* MID(double f(double, double), double a, double b, double y0, int N)
+double* MID(double(*f)(double, double), double a, double b, double y0, int N)
 {
     return TwoStageRungeKutta(N, y0, a, b, f, 1 / 2);
 }
 /**
  * Heun method
  */
-double* Heun(double f(double, double), double a, double b, double y0, int N)
+double* Heun(double(*f)(double, double), double a, double b, double y0, int N)
 {
     return TwoStageRungeKutta(N, y0, a, b, f, 2 / 3);
 }
@@ -74,7 +74,7 @@ double* Heun(double f(double, double), double a, double b, double y0, int N)
 /**
  * Three stage
  */
-double *ThreeStageHeun(int N, double y0, double a, double b, double f(double, double))
+double *ThreeStageHeun(int N, double y0, double a, double b, double(*f)(double, double))
 {
     return 0;
 }
@@ -82,7 +82,7 @@ double *ThreeStageHeun(int N, double y0, double a, double b, double f(double, do
 /**
  * ThreeStageRungeKuttaMathod
  */
-double *ThreeStageRungeKuttaMathod(double f(double, double), double a, double b, double y0, int N)
+double *ThreeStageRungeKuttaMathod(double(*f)(double, double), double a, double b, double y0, int N)
 {
     return 0;
 }
@@ -90,7 +90,7 @@ double *ThreeStageRungeKuttaMathod(double f(double, double), double a, double b,
 /**
  * Classic Runge-Kutta Method
  */
-double *ClassicRungeKutta(double f(double, double), double a, double b, double y0, int N)
+double *ClassicRungeKutta(double(*f)(double, double), double a, double b, double y0, int N)
 {
     double k[4];
     double h = (b - a) / N;
@@ -113,42 +113,42 @@ double *ClassicRungeKutta(double f(double, double), double a, double b, double y
     return result;
 }
 
-static double A78[13][13] = {
-    {0},
-    {2.0/17.0, 0},
-    {1.0/36.0, 1.0/12.0, 0},
-    {1.0/24.0, 0, 1.0/8.0, 0},
-    {5.0/12.0, 0, -25.0/16.0, 25.0/16.0, 0},
-    {1.0/20.0, 0, 0, 1.0/4.0, 1.0/5.0, 0},
-    {-25.0/108.0, 0, 0, 125.0/108.0, -65.0/27.0, 125.0/54.0, 0},
-    {31.0/300.0, 0, 0, 0, 61.0/225.0, -2.0/9.0, 13.0/900.0, 0},
-    {2.0, 0, 0, -53.0/6.0, 704.0/45.0, -107.0/9.0, 67.0/90.0, 3.0, 0},
-    {-91.0/108.0, 0, 23.0/108.0, -976.0/135.0, 311.0/54.0, -19.0/60.0, 17.0/6.0, -1.0/12.0, 0},
-    {2383.0/4100.0, 0, 0, -341.0/164.0, 4496.0/1025.0, -301.0/82.0, 2133.0/4100.0, 45.0/82.0, 45.0/164.0, 18.0/41.0, 0},
-    {3.0/205.0, 0, 0, 0, 0, -6.0/41.0, -3.0/205.0, -3.0/41.0, 3.0/41.0, 6.0/41.0, 0, 0},
-    {-1777.0/4100.0, 0, 0, -341.0/164.0, 4496.0/1025.0, -289.0/82.0, 2193.0/4100.0, 51.0/82.0, 33.0/164.0, 12.0/41.0, 0, 1.0, 0}
+static const double A78[] = {
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    2.0/17.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1.0/36.0, 1.0/12.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1.0/24.0, 0, 1.0/8.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    5.0/12.0, 0, -25.0/16.0, 25.0/16.0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1.0/20.0, 0, 0, 1.0/4.0, 1.0/5.0, 0, 0, 0, 0, 0, 0, 0, 0,
+    -25.0/108.0, 0, 0, 125.0/108.0, -65.0/27.0, 125.0/54.0, 0, 0, 0, 0, 0, 0, 0,
+    31.0/300.0, 0, 0, 0, 61.0/225.0, -2.0/9.0, 13.0/900.0, 0, 0, 0, 0, 0, 0,
+    2.0, 0, 0, -53.0/6.0, 704.0/45.0, -107.0/9.0, 67.0/90.0, 3.0, 0, 0, 0, 0, 0,
+    -91.0/108.0, 0, 23.0/108.0, -976.0/135.0, 311.0/54.0, -19.0/60.0, 17.0/6.0, -1.0/12.0, 0, 0, 0, 0, 0,
+    2383.0/4100.0, 0, 0, -341.0/164.0, 4496.0/1025.0, -301.0/82.0, 2133.0/4100.0, 45.0/82.0, 45.0/164.0, 18.0/41.0, 0, 0, 0,
+    3.0/205.0, 0, 0, 0, 0, -6.0/41.0, -3.0/205.0, -3.0/41.0, 3.0/41.0, 6.0/41.0, 0, 0, 0,
+    -1777.0/4100.0, 0, 0, -341.0/164.0, 4496.0/1025.0, -289.0/82.0, 2193.0/4100.0, 51.0/82.0, 33.0/164.0, 12.0/41.0, 0, 1.0, 0
 };
-static double B78[13] = {41.0/840.0, 0, 0, 0, 0, 34.0/105.0, 9.0/35.0, 9.0/35.0, 9.0/280.0, 9.0/280.0, 41.0/840.0, 0, 0};
-static double Bstar78[13] = {0, 0, 0, 0, 0, 34.0/105.0, 9.0/35.0, 9.0/35.0, 9.0/280.0, 9.0/280.0, 0, 41.0/840.0, 41.0/840.0};
-static double C78[13] = {0, 2.0/27.0, 1.0/9.0, 1.0/6.0, 5.0/12.0, 1.0/2.0, 5.0/6.0, 1.0/6.0, 2.0/3.0, 1.0/3.0, 1.0, 0, 1.0};
+static const double B78[] = {41.0/840.0, 0, 0, 0, 0, 34.0/105.0, 9.0/35.0, 9.0/35.0, 9.0/280.0, 9.0/280.0, 41.0/840.0, 0, 0};
+static const double Bstar78[] = {0, 0, 0, 0, 0, 34.0/105.0, 9.0/35.0, 9.0/35.0, 9.0/280.0, 9.0/280.0, 0, 41.0/840.0, 41.0/840.0};
+static const double C78[] = {0, 2.0/27.0, 1.0/9.0, 1.0/6.0, 5.0/12.0, 1.0/2.0, 5.0/6.0, 1.0/6.0, 2.0/3.0, 1.0/3.0, 1.0, 0, 1.0};
 
 
-static double A45[6][6] =
+static const double A45[] =
 {
-    {0},
-    {1.0/4.0, 0},
-    {3.0/32.0, 9.0/32.0, 0},
-    {1932.0/2197.0, -7200.0/2197.0, 7296.0/2197.0, 0},
-    {439.0/216.0, -8.0, 3680.0/513.0, -845.0/4104.0, 0},
-    {-8.0/27.0, 2.0, -3544.0/2565.0, 1859.0/4104.0, -11.0/40.0, 0}
+    0, 0, 0, 0, 0, 0,
+    1.0/4.0, 0, 0, 0, 0, 0,
+    3.0/32.0, 9.0/32.0, 0, 0, 0, 0,
+    1932.0/2197.0, -7200.0/2197.0, 7296.0/2197.0, 0, 0, 0,
+    439.0/216.0, -8.0, 3680.0/513.0, -845.0/4104.0, 0, 0,
+    -8.0/27.0, 2.0, -3544.0/2565.0, 1859.0/4104.0, -11.0/40.0, 0
 };
-static double B45[6] = {25.0/216.0, 0, 1408.0/2565.0, 2197.0/4104.0, -1.0/5.0, 0};
-static double Bstar45[6] = {16.0/135.0, 0, 6656.0/12825.0, 28561.0/56430.0, -9.0/50.0, 2.0/55.0};
-static double C45[6] = {0, 1.0/4.0, 3.0/8.0, 12.0/13.0, 1, 1.0/2.0};
+static const double B45[] = {25.0/216.0, 0, 1408.0/2565.0, 2197.0/4104.0, -1.0/5.0, 0};
+static const double Bstar45[] = {16.0/135.0, 0, 6656.0/12825.0, 28561.0/56430.0, -9.0/50.0, 2.0/55.0};
+static const double C45[] = {0, 1.0/4.0, 3.0/8.0, 12.0/13.0, 1, 1.0/2.0};
 
 
-static double *RKFmn(double f(double,double), double a, double b, double y0, double TOL, double hmax, double hmin,
-    double** A, double* B, double* Bstar, double* C, int n)
+static double *RKFmn(double(*f)(double,double), double a, double b, double y0, double TOL, double hmax, double hmin,
+    const double* A, const double* B, const double* Bstar, const double* C, int n)
 {
     int step = 0; //the total steps
     double t = a;
@@ -171,7 +171,7 @@ static double *RKFmn(double f(double,double), double a, double b, double y0, dou
             y = result[3 * step];
             for(int j = 0; j < i; j++)
             {
-                y += A[i][j] * k[j];
+                y += A[i * n + j] * k[j];
             }
             k[i] = h * f(t + C[i] * h, y);
             R += (B[i] - Bstar[i]) * k[i] / h;
@@ -210,30 +210,20 @@ static double *RKFmn(double f(double,double), double a, double b, double y0, dou
     return result;
 }
 
-double *RKF78(double f(double,double), double a, double b, double y0, double TOL, double hmax, double hmin)
+double *RKF78(double(*f)(double,double), double a, double b, double y0, double TOL, double hmax, double hmin)
 {
-    double **A = (double**)malloc_s(13 * sizeof(double*));
-    for(int i = 0; i < 13; i++)
-    {
-        A[i]=A78[i];
-    }
-    return RKFmn(f, a, b, y0, TOL, hmax, hmin, A, B78, Bstar78, C78, 13);
+    return RKFmn(f, a, b, y0, TOL, hmax, hmin, A78, B78, Bstar78, C78, 13);
 }
 
-double *RKF45(double f(double,double), double a, double b, double y0, double TOL, double hmax, double hmin)
+double *RKF45(double(*f)(double,double), double a, double b, double y0, double TOL, double hmax, double hmin)
 {
-    double **A = (double**)malloc_s(6 * sizeof(double*));
-    for(int i = 0; i < 6; i++)
-    {
-        A[i]=A45[i];
-    }
-    return RKFmn(f, a, b, y0, TOL, hmax, hmin, A, B45, Bstar45, C45, 6);
+    return RKFmn(f, a, b, y0, TOL, hmax, hmin, A45, B45, Bstar45, C45, 6);
 }
 
-/*
-Adams显式和隐式方法的PECE模式校正方法，这里k=1，用经典Runge-Kutta方法提供初值
-*/
-double *AdamsPECE(double f(double, double), double a, double b, double dy0, double y0, int N)
+/**
+ * One-step Adams correlation PECE method. Use classic Runge-Kutta method for the initial value.
+ */
+double *AdamsPECE(double(*f)(double, double), double a, double b, double dy0, double y0, int N)
 {
     double *y = (double *)malloc_s((N + 1) * sizeof(double));
     double *dy = (double *)malloc_s((N + 1) * sizeof(double));
@@ -362,14 +352,14 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
                 w[icomponent] = (*y)[step][icomponent];
                 for(int indexofks = 0; indexofks < j; indexofks++)
                 {
-                    w[icomponent] += A78[j][indexofks] * k[indexofks][icomponent];
+                    w[icomponent] += A78[j * n + indexofks] * k[indexofks][icomponent];
                 }
             }
             // i, m is for each component of a variable, the same number as the number of ODEs
             for(int i = 0; i < m; i++)
             {
-                // the ith component of vectork corresponding to the ith function
-                // The_jth_vectork[i] = h*ith_function(t, w)
+                // the ith component of vector_k corresponding to the ith function
+                // The_jth_vector_k[i] = h*ith_function(t, w)
                 k[j][i] = h * f[i](T + C78[j] * h, w);
             }
         }
@@ -390,10 +380,10 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
             if(R[icomponent] > TOL)
             {
                 h = h * delta[icomponent];
-                // printf("The R is %f, changing step length: %f\n",R[icomponent], h);
+                // printf("The R is %lf, changing step length: %lf\n",R[icomponent], h);
                 if(h < hmin)
                 {
-                    fprintf(stderr, "T = %f, minimal limit exceeds! lower minimal limit required.\n", T);
+                    fprintf(stderr, "T = %lf, minimal limit exceeds! lower minimal limit required.\n", T);
                     exit(1);
                 }
                 TOLflag = 1;

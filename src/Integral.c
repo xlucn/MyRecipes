@@ -6,17 +6,17 @@
 #include "NR.h"
 #include "LibFunction.h"
 
-double TrapezoidalInt(double f(double), double a, double b)
+double TrapezoidalInt(double(*f)(double), double a, double b)
 {
     return (b - a) / 2 * (f(a) + f(b));
 }
 
-double SimpsonInt(double f(double), double a, double b)
+double SimpsonInt(double(*f)(double), double a, double b)
 {
     return (b - a) / 6 * (f(a) + 4 * f((a + b) / 2) + f(b));
 }
 
-double CompositeSimpsonInt(double f(double), double a, double b, int N)
+double CompositeSimpsonInt(double(*f)(double), double a, double b, int N)
 {
     double Integral = 0;
     double h = (b - a) / N / 2;
@@ -31,7 +31,7 @@ double CompositeSimpsonInt(double f(double), double a, double b, int N)
     return Integral;
 }
 
-double RombergInt(double f(double), double a, double b, int N, double eps)
+double RombergInt(double(*f)(double), double a, double b, int N, double eps)
 {
     double result;
     double h = b - a;
@@ -81,7 +81,7 @@ double RombergInt(double f(double), double a, double b, int N, double eps)
 /*
 自适应Simpson积分，利用迭代法
 */
-double AdaptiveSimpsonInt(double f(double), double a, double b, double TOL)
+double AdaptiveSimpsonInt(double(*f)(double), double a, double b, double TOL)
 {
     double Stotal = SimpsonInt(f, a, b);
     double Sleft  = SimpsonInt(f, a, (a + b) / 2);
