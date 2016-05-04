@@ -302,8 +302,8 @@ double **SODERungeKutta(double (**f)(double, double*), double a, double b, doubl
 
 // m: number of functions or ODEs,
 // n: number of ks, order of RKF method matrix
-int SODERKF(double **t, double ***y, double *(*f)(double, double*), double *y0,
-    double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n)
+SODEsol SODERKF(double *(*f)(double, double*), double *y0,
+     double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n)
 {
     //TODO:Integrate backwards: if a > b then integrate from b to a
     //TODO:make the TOL a array
@@ -326,16 +326,16 @@ int SODERKF(double **t, double ***y, double *(*f)(double, double*), double *y0,
     {
         *(k + i) = (double*)malloc_s(m * sizeof(double));
     }
-    *t = (double*)malloc_s(length * sizeof(double)); // the values of variable
-    *y = (double**)malloc_s(length * sizeof(double*)); // the values of the functions
-    (*y)[0] = (double*)malloc_s(m * sizeof(double));
+    double *t = (double*)malloc_s(length * sizeof(double)); // the values of variable
+    double **y = (double**)malloc_s(length * sizeof(double*)); // the values of the functions
+    y[0] = (double*)malloc_s(m * sizeof(double));
 
     // initialization
-    (*t)[0] = T;
+    t[0] = T;
     for(int i = 0; i < m; i++)
     {
         w[i] = y0[i];
-        (*y)[0][i] = w[i];
+        y[0][i] = w[i];
     }
 
     while(T < b)
@@ -349,7 +349,7 @@ int SODERKF(double **t, double ***y, double *(*f)(double, double*), double *y0,
             // w = sum( a[j][n]*vectork[n], {n,0,j} )
             for(int icomponent = 0; icomponent < m; icomponent++)
             {
-                w[icomponent] = (*y)[step][icomponent];
+                w[icomponent] = y[step][icomponent];
                 for(int indexofks = 0; indexofks < j; indexofks++)
                 {
                     w[icomponent] += A78[j * n + indexofks] * k[indexofks][icomponent];
@@ -399,26 +399,26 @@ int SODERKF(double **t, double ***y, double *(*f)(double, double*), double *y0,
             if((step + 1) == length)
             {
                 length += 1000;
-                (*t) = (double*)realloc_s(*t, length * sizeof(double));
-                (*y) = (double**)realloc_s(*y, length * sizeof(double*));
+                t = (double*)realloc_s(t, length * sizeof(double));
+                y = (double**)realloc_s(y, length * sizeof(double*));
             }
             // allocate a new line in y.
-            (*y)[step+1] = (double*)malloc_s(m * sizeof(double));
+            y[step+1] = (double*)malloc_s(m * sizeof(double));
             // calculate the new numbers
             for(int icomponent = 0; icomponent < m; icomponent++)
             {
-                w[icomponent] = (*y)[step][icomponent];
+                w[icomponent] = y[step][icomponent];
                 for(int indexofks = 0; indexofks < n; indexofks++)
                 {
                     w[icomponent] += B78[indexofks] * k[indexofks][icomponent];
                 }
-                (*y)[step+1][icomponent] = w[icomponent];
+                y[step+1][icomponent] = w[icomponent];
             }
 
             // increase the time t by interval h
             T += h;
             step++;
-            (*t)[step] = T;
+            t[step] = T;
 
             double mindelta = 1.5;
             // raise the step length to a suitable value since all the R are below TOL
@@ -447,7 +447,8 @@ int SODERKF(double **t, double ***y, double *(*f)(double, double*), double *y0,
     free(k);
 
     // resize the arrays to suitable size--number of steps
-    *y = (double**)realloc_s(*y, step * sizeof(double*));
-    *t = (double*)realloc_s(*t, step * sizeof(double));
-    return step;
+    y = (double**)realloc_s(y, step * sizeof(double*));
+    t = (double*)realloc_s(t, step * sizeof(double));
+    SODEsol sol = {step, t, y};
+    return sol;
 }

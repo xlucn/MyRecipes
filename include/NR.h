@@ -83,6 +83,19 @@ double AdaptiveSimpsonInt(double(*f)(double), double a, double b, double TOL);
  *********************ODE*****************************************************
  *****************************************************************************/
 /**
+ * @brief a struct type to contain the solution of a system of ODE integration
+ * 
+ * This struct type contains three menbers: steps, record the steps used in the
+ * integration. It is useful in variable step size methods. t, the pointer to the
+ * independent virable list. y, the pointer to the dependent variables list.
+ */
+typedef struct _SODEsol{
+	int step; /**< the steps used in the integration */
+	double *t; /**< the pointer to the independent virable list */
+	double **y; /**< the pointer to the dependent variables list */
+}SODEsol;
+
+/**
  * @brief Euler method to solve initial value problem(IVP) of ODE
  * @param y0 initial value,
  * @param f derivative function. dy/dt=f(t,y).
@@ -163,7 +176,7 @@ double **SODERungeKutta(double (*f[])(double, double*), double a, double b, doub
  *
  * @endcode
  */
- int SODERKF(double **t, double ***y, double *(*f)(double, double*), double *y0,
+SODEsol SODERKF(double *(*f)(double, double*), double *y0,
      double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n);
 
 

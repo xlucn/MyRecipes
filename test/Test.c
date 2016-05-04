@@ -541,11 +541,12 @@ int testSODERungeKutta()
     double y0[] = {0, -1};
     //int N = 10;
     int m = 2;
-    double *t;
-    double **res;
-    int steps = SODERKF(&t, &res, f, y0, a, b, m, 0.1, 1e-8, 1e4, 1e-4, 13);
+    SODEsol sol = SODERKF(f, y0, a, b, m, 0.1, 1e-8, 1e4, 1e-4, 13);
     //SODERungeKutta(f, a, b, y0, m, N);
 
+    double *t = sol.t;
+    double **res = sol.y;
+    int steps = sol.step;
     
 
     printf("Testing Runge-Kutta Method for a System of ODEs\n");
