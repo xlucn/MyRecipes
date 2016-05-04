@@ -5,10 +5,15 @@
 #include <math.h>
 #include "NR.h"
 #include "LibFunction.h"
-/*
-传入插值点个数N，插值点坐标a[N]，对应插值点的函数值f[N]，对应插值点的函数导数值df[N]，和自变量x，
-返回用厄米插值多项式求得的函数近似值
-*/
+/**
+ * @brief Hermite polynomial Interpolation
+ * @param N number of Interpolation points,
+ * @param a[N] the Interpolation points,
+ * @param x variable
+ * @param f[N] function,
+ * @param df[N] derivative of f with respect to variable x,
+ * @return approximate value using Hermite polynomial
+ */
 double Hermite(int N, double *a, double *f, double *df, double x)
 {
     double *A = (double *)malloc_s(N * sizeof(double));
@@ -71,7 +76,14 @@ static double CubicSplineIpl(int N, double(*f)(double), double x, double *a, dou
     return temp;
 }
 
-
+/**
+ * @brief Lagrange三次样条插值函数
+ * @param N 分段区间数，即插值点数量为N + 1；
+ * @param a 插值点数组指针；
+ * @param f 函数；
+ * @param x 变量值；
+ * @return 返回样条插值函数值
+ */
 static double *LagrangeCubicSplineIplPara(int N, double *a, double(*f)(double))
 {
     double *h = (double *)malloc_s(N * sizeof(double));			/*插值点间距*/
@@ -131,7 +143,16 @@ static double *LagrangeCubicSplineIplPara(int N, double *a, double(*f)(double))
     return result;
 }
 
-
+/**
+ * @brief 完备三次样条插值函数
+ * @param N 分段区间数，即插值点数量为N + 1；
+ * @param a 插值点数组指针；
+ * @param f 函数；
+ * @param x 变量值；
+ * @param df_a derivative at a
+ * @param df_b derivative at b
+ * @return 样条插值函数值
+ */
 static double *CompleteCubicSplineIplPara(int N, double *a, double(*f)(double), double df_a, double df_b)
 {
     double *h = (double *)malloc_s(N * sizeof(double));			/*插值点间距*/
@@ -185,7 +206,16 @@ static double *CompleteCubicSplineIplPara(int N, double *a, double(*f)(double), 
     return result;
 }
 
-
+/**
+ * @brief 自然三次样条插值函数
+ * @param N 分段区间数，即插值点数量为N + 1；
+ * @param a 插值点数组指针；
+ * @param f 函数；
+ * @param x 变量值；
+ * @param ddf_a second order derivative at a
+ * @param ddf_b second order derivative at b
+ * @return 样条插值函数值
+ */
 static double *NatureCubicSplineIplPara(int N, double *a, double(*f)(double), double ddf_a, double ddf_b)
 {
     double *d = (double *)malloc_s((N - 1) * sizeof(double));		/*方程组常数项*/

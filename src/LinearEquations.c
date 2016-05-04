@@ -1,4 +1,4 @@
-//LuXu
+//Lu Xu
 //Solving linear equations
 
 #include <math.h>
@@ -7,6 +7,12 @@
 #include "NR.h"
 #include "LibFunction.h"
 
+/**
+ * @brief Gaussian elimination method to solve linear equation in the form of Ax=b.
+ * @param N The rank of the matrix
+ * @param A The coefficient matrix
+ * @param b The constant vector
+ */
 double *GaussEli(int N, double **A, double *b)
 {
     double *x = (double *)malloc_s(N * sizeof(double));
@@ -48,34 +54,35 @@ double *GaussEli(int N, double **A, double *b)
     return x;
 }
 
-/*
-Gauss elimination with partial pivoting
-*/
+/**
+ * @brief Gauss elimination with partial pivoting
+ * @param N the rank of the equation
+ * @param a the augmented matrix
+ */
 double *GaussEliPP(int N, double **a)
 {
-    int *max = (int*)malloc_s(N * sizeof(int));
-    double *temp;
+    int max;
     double *x = (double*)malloc_s(N * sizeof(double));
 
     for (int k = 0; k < N - 1; k++)
     {
-        max[k] = k;
+        max = k;
         for (int i = k; i < N; i++)
         {
-            if (fabs(a[i][k]) > fabs(a[max[k]][k]))
+            if (fabs(a[i][k]) > fabs(a[max][k]))
             {
-                max[k] = i;
+                max = i;
             }
         }
-        if (a[max[k]][k] == 0)
+        if (a[max][k] == 0)
         {
-            printf("A is singular\n");
+            fprintf(stderr, "A is singular\n");
             return NULL;
         }
-        if (max[k] != k) {
-            temp = a[k];
-            a[k] = a[max[k]];
-            a[max[k]] = temp;
+        if (max != k) {
+            double *temp = a[k];
+            a[k] = a[max];
+            a[max] = temp;
         }
         for (int i = k + 1; i < N; i++) {
             a[i][k] = a[i][k] / a[k][k];
@@ -86,7 +93,7 @@ double *GaussEliPP(int N, double **a)
     }
 
     if (a[N - 1][N - 1] == 0) {
-        printf("A is singular\n");
+        fprintf(stderr, "A is singular\n");
         return NULL;
     }
     else
@@ -100,13 +107,15 @@ double *GaussEliPP(int N, double **a)
         }
         x[k] = (a[k][N] - t) / a[k][k];
     }
-    free(max);
     return x;
 }
 
-/*
-Gauss elimination with partial pivoting proportionally
-*/
+
+/**
+ * @brief Gauss elimination with partial pivoting proportionally
+ * @param N the rank of the equation
+ * @param a the augmented matrix
+ */
 double *GaussEliPPP(int N, double **a)
 {
     int r = 0;
@@ -176,6 +185,11 @@ double *GaussEliPPP(int N, double **a)
     return x;
 }
 
+/**
+ * @brief Gauss Jordan elimination method to solve a system of linear equations
+ * @param N the rank of the equation
+ * @param a the augmented matrix
+ */
 double *GaussJordanEli(int N, double **a)
 {
     int* max = (int*)malloc_s(N * sizeof(int));
@@ -227,6 +241,15 @@ double *GaussJordanEli(int N, double **a)
     return x;
 }
 
+/**
+ * @brief Chasing method for solving tridiagonal equations.
+ * @param N the order of the matrix.
+ * @param d the main diagonal,
+ * @param c the line above d,
+ * @param a the line below d,
+ * @param b the constant vector.
+ * @return the solution of the equation *x or NULL if the eqation has no solution.
+ */
 double *Chasing(int N, double *d, double *c, double *a, double *b)
 {
     double *p = (double *)malloc_s(N * sizeof(double));

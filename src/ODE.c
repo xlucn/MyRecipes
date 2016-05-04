@@ -8,7 +8,12 @@
 #include "LibFunction.h"
 
 /**
- * Euler Method to solve ODE. y0:initial value, f(t, y) = dy/dt
+ * @brief Euler method to solve initial value problem(IVP) of ODE
+ * @param y0 initial value,
+ * @param f derivative function. dy/dt=f(t,y).
+ * @param a lower limit of interval
+ * @param b upper limit of interval
+ * @param N number of subintervals
  */
 double* Euler(double(*f)(double, double), double a, double b, double y0, int N)
 {
@@ -50,21 +55,21 @@ static double* TwoStageRungeKutta(int N, double y0, double a, double b, double(*
     return result;
 }
 /**
- * Improved Euler Method
+ * @brief Improved Euler Method
  */
 double* ImprovedEuler(double(*f)(double, double), double a, double b, double y0, int N)
 {
     return TwoStageRungeKutta(N, y0, a, b, f, 1);
 }
 /**
- * Mid-point method
+ * @brief Midpoint method.
  */
 double* MID(double(*f)(double, double), double a, double b, double y0, int N)
 {
     return TwoStageRungeKutta(N, y0, a, b, f, 1 / 2);
 }
 /**
- * Heun method
+ * @brief Heun Method
  */
 double* Heun(double(*f)(double, double), double a, double b, double y0, int N)
 {
@@ -72,7 +77,7 @@ double* Heun(double(*f)(double, double), double a, double b, double y0, int N)
 }
 
 /**
- * Three stage
+ * @brief Three stage Heun method.
  */
 double *ThreeStageHeun(int N, double y0, double a, double b, double(*f)(double, double))
 {
@@ -80,7 +85,7 @@ double *ThreeStageHeun(int N, double y0, double a, double b, double(*f)(double, 
 }
 
 /**
- * ThreeStageRungeKuttaMathod
+ * @brief Three Stage Runge-Kutta Method
  */
 double *ThreeStageRungeKuttaMathod(double(*f)(double, double), double a, double b, double y0, int N)
 {
@@ -88,7 +93,7 @@ double *ThreeStageRungeKuttaMathod(double(*f)(double, double), double a, double 
 }
 
 /**
- * Classic Runge-Kutta Method
+ * @brief Classic Runge-Kutta Method
  */
 double *ClassicRungeKutta(double(*f)(double, double), double a, double b, double y0, int N)
 {
@@ -209,7 +214,9 @@ static double *RKFmn(double(*f)(double,double), double a, double b, double y0, d
     result[0] = step;
     return result;
 }
-
+/**
+ * @brief Runge-Kutta-Fehlberg Method
+ */
 double *RKF78(double(*f)(double,double), double a, double b, double y0, double TOL, double hmax, double hmin)
 {
     return RKFmn(f, a, b, y0, TOL, hmax, hmin, A78, B78, Bstar78, C78, 13);
@@ -221,7 +228,14 @@ double *RKF45(double(*f)(double,double), double a, double b, double y0, double T
 }
 
 /**
- * One-step Adams correlation PECE method. Use classic Runge-Kutta method for the initial value.
+ * @brief One-step Adams correlation PECE method. Use classic Runge-Kutta method for the initial value.
+ * @param f right function of ODE
+ * @param a lower limit of interval
+ * @param b upper limit of interval
+ * @param dy0 initial value of derivative of f
+ * @param y0 initial value of f
+ * @param N number of subintervals
+ * @return array of ys
  */
 double *AdamsPECE(double(*f)(double, double), double a, double b, double dy0, double y0, int N)
 {
@@ -243,7 +257,15 @@ double *AdamsPECE(double(*f)(double, double), double a, double b, double dy0, do
     free(dy);
     return y;
 }
-
+/**
+ * @brief Classic Runge-Kutta Method to solve a System of ODEs.
+ * @param m the number of ODEs,
+ * @param N the numebr of steps,
+ * @param (a, b) the interval,
+ * @param y0 the initial values,
+ * @param f point to an array of functions.
+ * @return a 2D array of values of all functions in all steps.
+ */
 double **SODERungeKutta(double (**f)(double, double*), double a, double b, double *y0, int m, int N)
 {
     double h = (b - a) / N;
@@ -300,8 +322,28 @@ double **SODERungeKutta(double (**f)(double, double*), double a, double b, doubl
 }
 
 
-// m: number of functions or ODEs,
-// n: number of ks, order of RKF method matrix
+/**
+ * @brief RKF method to solve a system of ODEs
+ * @param t the address of a pointer to double type, this function will modify
+ *  the pointer to point to a one-dimension array.
+ * @param y the address of a 2-rank pointer to double type, this function will
+ *  modify the pointer to point to a two-dimension array.
+ * @param f an array of pointers to right-functions
+ * @param y0 an array of initial values
+ * @param a,b interval
+ * @param m number of equations
+ * @param h0 the initial step size
+ * @param TOL the required tolerance
+ * @param hmin, hmax the minimum and maximum step size allowed
+ * @param n temporarily use this number to indicate which method to use
+ * @return the number of steps use by RKF method to solve the equations, the
+ *  pointer *t will be a array of time in every step, and the pointer *y will be
+ *  a 2-rank array of all function values in all steps.
+ * Example Usage:
+ * @code
+ *
+ * @endcode
+ */
 SODEsol SODERKF(double *(*f)(double, double*), double *y0,
      double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n)
 {

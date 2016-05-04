@@ -3,9 +3,9 @@
 #include "NR.h"
 #include "LibFunction.h"
 
-/*
-solve the leastsquare solution for a system of linear equations.
-*/
+/**
+ * @brief solve the leastsquare solution for a system of linear equations.
+ */
 double *LeastSquare(int m, int n, double **A, double *b)
 {
     if (m<n)
@@ -56,7 +56,11 @@ double *LeastSquare(int m, int n, double **A, double *b)
     free(Ab);
     return res;
 }
-
+/**
+ * @brief Gram-Schmidt method of POD(proper orthogonal decomposition).
+ * Rank of The m*n(m>n) matrix need to be n.
+ * return a three demension array which contains two 2-d arrays [Q,R].
+ */
 double ***GramSchmidtQR(int m, int n, double **A)
 {
     double **Q = (double**)malloc_s(m * sizeof(double*));
@@ -105,7 +109,9 @@ double ***GramSchmidtQR(int m, int n, double **A)
     }
     return QR;
 }
-
+/**
+ * @brief Improved version of Gram-Schmidt method.
+ */
 double ***ImprovedGramSchmidtQR(int m, int n, double **A)
 {
     double temp;

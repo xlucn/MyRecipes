@@ -6,16 +6,25 @@
 #include "NR.h"
 #include "LibFunction.h"
 
+/**
+ * @brief Trapezoidal integration
+ */
 double TrapezoidalInt(double(*f)(double), double a, double b)
 {
     return (b - a) / 2 * (f(a) + f(b));
 }
 
+/**
+ * @brief Simpson integration
+ */
 double SimpsonInt(double(*f)(double), double a, double b)
 {
     return (b - a) / 6 * (f(a) + 4 * f((a + b) / 2) + f(b));
 }
 
+/**
+ * @brief Composite Simpson integration，N is the number of the subintervals
+ */
 double CompositeSimpsonInt(double(*f)(double), double a, double b, int N)
 {
     double Integral = 0;
@@ -31,6 +40,13 @@ double CompositeSimpsonInt(double(*f)(double), double a, double b, int N)
     return Integral;
 }
 
+/**
+ * @brief Romberg integration，
+ * @param N 所设置的最多序列数,
+ * @param [a,b] the interval,
+ * @param eps the precision,
+ * @param f the integration function
+ */
 double RombergInt(double(*f)(double), double a, double b, int N, double eps)
 {
     double result;
@@ -78,9 +94,10 @@ double RombergInt(double(*f)(double), double a, double b, int N, double eps)
 
 }
 
-/*
-自适应Simpson积分，利用迭代法
-*/
+
+/**
+ * @brief Adaptive Simpson intergral, using recursion.
+ */
 double AdaptiveSimpsonInt(double(*f)(double), double a, double b, double TOL)
 {
     double Stotal = SimpsonInt(f, a, b);

@@ -4,7 +4,9 @@
 #include <math.h>
 #include "NR.h"
 #include "LibFunction.h"
-
+/**
+ * @brief Bisection method to find the root of a equation
+ */
 double Bisection(double(*f)(double), double a, double b, double eps)
 {
     double p;
@@ -15,7 +17,9 @@ double Bisection(double(*f)(double), double a, double b, double eps)
     }
     return p;
 }
-
+/**
+ * @brief Use integration to solve equations in the form of x = g(x)
+ */
 double PicardIteration(double(*g)(double), double x, double eps)
 {
     double p = g(x);
@@ -27,6 +31,9 @@ double PicardIteration(double(*g)(double), double x, double eps)
     return p;
 }
 
+/**
+ * @brief Accelerate iteration of PicardIteration
+ */
 double SteffensenIteration(double(*g)(double), double x, double eps)
 {
     double y = g(x);
@@ -42,6 +49,10 @@ double SteffensenIteration(double(*g)(double), double x, double eps)
     return p;
 }
 
+/**
+ * @brief Newton method (or Newton-Raphson Method) to find the root of a equation.
+ * df is the derivative function of f(x)
+ */
 double NewtonMethod(double(*f)(double), double df(double), double x, double eps)
 {
     double p = x - f(x) / df(x);
@@ -53,6 +64,9 @@ double NewtonMethod(double(*f)(double), double df(double), double x, double eps)
     return p;
 }
 
+/**
+ * @brief Secent method to solve a equation, x0 and x1 is two initial points you need.
+ */
 double SecentMethod(double(*f)(double), double x0, double x1, double eps)
 {
     double y0 = f(x0);
@@ -69,6 +83,9 @@ double SecentMethod(double(*f)(double), double x0, double x1, double eps)
     return p;
 }
 
+/**
+ * @brief Muller method
+ */
 double MullerMethod(double(*f)(double), double x0, double x1, double x2, double eps)
 {
     double b;
