@@ -510,26 +510,21 @@ int testRKF()
     return _testRKF(0, 1, 1e-5, 1e-2, 1e-6, ODEf3, ODEy3);
 }
 
-static double SODEf1(double t, double *y)
+static double *SODEf1(double t, double *y)
 {
-    return -4 * y[0] - 2 * y[1] + cos(t) + 4 * sin(t);
+    double *f = (double*)malloc_s(2 * sizeof(double));
+    f[0] = -4 * y[0] - 2 * y[1] + cos(t) + 4 * sin(t);
+    f[1] = 3 * y[0] + y[1] - 3 * sin(t);
+    return f;
 }
 
-static double SODEf2(double t, double *y)
+static double *SODEy1(double x)
 {
-    return 3 * y[0] + y[1] - 3 * sin(t);
+	double *y = (double*)malloc_s(2 * sizeof(double));
+    y[0] = exp(-2 * x) * (-2 + 2 * exp(x) + exp(2 * x) * sin(x));
+    y[1] = -exp(-2 * x) * (3 * exp(x) - 2);
+    return y;
 }
-
-static double SODEy1(double x)
-{
-    return exp(-2 * x) * (-2 + 2 * exp(x) + exp(2 * x) * sin(x));
-}
-
-static double SODEy2(double x)
-{
-    return -exp(-2 * x) * (3 * exp(x) - 2);
-}
-
 
 /**
  * @brief 
@@ -539,30 +534,39 @@ static double SODEy2(double x)
  */
 int testSODERungeKutta()
 {
-    double (*f[2])(double,double*) = {SODEf1, SODEf2};
-    double (*y[2])(double) = {SODEy1, SODEy2};
+    double *(*f)(double,double*) = SODEf1;
+    double *(*y)(double) = SODEy1;
     double a = 0;
     double b = 1;
     double y0[] = {0, -1};
-    int N = 10;
+    //int N = 10;
     int m = 2;
-    double **result = SODERungeKutta(f, a, b, y0, m, N);
-
     double *t;
     double **res;
-    SODERKF(&t, &res, f, y0, a, b, m, 0.1, 1e-8, 1e4, 1e-4, 13);
+    int steps = SODERKF(&t, &res, f, y0, a, b, m, 0.1, 1e-8, 1e4, 1e-4, 13);
+    //SODERungeKutta(f, a, b, y0, m, N);
+
+    
 
     printf("Testing Runge-Kutta Method for a System of ODEs\n");
     printf("%8s%16s%16s%16s%16s\n", "t", "result1", "y1", "result2", "y2");
-    for(int i = 0; i < N + 1; i ++)
+    for(int i = 0; i < steps; i ++)
     {
-        printf("%8.2lf", a + i * (b - a) / N);
+		double *ans = y(t[i]);
+        printf("%8.2lf", t[i]);
         for(int j = 0 ; j < m; j++)
         {
-            printf("%16lf%16lf", result[i][j], y[j](a + i * (b - a) / N));
+            printf("%16lf%16lf", res[i][j], ans[j]);
         }
         printf("\n");
     }
+    free(t);
+    for (int i = 0; i < steps; i++)
+	{
+		free(res[i]);
+	}
+	free(res);
+	
     return PASSED;
 }
 

@@ -302,7 +302,7 @@ double **SODERungeKutta(double (**f)(double, double*), double a, double b, doubl
 
 // m: number of functions or ODEs,
 // n: number of ks, order of RKF method matrix
-int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
+int SODERKF(double **t, double ***y, double *(*f)(double, double*), double *y0,
     double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n)
 {
     //TODO:Integrate backwards: if a > b then integrate from b to a
@@ -356,11 +356,12 @@ int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
                 }
             }
             // i, m is for each component of a variable, the same number as the number of ODEs
+            double *temp = f(T + C78[j] * h, w);
             for(int i = 0; i < m; i++)
             {
                 // the ith component of vector_k corresponding to the ith function
                 // The_jth_vector_k[i] = h*ith_function(t, w)
-                k[j][i] = h * f[i](T + C78[j] * h, w);
+                k[j][i] = h * temp[i];
             }
         }
 
