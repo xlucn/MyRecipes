@@ -23,18 +23,27 @@
 double *Chasing(int N, double *d, double *c, double *a, double *b);
 /**
  * @brief Gaussian elimination method to solve linear equation in the form of Ax=b.
+ * @param N The rank of the matrix
+ * @param A The coefficient matrix
+ * @param b The constant vector
  */
 double *GaussEli(int N, double **A, double *b);
 /**
  * @brief Gauss elimination with partial pivoting
+ * @param N the rank of the equation
+ * @param a the augmented matrix
  */
 double *GaussEliPP(int N, double **a);
 /**
  * @brief Gauss elimination with partial pivoting proportionally
+ * @param N the rank of the equation
+ * @param a the augmented matrix
  */
 double *GaussEliPPP(int N, double **a);
 /**
  * @brief Gauss Jordan elimination method to solve a system of linear equations
+ * @param N the rank of the equation
+ * @param a the augmented matrix
  */
 double *GaussJordanEli(int N, double **a);
 
@@ -154,7 +163,7 @@ double **SODERungeKutta(double (*f[])(double, double*), double a, double b, doub
  *
  * @endcode
  */
- int SODERKF(double **t, double ***y, double (**f)(double, double*), double *y0,
+ int SODERKF(double **t, double ***y, double *(*f)(double, double*), double *y0,
      double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n);
 
 
