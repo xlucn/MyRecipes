@@ -1,44 +1,34 @@
-# function to remove files in $(1) list
-RM=@for i in $(1);do                                                 \
-    if [ -e $$i ];                                                   \
-    then                                                             \
-        rm -f $$i > /dev/null 2>&1; echo "[removing]"$$i;            \
-    fi;                                                              \
-done
-
-# function to delete the outdated dependance files.
-RMDEP=@                                                              \
-for i in `ls $(DEP_DIR)`;do                                          \
-    if ! [ -e $(SRC_DIR)/`basename $$i .d`.c ];                      \
-    then                                                             \
-        rm $(DEP_DIR)/$$i; echo "[removing]"$(DEP_DIR)/$$i;          \
-    fi;                                                              \
-done
+# custom names, something need to be customized by user
+## lib name, and the lib will be named lib$(LIBNAME).a
+LIBNAME=NR
+## binary file name
+BINNAME=MyRecipes
+## source dirs
+MY_SRC_DIR=src ODE
 
 # names of directories
-SRC_DIR=src
+SRC_DIR=$(MY_SRC_DIR)
 BIN_DIR=bin
 INC_DIR=include
 LIB_DIR=lib
 DBG_DIR=debug
 OBJ_DIR=$(DBG_DIR)/obj
 DEP_DIR=$(DBG_DIR)/dep
-DIRS=$(BIN_DIR) $(LIB_DIR) $(OBJ_DIR) $(DEP_DIR)
 
 # names of files
-SRC=$(wildcard $(SRC_DIR)/*.c)
-OBJ=$(addprefix $(OBJ_DIR)/,$(notdir $(SRC:.c=.o)))
-DEP=$(addprefix $(DEP_DIR)/,$(notdir $(SRC:.c=.d)))
-BIN=$(BIN_DIR)/MyRecipes
-LIB=$(LIB_DIR)/libNR.a
+SRC=$(foreach dir,$(SRC_DIR),$(wildcard $(dir)/*.c))
+OBJ=$(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
+DEP=$(addprefix $(DEP_DIR)/,$(SRC:.c=.d))
+BIN=$(BIN_DIR)/$(BINNAME)
+LIB=$(LIB_DIR)/lib$(LIBNAME).a
 
 # names of test-related files
-TEST_DIR=./test
+TEST_DIR=test
 TESTH=$(TEST_DIR)/Test.h
 TESTC=$(TEST_DIR)/Test.c
 TESTSRC=$(wildcard $(TEST_DIR)/*.c)
-TESTOBJ=$(addprefix $(OBJ_DIR)/,$(notdir $(TESTSRC:.c=.o)))
-TESTDEP=$(addprefix $(DEP_DIR)/,$(notdir $(TESTSRC:.c=.d)))
+TESTOBJ=$(addprefix $(OBJ_DIR)/,$(TESTSRC:.c=.o))
+TESTDEP=$(addprefix $(DEP_DIR)/,$(TESTSRC:.c=.d))
 GENTEST=GenerateTest.py
 TESTIFLAGS=-I $(TEST_DIR)
 
@@ -51,12 +41,14 @@ LFLAGS=-lm
 PYTHON=python
 
 
-.PHONY:all clean remove help dirs count files
-
-.DEFAULT:
-	@echo "see usage by \"make help\""
+.PHONY:all clean remove help dirs count files test
 
 all:dirs files
+
+DIRS+=$(BIN_DIR)
+DIRS+=$(LIB_DIR)
+DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(OBJ_DIR)/$(dir))
+DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(DEP_DIR)/$(dir))
 
 dirs:$(DIRS)
 	mkdir -p $(DIRS)
@@ -75,16 +67,16 @@ You can see other 'make' usage by \"make help\"\n\
 $(LIB):$(OBJ)
 	ar crv $@ $?
 
-$(OBJ):$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
+$(OBJ):$(OBJ_DIR)/%.o:%.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
-$(DEP):$(DEP_DIR)/%.d:$(SRC_DIR)/%.c
+$(DEP):$(DEP_DIR)/%.d:%.c
 	rm -f $@; $(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
 
-$(TESTOBJ):$(OBJ_DIR)/%.o:$(TEST_DIR)/%.c $(TESTH)
+$(TESTOBJ):$(OBJ_DIR)/%.o:%.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
-$(TESTDEP):$(DEP_DIR)/%.d:$(TEST_DIR)/%.c $(TESTH)
+$(TESTDEP):$(DEP_DIR)/%.d:%.c
 	rm -f $@; $(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
 
 $(TESTH):$(TESTC)
@@ -98,7 +90,6 @@ help:
 (all)	:	build the whole project.\n\
 count	:	count the lines, words and bytes of source files.\n\
 clean	:	remove the object files and the dependancy files.\n\
-cleandep:	clean the useless dependancy files.\n\
 remove	:	remove the binary file.\n\
 cleanall:	remove all the files created by make.\n\
 rebuild	:	clean all the files and rebuild the whole project."
@@ -107,14 +98,17 @@ count:
 	echo -n `date`"\t" >> ./.count && cat $(SRC_DIR)/* $(INC_DIR)/* $(TEST_DIR)/* | wc >> ./.count
 
 remove:
-	$(call RM,$(BIN))
+	rm -rf $(BIN_DIR) $(LIB_DIR)
 
 clean:
-	$(call RM,$(OBJ) $(DEP) $(TESTDEP) $(TESTOBJ))
+	rm -rf $(OBJ_DIR) $(DEP_DIR)
 
 cleanall:clean remove
 
 rebuild:cleanall all
 
-cleandep:
-	$(call RMDEP)
+
+test:
+	@echo $(SRC)
+	@echo $(OBJ)
+	@echo $(DEP)
