@@ -100,16 +100,11 @@ double MullerMethod(double(*f)(double), double x0, double x1, double x2, double 
     double f12 = (f2 - f1) / (x2 - x1);
     double f012  = (f12 - f01) / (x2 - x0);
 
-    for(int i = 0; i < 1000; i++)
-    {
+    do{
         b = f12 + f012 * (x2 - x1);
         d = sqrt(b * b - 4 * f2 * f012);
         e = fabs(b - d) > fabs(b + d) ? b + d : b - d;
         h = -2 * f2 / e;
-        if (fabs(h) < eps)
-        {
-            break;
-        }
         x0 = x1;
         x1 = x2;
         x2 += h;
@@ -119,7 +114,7 @@ double MullerMethod(double(*f)(double), double x0, double x1, double x2, double 
         f01 = (f1 - f0) / (x1 - x0);
         f12 = (f2 - f1) / (x2 - x1);
         f012  = (f12 - f01) / (x2 - x0);
-    }
+    }while(fabs(h) < eps);
 
     return x2;
 }
