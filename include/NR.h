@@ -8,6 +8,7 @@
 #define _NR_H_
 
 #include "LibFunction.h"
+#include "constants.h"
 
 /**
  * solve Linear Equations
@@ -45,6 +46,24 @@ typedef struct _SODEsol{
 	double *t; /**< the pointer to the independent virable list */
 	double **y; /**< the pointer to the dependent variables list */
 }SODEsol;
+ 
+/**
+ * @brief a struct type to contain the solution of an ODE.
+ * 
+ * This struct type contains three menbers: 
+ * steps, record the steps used in the integration. It is useful in variable 
+ *     step size methods. 
+ * t, the pointer to the independent virable list. 
+ * y, the pointer to the dependent variable list.
+ */
+typedef struct _ODEsol{
+	int step; /**< the steps used in the integration */
+	double *t; /**< the pointer to the independent virable list */
+	double *y; /**< the pointer to the dependent variables list */
+}ODEsol;
+
+void DisposeSODEsol(SODEsol sol);
+void DisposeODEsol(ODEsol sol);
 
 double* Euler(double(*f)(double, double), double a, double b, double y0, int N);
 double* ImprovedEuler(double(*f)(double, double), double a, double b, double y0, int N);
