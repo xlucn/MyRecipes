@@ -10,7 +10,7 @@
 #include "LibFunction.h"
 
 /**
- * LinearEquations
+ * solve Linear Equations
  */
 double *Chasing(int N, double *d, double *c, double *a, double *b);
 double *GaussEli(int N, double **A, double *b);
@@ -32,11 +32,13 @@ double AdaptiveSimpsonInt(double(*f)(double), double a, double b, double TOL);
  */
  
 /**
- * @brief a struct type to contain the solution of a system of ODE integration
+ * @brief a struct type to contain the solution of a system of ODE.
  * 
- * This struct type contains three menbers: steps, record the steps used in the
- * integration. It is useful in variable step size methods. t, the pointer to the
- * independent virable list. y, the pointer to the dependent variables list.
+ * This struct type contains three menbers: 
+ * steps, record the steps used in the integration. It is useful in variable 
+ *     step size methods. 
+ * t, the pointer to the independent virable list. 
+ * y, the pointer to the dependent variables list.
  */
 typedef struct _SODEsol{
 	int step; /**< the steps used in the integration */
@@ -68,7 +70,7 @@ double CompleteCubicSplineIpl(double(*f)(double), double df_a, double df_b, doub
 double LagrangeCubicSplineIpl(double(*f)(double), double x, int N, double *a);
 
 /**
- * Basic
+ * Basic functions
  */
 double DividedDiff(double(*f)(double), double *x, int N);
 double **FullDividedDiff(double(*f)(double), double *x, int N, int k);
@@ -77,14 +79,14 @@ double *LagrangePoly(double *a, double x, int N);
 double Chebyshev(int n, double x);
 
 /**
- * LeastSq
+ * Least Square
  */
 double *LeastSquare(int m, int n, double **A, double *b);
 double ***GramSchmidtQR(int m, int n, double **A);
 double ***ImprovedGramSchmidtQR(int m, int n, double **A);
 
 /**
- * Solve
+ * Solve functions
  */
 double Bisection(double(*f)(double), double a, double b, double eps);
 double PicardIteration(double g(double), double x, double eps);

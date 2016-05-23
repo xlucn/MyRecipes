@@ -4,8 +4,10 @@ LIBNAME=NR
 ## binary file name
 BINNAME=MyRecipes
 ## source dirs
-MY_SRC_DIR=src ODE
+MY_SRC_DIR=ODE Basic Integral Interpolation LeastSq LibFunction LinearEquations Solve
 
+#those things are not necessarily needed to change
+#
 # names of directories
 SRC_DIR=$(MY_SRC_DIR)
 BIN_DIR=bin
@@ -50,11 +52,10 @@ DIRS+=$(LIB_DIR)
 DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(OBJ_DIR)/$(dir))
 DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(DEP_DIR)/$(dir))
 
-dirs:$(DIRS)
+dirs:
 	mkdir -p $(DIRS)
 
 files:$(DEP) $(TESTDEP) $(BIN)
-
 
 $(BIN):$(LIB) $(TESTOBJ) $(OBJ)
 	$(CC) $(CFLAGS) -o $(BIN) $(TESTOBJ) $(OBJ) $(LFLAGS)
