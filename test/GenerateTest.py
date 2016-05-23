@@ -7,8 +7,10 @@ a array of functions, a array of function names and the number of functions.
 
 import os, re
 
-testc = 'Test.c'
-testh = 'Test.h'
+# file containing the test function declaraions
+testh = ['Test.h']
+# files to be created
+testc = ['Test.c']
 testinfo = 'TestFunctions.c'
 
 description = \
@@ -22,7 +24,17 @@ description = \
  */
 '''
 
-def readfuncs(testfile):
+def readfuncs(filelist):
+    funcs = []
+    for testfile in filelist:
+        funclist = _readfuncs(testfile)
+        if funclist != None:
+            funcs += funclist
+    funcs = list(set(funcs))
+    funcs.sort()
+    return funcs
+
+def _readfuncs(testfile):
     '''
     read a source/header file and find the function declarations or definitions
     in the file.
@@ -37,8 +49,6 @@ def readfuncs(testfile):
     for line in source.readlines():
         if p.match(line) != None:
             funcs.append(''.join(line.split())[3:].split('(')[0])
-    funcs = list(set(funcs))
-    funcs.sort()
     source.close()
     return funcs
 
@@ -94,8 +104,10 @@ int num = %d;
 def main():
     funclist = readfuncs(testc)
     if funclist != readfuncs(testh):
-            gentest(funclist)
-            print 'File ' + testh + ' and ' + testinfo + ' (re)generated.'
+        gentest(funclist)
+        print 'File ' + testh + ' and ' + testinfo + ' are (re)generated.'
+    else:
+        print 'File ' + testh + ' and ' + testinfo + ' are up to date.'
 
 if __name__ == '__main__':
     main()
