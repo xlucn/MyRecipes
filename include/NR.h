@@ -34,32 +34,20 @@ double AdaptiveSimpsonInt(double(*f)(double), double a, double b, double TOL);
  
 /**
  * @brief a struct type to contain the solution of a system of ODE.
- * 
- * This struct type contains three menbers: 
- * steps, record the steps used in the integration. It is useful in variable 
- *     step size methods. 
- * t, the pointer to the independent virable list. 
- * y, the pointer to the dependent variables list.
  */
 typedef struct _SODEsol{
-	int step; /**< the steps used in the integration */
+	int step; /**< the steps used in the integration. It is useful in variable step size methods.*/
 	double *t; /**< the pointer to the independent virable list */
 	double **y; /**< the pointer to the dependent variables list */
 }SODEsol;
  
 /**
  * @brief a struct type to contain the solution of an ODE.
- * 
- * This struct type contains three menbers: 
- * steps, record the steps used in the integration. It is useful in variable 
- *     step size methods. 
- * t, the pointer to the independent virable list. 
- * y, the pointer to the dependent variable list.
  */
 typedef struct _ODEsol{
-	int step; /**< the steps used in the integration */
+	int step; /**< the steps used in the integration. It is useful in variable step size methods. */
 	double *t; /**< the pointer to the independent virable list */
-	double *y; /**< the pointer to the dependent variables list */
+	double *y; /**< the pointer to the dependent variable list */
 }ODEsol;
 
 void DisposeSODEsol(SODEsol sol);
