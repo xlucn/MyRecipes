@@ -53,7 +53,7 @@ DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(OBJ_DIR)/$(dir))
 DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(DEP_DIR)/$(dir))
 
 dirs:
-	mkdir -p $(DIRS)
+	@mkdir -p $(DIRS)
 
 files:$(DEP) $(TESTDEP) $(BIN)
 

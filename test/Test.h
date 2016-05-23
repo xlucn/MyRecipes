@@ -39,6 +39,6 @@ int testSecent();
 int testSplineIpl();
 int testSteffensen();
 
-
 void testall();
+
 #endif
