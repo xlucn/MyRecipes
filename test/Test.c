@@ -44,3 +44,8 @@ void testall()
     free(result);
 }
 
+int main()
+{
+    testall();
+    return 0;
+}
