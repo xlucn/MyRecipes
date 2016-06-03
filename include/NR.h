@@ -8,6 +8,7 @@
 #define _NR_H_
 
 #include "constants.h"
+#include <stdlib.h>
 
 #define malloc
 #define realloc
@@ -24,7 +25,7 @@ double *GaussEliPPP(int N, double **a);
 double *GaussJordanEli(int N, double **a);
 
 /**
- * Integral
+ * Integration
  */
 double TrapezoidalInt(double(*f)(double), double a, double b);
 double SimpsonInt(double(*f)(double), double a, double b);
@@ -35,25 +36,8 @@ double AdaptiveSimpsonInt(double(*f)(double), double a, double b, double TOL);
 /**
  * ODE
  */
- 
-/**
- * @brief a struct type to contain the solution of a system of ODE.
- */
-typedef struct _SODEsol{
-	int step; /**< the steps used in the integration. It is useful in variable step size methods.*/
-	double *t; /**< the pointer to the independent virable list */
-	double **y; /**< the pointer to the dependent variables list */
-}SODEsol;
- 
-/**
- * @brief a struct type to contain the solution of an ODE.
- */
-typedef struct _ODEsol{
-	int step; /**< the steps used in the integration. It is useful in variable step size methods. */
-	double *t; /**< the pointer to the independent virable list */
-	double *y; /**< the pointer to the dependent variable list */
-}ODEsol;
-
+typedef struct _SODEsol SODEsol;
+typedef struct _ODEsol ODEsol;
 void DisposeSODEsol(SODEsol sol);
 void DisposeODEsol(ODEsol sol);
 
@@ -70,6 +54,24 @@ double* AdamsPECE(double(*f)(double, double), double a, double b, double dy0, do
 double** SODERungeKutta(double (*f[])(double, double*), double a, double b, double *y0, int m, int N);
 SODEsol SODERKF(double *(*f)(double, double*), double *y0,
      double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n);
+
+/**
+ * @brief a struct type to contain the solution of a system of ODE.
+ */
+struct _SODEsol{
+	int step; /**< the steps used in the integration. It is useful in variable step size methods.*/
+	double *t; /**< the pointer to the independent virable list */
+	double **y; /**< the pointer to the dependent variables list */
+};
+ 
+/**
+ * @brief a struct type to contain the solution of an ODE.
+ */
+struct _ODEsol{
+	int step; /**< the steps used in the integration. It is useful in variable step size methods. */
+	double *t; /**< the pointer to the independent virable list */
+	double *y; /**< the pointer to the dependent variable list */
+};
 
 
 /**
