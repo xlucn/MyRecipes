@@ -17,7 +17,8 @@ def readfuncs(filename):
     return a list of sorted function names.
     '''
     regex = 'int +test[1-9|a-z|A-Z|_]* *\( *\)*'
-    return os.popen("awk '/%s/{print$2}' %s|sort|awk -F'(' '{print $1}'" % (regex, filename)).read().split()
+    command = "awk '/%s/{print$2}' %s|sort|awk -F'(' '{print $1}'"  % (regex, filename)
+    return os.popen(command).read().split()
 
 def gentest(funcs):
     '''
@@ -33,9 +34,7 @@ def gentest(funcs):
  * the related lines in the makefile.
  */
 '''
-    # write the header file
-    with open(testh, 'w') as header:
-        header.write(description +
+    headercontent = description +
 '''
 #ifndef _TESTDECLARATION_H_
 #define _TESTDECLARATION_H_
@@ -52,10 +51,8 @@ extern int num;	            //the number of test functions
 void testall();
 
 #endif
-''' % ''.join(['int %s();\n' % func for func in funcs]))
-    # write the source file
-    with open(testinfo, 'w') as cfile:
-        cfile.write(description +
+''' % ''.join(['int %s();\n' % func for func in funcs])
+    cfilecontent = description +
 '''
 #include "Test.h"
 
@@ -70,7 +67,11 @@ char *names[] = {
 int num = %d;
 ''' %  (''.join(['\t%s,\n' % i for i in funcs])[:-2],
         ''.join(['\t\"%s\",\n' % i for i in funcs])[:-2],
-        len(funcs)))
+        len(funcs))
+    with open(testh, 'w') as header:
+        header.write(headercontent)
+    with open(testinfo, 'w') as cfile:
+        cfile.write(cfilecontent)
 
 def main():
     funclist = readfuncs(testc)
