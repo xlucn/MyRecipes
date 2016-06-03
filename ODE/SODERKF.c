@@ -1,29 +1,24 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include "NR.h"
+
 /**
  * @brief RKF method to solve a system of ODEs
- * @param t the address of a pointer to double type, this function will modify
- *  the pointer to point to a one-dimension array.
- * @param y the address of a 2-rank pointer to double type, this function will
- *  modify the pointer to point to a two-dimension array.
  * @param f a pointer to right-function returning an array of derivatives
  * @param y0 an array of initial values
- * @param a,b interval
+ * @param a interval
+ * @param b 
  * @param m number of equations
  * @param h0 the initial step size
  * @param TOL the required tolerance
- * @param hmin, hmax the minimum and maximum step size allowed
- * @param n temporarily use this number to indicate which method to use
- * @return the number of steps use by RKF method to solve the equations, the
- *  pointer *t will be a array of time in every step, and the pointer *y will be
- *  a 2-rank array of all function values in all steps.
+ * @param hmax  the minimum and maximum step size allowed
+ * @param hmin
+ * @param n  temporarily use this number to indicate which method to use
+ * @returns struct type SODEsol
  * @note remember to dispose the returned struct by DisposeSODEsol
  * @see DisposeSODEsol
- * Example Usage:
- * @code
- *
- * @endcode
+ * @see SODEsol
  */
 SODEsol SODERKF(double *(*f)(double, double*), double *y0,
      double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n)
