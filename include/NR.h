@@ -7,8 +7,12 @@
 #ifndef _NR_H_
 #define _NR_H_
 
-#include "LibFunction.h"
 #include "constants.h"
+
+#define malloc
+#define realloc
+void* malloc_s(size_t size);
+void* realloc_s(void* ptr, size_t size);
 
 /**
  * solve Linear Equations
