@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "NR.h"
-#include "LibFunction.h"
 
 /**
  * @brief Gaussian elimination method to solve linear equation in the form of Ax=b.

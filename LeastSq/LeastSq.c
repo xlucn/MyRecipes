@@ -1,7 +1,6 @@
 #include <math.h>
 #include <stdlib.h>
 #include "NR.h"
-#include "LibFunction.h"
 
 /**
  * @brief solve the leastsquare solution for a system of linear equations.

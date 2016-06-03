@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include "NR.h"
-#include "LibFunction.h"
 /**
  * @brief Bisection method to find the root of a equation
  */
