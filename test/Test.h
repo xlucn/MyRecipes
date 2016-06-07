@@ -13,11 +13,7 @@
 #define PASSED 0
 #define FAILED 1
 
-extern int (*tests[])();    //the list of test functions which are listed below
-extern char *names[];       //the list of test functions' names
-extern int num;	            //the number of test functions
-
-//declarations of testfunctions
+/* declarations of testfunctions */
 int testAdamsPECE();
 int testAdaptiveSimpson();
 int testBisection();
@@ -40,5 +36,56 @@ int testSplineIpl();
 int testSteffensen();
 
 void testall();
+
+/* define the array of all test functions */
+#define FUNC_ARRAY { \
+	testAdamsPECE,\
+	testAdaptiveSimpson,\
+	testBisection,\
+	testChasing,\
+	testClassicRK,\
+	testDividedDiff,\
+	testGaussianEli,\
+	testGaussianEliPP,\
+	testHermiteIpl,\
+	testLeastSq,\
+	testMuller,\
+	testNewtonMethod,\
+	testPicardRecurtion,\
+	testQR,\
+	testRKF,\
+	testRomberg,\
+	testSecent,\
+	testSODERungeKutta,\
+	testSplineIpl,\
+	testSteffensen \
+}
+
+/* define the array of function names */
+#define NAME_ARRAY { \
+	"testAdamsPECE",\
+	"testAdaptiveSimpson",\
+	"testBisection",\
+	"testChasing",\
+	"testClassicRK",\
+	"testDividedDiff",\
+	"testGaussianEli",\
+	"testGaussianEliPP",\
+	"testHermiteIpl",\
+	"testLeastSq",\
+	"testMuller",\
+	"testNewtonMethod",\
+	"testPicardRecurtion",\
+	"testQR",\
+	"testRKF",\
+	"testRomberg",\
+	"testSecent",\
+	"testSODERungeKutta",\
+	"testSplineIpl",\
+	"testSteffensen" \
+}
+
+/* define the number of functions */
+#define FUNC_COUNT 20
 
 #endif

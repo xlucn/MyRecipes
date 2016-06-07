@@ -22,11 +22,14 @@
  */
 void testall()
 {
-    /* the "num" is defined in "Test.h", which is the number of test functions. */
-    int* result = (int*)malloc_s(num * sizeof(int));  /* record the test results */
+    /* the "FUNC_COUNT" is defined in "Test.h", which is the number of test functions. */
+    /* the "FUNC_ARRAY" is defined in "Test.h", which is an array of test functions.*/
+    /* the "NAME_ARRAY" is defined in "Test.h", which is an array of test functions' names.*/
+    int (*tests[FUNC_COUNT])() = FUNC_ARRAY;
+    char *names[FUNC_COUNT] = NAME_ARRAY;
+    int result[FUNC_COUNT];  /* record the test results */
 
-    /* the "tests" is defined in "Test.h", which is an array of test functions.*/
-    for(int i = 0; i < num; i ++)
+    for(int i = 0; i < FUNC_COUNT; i++)
     {
         printf("===================================================\n");
         printf("* * * * * * * * * *testing No.%2d* * * * * * * * * *\n", i);
@@ -36,12 +39,10 @@ void testall()
     }
 
 	/* summary */
-    for (int i = 0; i < num; i++)
+    for (int i = 0; i < FUNC_COUNT; i++)
     {
         printf("%s No.%02d %s\n", result[i] ? "*[failed]" : " [passed]", i, names[i]);
     }
-
-    free(result);
 }
 
 int main()
