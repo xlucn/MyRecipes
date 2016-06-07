@@ -15,32 +15,26 @@
 void* malloc_s(size_t size);
 void* realloc_s(void* ptr, size_t size);
 
-/**
- * solve Linear Equations
- */
+/* Solve linear equations */
 double *Chasing(int N, double *d, double *c, double *a, double *b);
 double *GaussEli(int N, double **A, double *b);
 double *GaussEliPP(int N, double **a);
 double *GaussEliPPP(int N, double **a);
 double *GaussJordanEli(int N, double **a);
 
-/**
- * Integration
- */
+/* Integration */
 double TrapezoidalInt(double(*f)(double), double a, double b);
 double SimpsonInt(double(*f)(double), double a, double b);
 double CompositeSimpsonInt(double(*f)(double), double a, double b, int N);
 double RombergInt(double(*f)(double), double a, double b, int N, double eps);
 double AdaptiveSimpsonInt(double(*f)(double), double a, double b, double TOL);
 
-/**
- * ODE
- */
+/* ODE (ordinary differential equations) */
 typedef struct _SODEsol SODEsol;
 typedef struct _ODEsol ODEsol;
+
 void DisposeSODEsol(SODEsol sol);
 void DisposeODEsol(ODEsol sol);
-
 double* Euler(double(*f)(double, double), double a, double b, double y0, int N);
 double* ImprovedEuler(double(*f)(double, double), double a, double b, double y0, int N);
 double* MID(double(*f)(double, double), double a, double b, double y0, int N);
@@ -52,9 +46,8 @@ double* RKF78(double(*f)(double,double), double a, double b, double y0, double T
 double* RKF45(double(*f)(double,double), double a, double b, double y0, double TOL, double hmax, double hmin);
 double* AdamsPECE(double(*f)(double, double), double a, double b, double dy0, double y0, int N);
 double** SODERungeKutta(double (*f[])(double, double*), double a, double b, double *y0, int m, int N);
-SODEsol SODERKF(double *(*f)(double, double*), double *y0,
-     double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n);
-
+SODEsol SODERKF(double *(*f)(double, double*), double *y0, double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n);
+ 
 /**
  * @brief a struct type to contain the solution of a system of ODE.
  */
@@ -63,7 +56,6 @@ struct _SODEsol{
 	double *t; /**< the pointer to the independent virable list */
 	double **y; /**< the pointer to the dependent variables list */
 };
- 
 /**
  * @brief a struct type to contain the solution of an ODE.
  */
@@ -74,37 +66,29 @@ struct _ODEsol{
 };
 
 
-/**
- * Interpolation
- */
+/* Interpolation */
 double Hermite(int N, double *a, double *f, double *df, double x);
 double NatureCubicSplineIpl(double(*f)(double), double ddf_a, double ddf_b, double x, int N, double *a);
 double CompleteCubicSplineIpl(double(*f)(double), double df_a, double df_b, double x, int N, double *a);
 double LagrangeCubicSplineIpl(double(*f)(double), double x, int N, double *a);
 
-/**
- * Basic functions
- */
+/* Basic functions */
 double DividedDiff(double(*f)(double), double *x, int N);
 double **FullDividedDiff(double(*f)(double), double *x, int N, int k);
 double **DividedDiffMatrix(double(*f)(double), double *x, int N);
 double *LagrangePoly(double *a, double x, int N);
 double Chebyshev(int n, double x);
 
-/**
- * Least Square
- */
+/* Least Square */
 double *LeastSquare(int m, int n, double **A, double *b);
 double ***GramSchmidtQR(int m, int n, double **A);
 double ***ImprovedGramSchmidtQR(int m, int n, double **A);
 
-/**
- * Solve functions
- */
+/* Solve equations */
 double Bisection(double(*f)(double), double a, double b, double eps);
-double PicardIteration(double g(double), double x, double eps);
-double SteffensenIteration(double g(double), double x, double eps);
-double NewtonMethod(double(*f)(double), double df(double), double x, double eps);
+double PicardIteration(double (*g)(double), double x, double eps);
+double SteffensenIteration(double (*g)(double), double x, double eps);
+double NewtonMethod(double(*f)(double), double (*df)(double), double x, double eps);
 double SecentMethod(double(*f)(double), double x0, double x1, double eps);
 double MullerMethod(double(*f)(double), double x0, double x1, double x2, double eps);
 
