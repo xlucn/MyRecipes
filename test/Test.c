@@ -12,9 +12,6 @@
  */
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include "NR.h"
 #include "Test.h"
 
 /**
