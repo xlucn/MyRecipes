@@ -2,10 +2,10 @@
 #include <math.h>
 #include "NR.h"
 
-/*
-Cubic Spline Interpolation.
-note that the parameter *m is created by functions ...CubicSplineIplPara(...)
-*/
+/**
+ * @brief Cubic Spline Interpolation.
+ * @note that the parameter *m is created by functions ...CubicSplineIplPara(...)
+ */
 static double CubicSplineIpl(int N, double(*f)(double), double x, double *a, double *m)
 {
     double *h = (double *)malloc_s(N * sizeof(double));
@@ -219,32 +219,45 @@ static double *NatureCubicSplineIplPara(int N, double *a, double(*f)(double), do
     return m;
 }
 
-/*
-自然三次样条插值函数，传递的参数为：
-N：分段区间数，即插值点数量为N + 1；a：插值点数组；f：函数；x：变量值；ddf_a, ddf_b：两端二阶导数值；
-返回样条插值函数值
+/**
+ * @brief 自然三次样条插值函数
+ * @param N 分段区间数，即插值点数量为N + 1
+ * @param a：插值点数组
+ * @param f：函数
+ * @param x：变量值
+ * @param ddf_a
+ * @param ddf_b：两端二阶导数值
+ * @return 样条插值函数值
 */
-double NatureCubicSplineIpl(double(*f)(double), double ddf_a, double ddf_b, double x, int N, double *a)
+double NatureCubicSplineIpl(double (*f)(double), double ddf_a, double ddf_b, double x, int N, double *a)
 {
     return CubicSplineIpl(N, f, x, a, NatureCubicSplineIplPara(N, a, f, ddf_a, ddf_b));
 }
 
-/*
-完备三次样条插值函数，传递的参数为：
-N：分段区间数，即插值点数量为N + 1；a：插值点数组指针；f：函数；x：变量值；df_a, df_b：两端导数值；
-返回样条插值函数值
-*/
-double CompleteCubicSplineIpl(double(*f)(double), double df_a, double df_b, double x, int N, double *a)
+/**
+ * @brief 完备三次样条插值函数
+ * @param f 函数
+ * @param df_a 两端导数值
+ * @param df_b 
+ * @param x 变量值
+ * @param N 分段区间数，即插值点数量为N + 1
+ * @param a 插值点数组指针
+ * @returns 样条插值函数值
+ */
+double CompleteCubicSplineIpl(double (*f)(double), double df_a, double df_b, double x, int N, double *a)
 {
     return CubicSplineIpl(N, f, x, a, CompleteCubicSplineIplPara(N, a, f, df_a, df_b));
 }
 
-/*
-Lagrange三次样条插值函数，传递的参数为：
-N：分段区间数，即插值点数量为N + 1；a：插值点数组指针；f：函数；x：变量值；
-返回样条插值函数值
-*/
-double LagrangeCubicSplineIpl(double(*f)(double), double x, int N, double *a)
+/**
+ * @brief Lagrange三次样条插值函数
+ * @param f 函数
+ * @param x 变量值
+ * @param N 分段区间数，即插值点数量为N + 1
+ * @param a 插值点数组指针
+ * @returns 样条插值函数值
+ */
+double LagrangeCubicSplineIpl(double (*f)(double), double x, int N, double *a)
 {
     return CubicSplineIpl(N, f, x, a, LagrangeCubicSplineIplPara(N, a, f));
 }
