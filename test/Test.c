@@ -19,12 +19,12 @@
  */
 void testall()
 {
-    /* the "FUNC_COUNT" is defined in "Test.h", which is the number of test functions. */
-    /* the "FUNC_ARRAY" is defined in "Test.h", which is an array of test functions.*/
-    /* the "NAME_ARRAY" is defined in "Test.h", which is an array of test functions' names.*/
+    /* "FUNC_COUNT" defined in "Test.h": the number of test functions. */
+    /* "FUNC_ARRAY" defined in "Test.h": an array of test functions.*/
+    /* "NAME_ARRAY" defined in "Test.h": an array of test functions' names.*/
     int (*tests[FUNC_COUNT])() = FUNC_ARRAY;
     char *names[FUNC_COUNT] = NAME_ARRAY;
-    int result[FUNC_COUNT];  /* record the test results */
+    int result[FUNC_COUNT];
 
     for(int i = 0; i < FUNC_COUNT; i++)
     {
