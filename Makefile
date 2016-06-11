@@ -27,7 +27,6 @@ LIB=$(LIB_DIR)/lib$(LIBNAME).a
 # names of test-related files
 TEST_DIR=test
 TESTH=$(TEST_DIR)/Test.h
-TESTC=$(TEST_DIR)/Test.c
 TESTSRC=$(wildcard $(TEST_DIR)/*.c)
 TESTOBJ=$(addprefix $(OBJ_DIR)/,$(TESTSRC:.c=.o))
 TESTDEP=$(addprefix $(DEP_DIR)/,$(TESTSRC:.c=.d))
@@ -74,13 +73,13 @@ $(OBJ):$(OBJ_DIR)/%.o:%.c
 $(DEP):$(DEP_DIR)/%.d:%.c
 	rm -f $@; $(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
 
-$(TESTOBJ):$(OBJ_DIR)/%.o:%.c
+$(TESTOBJ):$(OBJ_DIR)/%.o:%.c $(TESTH)
 	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
 $(TESTDEP):$(DEP_DIR)/%.d:%.c
 	rm -f $@; $(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
 
-$(TESTH):$(TESTC)
+$(TESTH):$(TESTSRC)
 	cd $(TEST_DIR);$(PYTHON) $(GENTEST)
 
 -include $(wildcard $(DEP_DIR)/*.d)
@@ -96,7 +95,8 @@ cleanall:	remove all the files created by make.\n\
 rebuild	:	clean all the files and rebuild the whole project."
 
 count:
-	echo -n `date`"\t" >> ./.count && cat $(SRC_DIR)/* $(INC_DIR)/* $(TEST_DIR)/* | wc >> ./.count
+	echo -n `date`"\t" >> ./.count
+	cat $(SRC_DIR)/* $(INC_DIR)/* $(TEST_DIR)/* | wc >> ./.count
 
 remove:
 	rm -rf $(BIN_DIR) $(LIB_DIR)
@@ -105,6 +105,7 @@ clean:
 	rm -rf $(OBJ_DIR) $(DEP_DIR)
 
 cleanall:clean remove
+
 
 rebuild:cleanall all
 
