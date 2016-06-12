@@ -95,8 +95,23 @@ cleanall:	remove all the files created by make.\n\
 rebuild	:	clean all the files and rebuild the whole project."
 
 count:
-	echo -n `date`"\t" >> ./.count
-	cat $(SRC_DIR)/* $(INC_DIR)/* $(TEST_DIR)/* | wc >> ./.count
+	@\
+	echo -n `date '+%Y %m %d'` >> .count;\
+	for dir in `ls`;\
+	do\
+		if [ -d $$dir ];\
+		then\
+			for file in `ls $$dir`;\
+			do\
+				ext=$${file##*.};\
+				if [ $$ext = c ] || [ $$ext = h ] || [ $$ext = py ];\
+				then\
+					files=$$files" $$dir/$$file";\
+				fi;\
+			done;\
+		fi;\
+	done;\
+	cat $$files | wc >> .count
 
 remove:
 	rm -rf $(BIN_DIR) $(LIB_DIR)
