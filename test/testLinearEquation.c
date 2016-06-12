@@ -41,10 +41,16 @@ int testChasing()
     return PASSED;
 }
 
-static const double LinEqA1[3][3] = {{21, -38, 23},{-38, 70, -43},{23, -43, 27}};
-static const double LinEqb1[3] = {-26,49,-28};
-static const double LinEqans1[3] = {10.7143,12.5714,9.85714};
-static const int LinEqN1 = 3;
+
+
+static double LinEqA1[] = {
+    21, -38, 23,
+    -38, 70, -43,
+    23, -43, 27
+};
+static double LinEqb1[] = {-26,49,-28};
+static double LinEqans1[] = {10.7143,12.5714,9.85714};
+static int LinEqN1 = 3;
 
 /**
  * @brief 
@@ -53,32 +59,14 @@ static const int LinEqN1 = 3;
 int testGaussianEli()
 {
     double eps = 1e-3;
-    
-    /* copy */
-    int N = LinEqN1;
-    double **A = (double **)malloc_s(N * sizeof(double *));
-    for(int i = 0; i < N; i++)
-    {
-        A[i] = (double*)malloc_s(N * sizeof(double));
-        for (int j = 0; j < N; j++)
-        {
-            A[i][j] = LinEqA1[i][j];
-        }
-    }
-    double *b = (double*)malloc_s(N * sizeof(double));
-    for(int i = 0; i < N; i++)
-    {
-        b[i] = LinEqb1[i];
-    }
 
-
-    double *x1 = GaussEli(N, A, b);
-    for(int i = 0; i < N; i++)
+    double *x1 = GaussEli(LinEqN1, LinEqA1, LinEqb1);
+    for(int i = 0; i < LinEqN1; i++)
     {
         printf("%lf\t", x1[i]);
     }
     printf("\n");
-    for(int i = 0; i < N; i++)
+    for(int i = 0; i < LinEqN1; i++)
     {
         if (fabs(x1[i] - LinEqans1[i]) > eps)
         {
@@ -95,26 +83,15 @@ int testGaussianEli()
  */
 int testGaussianEliPP()
 {
-    int N = LinEqN1;
     double eps = 1e-2;
-    double **Ae = (double**)malloc_s(N * sizeof(double*));
-    for (int i = 0; i < N; i++)
-    {
-        Ae[i] = (double*)malloc_s((N + 1) * sizeof(double));
-        for (int j = 0; j < N; j++)
-        {
-            Ae[i][j] = LinEqA1[i][j];
-        }
-        Ae[i][N] = LinEqb1[i];
-    }
-    double *res = GaussEliPP(N, Ae);
-    for(int i = 0; i < N; i++)
+    double *res = GaussEliPP(LinEqN1, LinEqA1, LinEqb1);
+    for(int i = 0; i < LinEqN1; i++)
     {
         printf("%lf\t", res[i]);
     }
     printf("\n");
 
-    for(int i = 0; i < N; i ++)
+    for(int i = 0; i < LinEqN1; i ++)
     {
         if (fabs(res[i] - LinEqans1[i]) > eps)
         {
@@ -131,30 +108,19 @@ int testGaussianEliPP()
  */
 int testGaussianEliPPP()
 {
-    int N = LinEqN1;
     double eps = 1e-2;
-    double **Ae = (double**)malloc_s(N * sizeof(double*));
-    for (int i = 0; i < N; i++)
-    {
-        Ae[i] = (double*)malloc_s((N + 1) * sizeof(double));
-        for (int j = 0; j < N; j++)
-        {
-            Ae[i][j] = LinEqA1[i][j];
-        }
-        Ae[i][N] = LinEqb1[i];
-    }
-    double *res = GaussEliPPP(N, Ae);
+    double *res = GaussEliPPP(LinEqN1, LinEqA1, LinEqb1);
     if(res == NULL)
     {
         return FAILED;
     }
-    for(int i = 0; i < N; i++)
+    for(int i = 0; i < LinEqN1; i++)
     {
         printf("%lf\t", res[i]);
     }
     printf("\n");
 
-    for(int i = 0; i < N; i ++)
+    for(int i = 0; i < LinEqN1; i ++)
     {
         if (fabs(res[i] - LinEqans1[i]) > eps)
         {

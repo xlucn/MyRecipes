@@ -22,6 +22,7 @@ int testClassicRK();
 int testDividedDiff();
 int testGaussianEli();
 int testGaussianEliPP();
+int testGaussianEliPPP();
 int testHermiteIpl();
 int testLeastSq();
 int testMuller();
@@ -47,6 +48,7 @@ void testall();
 	testDividedDiff,\
 	testGaussianEli,\
 	testGaussianEliPP,\
+	testGaussianEliPPP,\
 	testHermiteIpl,\
 	testLeastSq,\
 	testMuller,\
@@ -71,6 +73,7 @@ void testall();
 	"testDividedDiff",\
 	"testGaussianEli",\
 	"testGaussianEliPP",\
+	"testGaussianEliPPP",\
 	"testHermiteIpl",\
 	"testLeastSq",\
 	"testMuller",\
@@ -86,6 +89,6 @@ void testall();
 }
 
 /* define the number of functions */
-#define FUNC_COUNT 20
+#define FUNC_COUNT 21
 
 #endif

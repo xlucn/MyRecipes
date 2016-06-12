@@ -17,9 +17,9 @@ void* realloc_s(void* ptr, size_t size);
 
 /* Solve linear equations */
 double *Chasing(int N, double *d, double *c, double *a, double *b);
-double *GaussEli(int N, double **A, double *b);
-double *GaussEliPP(int N, double **a);
-double *GaussEliPPP(int N, double **a);
+double *GaussEli(int N, double *a, double *b);
+double *GaussEliPP(int N, double *a, double *b);
+double *GaussEliPPP(int N, double *a, double *b);
 double *GaussJordanEli(int N, double **a);
 
 /* Integration */

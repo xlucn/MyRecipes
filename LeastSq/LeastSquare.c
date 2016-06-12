@@ -14,21 +14,17 @@ double *LeastSquare(int m, int n, double **A, double *b)
 
     double *res = (double*)malloc_s(n * sizeof(double));
     double *Ab = (double*)malloc_s(n * sizeof(double));
-    double **AA = (double**)malloc_s(n * sizeof(double*));
-    for (int i = 0; i < n; i++)
-    {
-        AA[i] = (double*)malloc_s(n * sizeof(double));
-    }
+    double *AA = (double*)malloc_s(n * n * sizeof(double*));
 
-    //transpose of matrix A times A
+    // A.T times A
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n; j++)
         {
-            AA[i][j] = 0;
+            AA[i * n * j] = 0;
             for (int k = 0; k < m; k++)
             {
-                AA[i][j] += A[k][i] * A[k][j];
+                AA[i * n * j] += A[k][i] * A[k][j];
             }
         }
     }
@@ -47,10 +43,6 @@ double *LeastSquare(int m, int n, double **A, double *b)
     res = GaussEli(n, AA, Ab);
 
     //free the memory space allocated before
-    for (int i = 0; i < n; i++)
-    {
-        free(AA[i]);
-    }
     free(AA);
     free(Ab);
     return res;

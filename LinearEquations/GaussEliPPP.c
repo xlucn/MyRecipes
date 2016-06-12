@@ -4,12 +4,24 @@
 
 /**
  * @brief Gauss elimination with partial pivoting proportionally
- * @param N the rank of the equation
- * @param a the augmented matrix
- * @return an array of numbers, NULL if the equation has no solution
+ * @param N The numbers of the variables
+ * @param a The coefficient matrix in a 1-dimension array
+ * @param b The constant vector
+ * @return An array of numbers, NULL if the equation has no solution
  */
-double *GaussEliPPP(int N, double **a)
+double *GaussEliPPP(int N, double *a, double *b)
 {
+    double **A = (double**)malloc_s(N * sizeof(double*));
+    for (int i = 0; i < N; i++)
+    {
+        A[i] = (double*)malloc_s((N + 1) * sizeof(double));
+        for (int j = 0; j < N; j++)
+        {
+            A[i][j] = a[i * N + j];
+        }
+        A[i][N] = b[i];
+    }
+    
     double *max = (double*)malloc_s(N * sizeof(double));
     double *x = (double*)malloc_s(N * sizeof(double));
 
@@ -19,7 +31,7 @@ double *GaussEliPPP(int N, double **a)
         max[i] = 0;
         for (int j = 0; j < N; j++)
         {
-            max[i] = (fabs(max[i]) < fabs(a[i][j])) ? fabs(a[i][j]) : max[i];
+            max[i] = (fabs(max[i]) < fabs(A[i][j])) ? fabs(A[i][j]) : max[i];
         }
         if (fabs(max[i]) < 1e-15)
         {
@@ -35,9 +47,9 @@ double *GaussEliPPP(int N, double **a)
         // choose the pivot element
         for (int i = k; i < N; i++)
         {
-            r = (fabs(a[r][k] / max[r]) < fabs(a[i][k] / max[i])) ? i : r;
+            r = (fabs(A[r][k] / max[r]) < fabs(A[i][k] / max[i])) ? i : r;
         }
-        if (fabs(a[r][k]) < 1e-15)
+        if (fabs(A[r][k]) < 1e-15)
         {
             printf("A is singular\n");
             return NULL;
@@ -45,20 +57,20 @@ double *GaussEliPPP(int N, double **a)
         if (r != k)
         {
             double q = max[k]; max[k] = max[r]; max[r] = q;
-            double *t = a[k]; a[k] = a[r]; a[r] = t;
+            double *t = A[k]; A[k] = A[r]; A[r] = t;
         }
 
         for (int i = k + 1; i < N; i++)
         {
-            a[i][k] = a[i][k] / a[k][k];
+            A[i][k] = A[i][k] / A[k][k];
             for (int j = k + 1; j < N + 1; j++)
             {
-                a[i][j] -= a[i][k] * a[k][j];
+                A[i][j] -= A[i][k] * A[k][j];
             }
         }
     }
 
-    if (fabs(a[N - 1][N - 1]) < 1e-15)
+    if (fabs(A[N - 1][N - 1]) < 1e-15)
     {
         printf("A is singular\n");
         return NULL;
@@ -69,9 +81,9 @@ double *GaussEliPPP(int N, double **a)
         double t = 0;
         for (int j = k + 1; j < N; j++) 
         {
-            t += a[k][j] * x[j];
+            t += A[k][j] * x[j];
         }
-        x[k] = (a[k][N] - t) / a[k][k];
+        x[k] = (A[k][N] - t) / A[k][k];
     }
     free(max);
     return x;
