@@ -1,4 +1,3 @@
-
 #include <math.h>
 #include <stdio.h>
 #include "NR.h"
@@ -8,6 +7,7 @@
  * @param N The rank of the matrix
  * @param A The coefficient matrix
  * @param b The constant vector
+ * @return an array of numbers, NULL if the equation has no solution
  */
 double *GaussEli(int N, double **A, double *b)
 {

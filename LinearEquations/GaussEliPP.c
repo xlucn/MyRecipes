@@ -1,4 +1,3 @@
-
 #include <math.h>
 #include <stdio.h>
 #include "NR.h"
@@ -7,6 +6,7 @@
  * @brief Gauss elimination with partial pivoting
  * @param N the rank of the equation
  * @param a the augmented matrix
+ * @return an array of numbers, NULL if the equation has no solution
  */
 double *GaussEliPP(int N, double **a)
 {
@@ -15,6 +15,7 @@ double *GaussEliPP(int N, double **a)
 
     for (int k = 0; k < N - 1; k++)
     {
+        /* find the pivot */
         max = k;
         for (int i = k; i < N; i++)
         {
@@ -23,17 +24,20 @@ double *GaussEliPP(int N, double **a)
                 max = i;
             }
         }
-        if (a[max][k] == 0)
+        /* singular matrix */
+        if (fabs(a[max][k]) < 1e-15)
         {
-            fprintf(stderr, "A is singular\n");
+            fprintf(stderr, "GaussEliPP: A is singular\n");
             return NULL;
         }
+        /* swap */
         if (max != k) 
         {
             double *temp = a[k];
             a[k] = a[max];
             a[max] = temp;
         }
+        /* elimination */
         for (int i = k + 1; i < N; i++) 
         {
             a[i][k] = a[i][k] / a[k][k];
@@ -43,19 +47,18 @@ double *GaussEliPP(int N, double **a)
             }
         }
     }
-
-    if (a[N - 1][N - 1] == 0) 
+    /* singular matrix */
+    if (fabs(a[N - 1][N - 1]) < 1e-15) 
     {
-        fprintf(stderr, "A is singular\n");
+        fprintf(stderr, "GaussEliPP: A is singular\n");
         return NULL;
     }
-    else
+    
+    for (int k = N - 1; k >= 0; k--) 
     {
-        x[N - 1] = a[N - 1][N] / a[N - 1][N - 1];
-    }
-    for (int k = N - 2; k >= 0; k--) {
         double t = 0;
-        for (int j = k + 1; j < N; j++) {
+        for (int j = k + 1; j < N; j++) 
+        {
             t += a[k][j] * x[j];
         }
         x[k] = (a[k][N] - t) / a[k][k];
