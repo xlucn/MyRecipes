@@ -31,6 +31,25 @@ double *GaussEli(int N, double *a, double *b)
 
     for(int k = 0; k < N - 1; k++)
     {
+        /* if a_kk is zero, pick another nonzero from this row */
+        if(fabs(A[k][k]) < FLOAT_ZERO_LIM)
+        {
+            for(int i = k + 1; i < N; i++)
+            {
+                if(fabs(A[i][k]) >= FLOAT_ZERO_LIM)
+                {
+                    double *temp = A[i];
+                    A[i] = A[k];
+                    A[k] = temp;
+                    break;
+                }
+            }
+            if(fabs(A[k][k]) < FLOAT_ZERO_LIM)
+            {
+                fprintf(stderr, "GaussEli: A is singular.\n");
+                return NULL;
+            }
+        }
         for(int i = k + 1; i < N; i++)
         {
             l[i][k] = A[i][k] / A[k][k];
