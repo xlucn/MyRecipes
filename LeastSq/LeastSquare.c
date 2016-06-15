@@ -21,10 +21,10 @@ double *LeastSquare(int m, int n, double **A, double *b)
     {
         for (int j = 0; j < n; j++)
         {
-            AA[i * n * j] = 0;
+            AA[i * n + j] = 0;
             for (int k = 0; k < m; k++)
             {
-                AA[i * n * j] += A[k][i] * A[k][j];
+                AA[i * n + j] += A[k][i] * A[k][j];
             }
         }
     }
