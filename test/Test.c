@@ -41,7 +41,8 @@ void testall()
     
     for (int i = 0; i < FUNC_COUNT; i++)
     {
-        printf("%s No.%02d %s\n", (result[i] == PASSED) ? "[passed]" : "\033[31m[failed]\033[0m", i, names[i]);
+        printf("%s No.%02d %s\n", (result[i] == PASSED) ? 
+            "\033[36m[passed]\033[0m" : "\033[31m[failed]\033[0m", i, names[i]);
     }
 }
 
