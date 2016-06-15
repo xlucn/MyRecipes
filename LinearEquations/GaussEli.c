@@ -11,6 +11,7 @@
  */
 double *GaussEli(int N, double *a, double *b)
 {
+    /* copy into a new array */
     double **A = (double**)malloc_s(N * sizeof(double*));
     for (int i = 0; i < N; i++)
     {
@@ -23,11 +24,7 @@ double *GaussEli(int N, double *a, double *b)
     }
     
     double *x = (double *)malloc_s(N * sizeof(double));
-    double **l = (double **)malloc_s(N * sizeof(double *));
-    for(int i = 0; i < N; i++)
-    {
-        l[i] = (double *)malloc_s(N * sizeof(double));
-    }
+    double l;
 
     for(int k = 0; k < N - 1; k++)
     {
@@ -50,13 +47,14 @@ double *GaussEli(int N, double *a, double *b)
                 return NULL;
             }
         }
+        /* elimination */
         for(int i = k + 1; i < N; i++)
         {
-            l[i][k] = A[i][k] / A[k][k];
+            l = A[i][k] / A[k][k];
             A[i][k] = 0;
             for(int j = k + 1; j < N + 1; j++)
             {
-                A[i][j] -= l[i][k] * A[k][j];
+                A[i][j] -= l * A[k][j];
             }
         }
     }
@@ -73,8 +71,8 @@ double *GaussEli(int N, double *a, double *b)
 
     for(int i = 0; i < N; i++)
     {
-        free(*(l + i));
+        free(A[i]);
     }
-    free(l);
+    free(A);
     return x;
 }
