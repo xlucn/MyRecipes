@@ -27,6 +27,10 @@ int testLeastSq()
     double b[4] = {-4, 3, 1, -6};
 
     double *res = LeastSquare(m, n, A, b);
+    if(res == NULL)
+    {
+        return FAILED;
+    }
     for (int i = 0; i < n; i++)
     {
         printf("%lf\t", res[i]);
