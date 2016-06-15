@@ -6,9 +6,6 @@ a array of functions, a array of function names and the number of functions.
 '''
 import os
 
-testh = 'Test.h'
-testc = '`ls test*`'
-
 def readfuncs(filename):
     '''
     read files and find test function declarations or definitions.
@@ -42,8 +39,7 @@ def gentest(funcs):
 #define FAILED 1
 
 /* declarations of testfunctions */
-%s
-void testall();
+%s \nvoid testall();
 
 /* define the array of all test functions */
 #define FUNC_ARRAY { %s \\\n}
@@ -65,8 +61,8 @@ def main():
     If the header file exists and the functions in it are the same as those in
     source files, then it is up to date. Otherwise update the header file
     '''
-    funclist = readfuncs(testc)
-    if os.path.exists(testh) and funclist == readfuncs(testh):
+    funclist = readfuncs('`ls test*`')
+    if os.path.exists('Test.h') and funclist == readfuncs('Test.h'):
         print 'Test header file is up to date.'
     else:
         gentest(funclist)
