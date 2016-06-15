@@ -31,7 +31,7 @@ double *GaussJordanEli(int N, double **a)
                 max[k] = (fabs(a[max[k]][k]) < fabs(a[i][k])) ? i : max[k];
             }
         }
-        if (a[max[k]][k] == 0)
+        if (fabs(a[max[k]][k]) < FLOAT_ZERO_LIM)
         {
             printf("A is singular\n");
             return NULL;

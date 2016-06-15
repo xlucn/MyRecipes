@@ -1,6 +1,8 @@
 #ifndef _CONST_H_
 #define _CONST_H_
 
+#define FLOAT_ZERO_LIM 1e-14
+
 static const double A78[] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     2.0/17.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

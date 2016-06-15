@@ -33,7 +33,7 @@ double *GaussEliPPP(int N, double *a, double *b)
         {
             max[i] = (fabs(max[i]) < fabs(A[i][j])) ? fabs(A[i][j]) : max[i];
         }
-        if (fabs(max[i]) < 1e-15)
+        if (fabs(max[i]) < FLOAT_ZERO_LIM)
         {
             fprintf(stderr, "GaussEliPPP: A is singular\n");
             return NULL;
@@ -49,7 +49,7 @@ double *GaussEliPPP(int N, double *a, double *b)
         {
             r = (fabs(A[r][k] / max[r]) < fabs(A[i][k] / max[i])) ? i : r;
         }
-        if (fabs(A[r][k]) < 1e-15)
+        if (fabs(A[r][k]) < FLOAT_ZERO_LIM)
         {
             printf("A is singular\n");
             return NULL;
@@ -70,7 +70,7 @@ double *GaussEliPPP(int N, double *a, double *b)
         }
     }
 
-    if (fabs(A[N - 1][N - 1]) < 1e-15)
+    if (fabs(A[N - 1][N - 1]) < FLOAT_ZERO_LIM)
     {
         printf("A is singular\n");
         return NULL;

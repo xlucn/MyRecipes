@@ -37,7 +37,7 @@ double *GaussEliPP(int N, double *a, double *b)
             }
         }
         /* singular matrix */
-        if (fabs(A[max][k]) < 1e-15)
+        if (fabs(A[max][k]) < FLOAT_ZERO_LIM)
         {
             fprintf(stderr, "GaussEliPP: A is singular\n");
             return NULL;
@@ -60,7 +60,7 @@ double *GaussEliPP(int N, double *a, double *b)
         }
     }
     /* singular matrix */
-    if (fabs(A[N - 1][N - 1]) < 1e-15) 
+    if (fabs(A[N - 1][N - 1]) < FLOAT_ZERO_LIM) 
     {
         fprintf(stderr, "GaussEliPP: A is singular\n");
         return NULL;
