@@ -35,7 +35,7 @@ TESTIFLAGS=-I $(TEST_DIR)
 
 # compiler and parameters
 CC=gcc
-CFLAGS=-Wall -g -std=c11
+CFLAGS=-Wall -g -std=c99
 IFLAGS=-I $(INC_DIR)
 DFLAGS=-MM
 LFLAGS=-lm
