@@ -58,7 +58,7 @@ files:$(DEP) $(TESTDEP) $(BIN)
 
 $(BIN):$(LIB) $(TESTOBJ) $(OBJ)
 	$(CC) $(CFLAGS) -o $(BIN) $(TESTOBJ) $(OBJ) $(LFLAGS)
-	@echo -e \
+	@echo \
 "**************************************************\
 \nThank you for using MyRecipes!\n\
 You can see other 'make' usage by \"make help\"\n\
@@ -122,6 +122,3 @@ rebuild:cleanall all
 
 
 test:
-	@echo $(SRC)
-	@echo $(OBJ)
-	@echo $(DEP)

@@ -15,21 +15,21 @@
 void* malloc_s(size_t size);
 void* realloc_s(void* ptr, size_t size);
 
-/* Solve linear equations */
+/*----------------------- Solve linear equations -----------------------------*/
 double *Chasing(int N, double *d, double *c, double *a, double *b);
 double *GaussEli(int N, double *a, double *b);
 double *GaussEliPP(int N, double *a, double *b);
 double *GaussEliPPP(int N, double *a, double *b);
 double *GaussJordanEli(int N, double **a);
 
-/* Integration */
+/*--------------------------- Integration ------------------------------------*/
 double TrapezoidalInt(double(*f)(double), double a, double b);
 double SimpsonInt(double(*f)(double), double a, double b);
 double CompositeSimpsonInt(double(*f)(double), double a, double b, int N);
 double RombergInt(double(*f)(double), double a, double b, int N, double eps);
 double AdaptiveSimpsonInt(double(*f)(double), double a, double b, double TOL);
 
-/* ODE (ordinary differential equations) */
+/*------------------- ODE (ordinary differential equations) ------------------*/
 typedef struct _SODEsol SODEsol;
 typedef struct _ODEsol ODEsol;
 
@@ -66,25 +66,25 @@ struct _ODEsol{
 };
 
 
-/* Interpolation */
+/*----------------------------- Interpolation --------------------------------*/
 double Hermite(int N, double *a, double *f, double *df, double x);
 double NatureCubicSplineIpl(double(*f)(double), double ddf_a, double ddf_b, double x, int N, double *a);
 double CompleteCubicSplineIpl(double(*f)(double), double df_a, double df_b, double x, int N, double *a);
 double LagrangeCubicSplineIpl(double(*f)(double), double x, int N, double *a);
 
-/* Basic functions */
+/*------------------------- Basic functions ----------------------------------*/
 double DividedDiff(double(*f)(double), double *x, int N);
 double **FullDividedDiff(double(*f)(double), double *x, int N, int k);
 double **DividedDiffMatrix(double(*f)(double), double *x, int N);
 double *LagrangePoly(double *a, double x, int N);
 double Chebyshev(int n, double x);
 
-/* Least Square */
+/*------------------------------ Least Square --------------------------------*/
 double *LeastSquare(int m, int n, double **A, double *b);
 double ***GramSchmidtQR(int m, int n, double **A);
 double ***ImprovedGramSchmidtQR(int m, int n, double **A);
 
-/* Solve equations */
+/*---------------------------- Solve equations -------------------------------*/
 double Bisection(double(*f)(double), double a, double b, double eps);
 double PicardIteration(double (*g)(double), double x, double eps);
 double SteffensenIteration(double (*g)(double), double x, double eps);
