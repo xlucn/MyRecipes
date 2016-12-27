@@ -1,7 +1,9 @@
+#include <float.h>
+
 #ifndef _CONST_H_
 #define _CONST_H_
 
-#define FLOAT_ZERO_LIM 1e-14
+#define FLOAT_ZERO_LIM (DBL_EPSILON * 10)
 
 static const double A78[] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

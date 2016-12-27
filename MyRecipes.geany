@@ -28,15 +28,14 @@ long_line_behaviour=2
 long_line_column=80
 
 [files]
-current_page=7
-FILE_NAME_0=1677;Make;0;EUTF-8;1;1;0;%2Fhome%2Foliver%2FDocuments%2FMyRecipes%2FMakefile;0;4
+current_page=6
+FILE_NAME_0=2462;Make;0;EUTF-8;1;1;0;%2Fhome%2Foliver%2FDocuments%2FMyRecipes%2FMakefile;0;4
 FILE_NAME_1=413;C;0;EUTF-8;0;1;0;%2Fhome%2Foliver%2FDocuments%2FMyRecipes%2FLeastSq%2FLeastSquare.c;0;4
 FILE_NAME_2=458;C;0;EUTF-8;0;1;0;%2Fhome%2Foliver%2FDocuments%2FMyRecipes%2Ftest%2FtestLeastSq.c;0;4
-FILE_NAME_3=545;C;0;EUTF-8;0;1;0;%2Fhome%2Foliver%2FDocuments%2FMyRecipes%2FLinearEquations%2FGaussEli.c;0;4
+FILE_NAME_3=1356;C;0;EUTF-8;0;1;0;%2Fhome%2Foliver%2FDocuments%2FMyRecipes%2FLinearEquations%2FGaussEli.c;0;4
 FILE_NAME_4=0;C;0;EUTF-8;0;1;0;%2Fhome%2Foliver%2FDocuments%2FMyRecipes%2FLinearEquations%2FGaussEliPP.c;0;4
 FILE_NAME_5=920;C++;0;EUTF-8;1;1;0;%2Fhome%2Foliver%2FDocuments%2FMyRecipes%2Finclude%2FNR.h;0;4
-FILE_NAME_6=1102;None;0;EUTF-8;1;1;0;%2Fhome%2Foliver%2FDocuments%2FMyRecipes%2FMyRecipes.geany;0;4
-FILE_NAME_7=118;Markdown;0;EUTF-8;1;1;0;%2Fhome%2Foliver%2FDocuments%2FMyRecipes%2FReadme.md;0;4
+FILE_NAME_6=34;C;0;EUTF-8;1;1;0;%2Fhome%2Foliver%2FDocuments%2Ftestgeany.c;0;4
 
 [VTE]
 last_dir=/home/oliver/Documents/MyRecipes
@@ -51,8 +50,8 @@ external_dirs=
 
 [build-menu]
 EX_00_LB=_Execute
-EX_00_CM=%p/bin/MyRecipes
-EX_00_WD=
+EX_00_CM=./bin/MyRecipes
+EX_00_WD=%p
 NF_00_LB=_Make
 NF_00_CM=make
 NF_00_WD=%p
