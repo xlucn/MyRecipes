@@ -9,8 +9,7 @@ import os
 def readfuncs(filename):
     '''
     read files and find test function declarations or definitions.
-    return a list of sorted function names.
-    FIXME: invoking linux command here, so it does not work under Windows.
+    return a list of sorted function names.S
     '''
     # TODO: change to platform-independent
     regex = 'int +test[1-9|a-z|A-Z|_]* *\( *\)*'
