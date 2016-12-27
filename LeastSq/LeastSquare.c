@@ -14,7 +14,7 @@ double *LeastSquare(int m, int n, double **A, double *b)
 
     double *res = (double*)malloc_s(n * sizeof(double));
     double *Ab = (double*)malloc_s(n * sizeof(double));
-    double *AA = (double*)malloc_s(n * n * sizeof(double*));
+    double *AA = (double*)malloc_s(n * n * sizeof(double));
 
     // A.T times A
     for (int i = 0; i < n; i++)
