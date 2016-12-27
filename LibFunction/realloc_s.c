@@ -5,7 +5,7 @@
 
 #undef realloc
 /**
- * @brief safer realloc function with bland pointer check
+ * @brief safer realloc function with null pointer check
  */
 void* realloc_s(void* ptr, size_t size)
 {

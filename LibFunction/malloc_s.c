@@ -5,7 +5,7 @@
 
 #undef malloc
 /**
- * @brief safer malloc function with bland pointer check
+ * @brief safer malloc function with null pointer check
  */
 void* malloc_s(size_t size)
 {
