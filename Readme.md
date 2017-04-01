@@ -3,11 +3,11 @@
 * Author: LuXu(Oliver Lew)
 * email: oliver_lew@outlook.com
 
-just an exercise
+just an exercise implementing the algorithms from 《数值计算方法》，林成森，科学出版社。
 
-current only targeted to linux, need:
+Requirements:
 
-* awk
-* gcc(just need to comform to c99)
 * make
+* gcc(just need versions comforming to c99)
+* awk
 * python
