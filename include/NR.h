@@ -30,11 +30,23 @@ double RombergInt(double(*f)(double), double a, double b, int N, double eps);
 double AdaptiveSimpsonInt(double(*f)(double), double a, double b, double TOL);
 
 /*------------------- ODE (ordinary differential equations) ------------------*/
-typedef struct _SODEsol SODEsol;
-typedef struct _ODEsol ODEsol;
+typedef struct _SODEsol *SODEsol;
+typedef struct _ODEsol *ODEsol;
+struct _SODEsol;
+struct _ODEsol;
 
-void DisposeSODEsol(SODEsol sol);
-void DisposeODEsol(ODEsol sol);
+/* manipulating the structures */
+SODEsol newSODEsol(int step, double *t, double **y);
+ODEsol newODEsol(int step, double *t, double *y);
+int      ODEsolGetStep(ODEsol sol);
+double*  ODEsolGetT(ODEsol sol);
+double*  ODEsolGetY(ODEsol sol);
+void     DisposeODEsol(ODEsol sol);
+int      SODEsolGetStep(SODEsol sol);
+double*  SODEsolGetT(SODEsol sol);
+double** SODEsolGetY(SODEsol sol);
+void     DisposeSODEsol(SODEsol sol);
+
 double* Euler(double(*f)(double, double), double a, double b, double y0, int N);
 double* ImprovedEuler(double(*f)(double, double), double a, double b, double y0, int N);
 double* MID(double(*f)(double, double), double a, double b, double y0, int N);
@@ -47,23 +59,6 @@ double* RKF45(double(*f)(double,double), double a, double b, double y0, double T
 double* AdamsPECE(double(*f)(double, double), double a, double b, double dy0, double y0, int N);
 double** SODERungeKutta(double (*f[])(double, double*), double a, double b, double *y0, int m, int N);
 SODEsol SODERKF(double *(*f)(double, double*), double *y0, double a, double b, int m, double h0, double TOL, double hmax, double hmin, int n);
- 
-/**
- * @brief a struct type to contain the solution of a system of ODE.
- */
-struct _SODEsol{
-	int step; /**< the steps used in the integration. It is useful in variable step size methods.*/
-	double *t; /**< the pointer to the independent virable list */
-	double **y; /**< the pointer to the dependent variables list */
-};
-/**
- * @brief a struct type to contain the solution of an ODE.
- */
-struct _ODEsol{
-	int step; /**< the steps used in the integration. It is useful in variable step size methods. */
-	double *t; /**< the pointer to the independent virable list */
-	double *y; /**< the pointer to the dependent variable list */
-};
 
 
 /*----------------------------- Interpolation --------------------------------*/

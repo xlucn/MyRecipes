@@ -167,6 +167,6 @@ SODEsol SODERKF(double *(*f)(double, double*), double *y0,
     // resize the arrays to suitable size -- number of steps
     y = (double**)realloc_s(y, step * sizeof(double*));
     t = (double*)realloc_s(t, step * sizeof(double));
-    SODEsol sol = {step, t, y};
+    SODEsol sol = newSODEsol(step, t, y);
     return sol;
 }
