@@ -1,17 +1,17 @@
-# custom names, something need to be customized by user
+# custom names, something need to be customized
 ## lib name, and the lib will be named lib$(LIBNAME).a
 LIBNAME=NR
 ## binary file name
 BINNAME=MyRecipes
-## source dirs
+## source dirs, dirs directly contain the source files
 MY_SRC_DIR=ODE Basic Integral Interpolation LeastSq LibFunction LinearEquations Solve
 
 #those things are not necessarily needed to change
 #
 # names of directories
 SRC_DIR=$(MY_SRC_DIR)
-BIN_DIR=bin
 INC_DIR=include
+BIN_DIR=bin
 LIB_DIR=lib
 DBG_DIR=debug
 OBJ_DIR=$(DBG_DIR)/obj
@@ -30,7 +30,7 @@ TESTH=$(TEST_DIR)/Test.h
 TESTSRC=$(wildcard $(TEST_DIR)/*.c)
 TESTOBJ=$(addprefix $(OBJ_DIR)/,$(TESTSRC:.c=.o))
 TESTDEP=$(addprefix $(DEP_DIR)/,$(TESTSRC:.c=.d))
-GENTEST=GenerateTest.py
+GENTEST=$(TEST_DIR)/GenerateTest.py
 TESTIFLAGS=-I $(TEST_DIR)
 
 # compiler and parameters
@@ -38,72 +38,74 @@ CC=gcc
 CFLAGS=-Wall -g -std=c99
 IFLAGS=-I $(INC_DIR)
 DFLAGS=-MM
-LFLAGS=-lm
+LFLAGS=-lm -lNR -L $(LIB_DIR)
 PYTHON=python
 
-
-.PHONY:all clean remove help dirs count files test
-
-all:dirs files
-
-DIRS+=$(BIN_DIR)
-DIRS+=$(LIB_DIR)
+# directories for new created files
+DIRS+=$(BIN_DIR) $(LIB_DIR) $(DBG_DIR)
 DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(OBJ_DIR)/$(dir))
 DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(DEP_DIR)/$(dir))
 
-dirs:
-	@mkdir -p $(DIRS)
+.PHONY:all help clean remove cleanall rebuild test
 
-files:$(DEP) $(TESTDEP) $(BIN)
+all:$(DEP) $(TESTDEP) $(BIN)
+ 
+include $(foreach dir, $(DIRS), $(wildcard $(dir)/*.d))
 
-$(BIN):$(LIB) $(TESTOBJ) $(OBJ)
-	$(CC) $(CFLAGS) -o $(BIN) $(TESTOBJ) $(OBJ) $(LFLAGS)
-	@echo \
-"**************************************************\
-\nThank you for using MyRecipes!\n\
-You can see other 'make' usage by \"make help\"\n\
-**************************************************"
+$(DEP) $(TESTDEP) $(BIN): | $(DIRS)
+
+$(DIRS):
+	mkdir -p $(DIRS)
+
+$(TESTH):$(TESTSRC)
+	$(PYTHON) $(GENTEST)
+
+$(DEP):$(DEP_DIR)/%.d:%.c
+	set -e; rm -f $@; $(CC) $(DFLAGS) $(IFLAGS) $< | \
+	sed 's,\($(*F)\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
+
+$(TESTDEP):$(DEP_DIR)/%.d:%.c
+	set -e; rm -f $@; $(CC) $(DFLAGS) $(IFLAGS) $< | \
+	sed 's,\($(*F)\)\.o[ :]*,$(OBJ_DIR)/$(*D)/\1.o $@ : ,g' > $@
+
+$(OBJ_DIR)/%.o:%.c
+	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
 $(LIB):$(OBJ)
 	ar crv $@ $?
 
-$(OBJ):$(OBJ_DIR)/%.o:%.c
-	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
+$(BIN):$(LIB) $(TESTOBJ)
+	$(CC) $(CFLAGS) -o $(BIN) $(TESTOBJ) $(LFLAGS)
+	@echo \
+"**************************************************\n\
+Thank you for using MyRecipes!\n\
+You can see other 'make' usage by \"make help\"\n\
+**************************************************"
 
-$(DEP):$(DEP_DIR)/%.d:%.c
-	rm -f $@; $(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
 
-$(TESTOBJ):$(OBJ_DIR)/%.o:%.c $(TESTH)
-	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
-
-$(TESTDEP):$(DEP_DIR)/%.d:%.c
-	rm -f $@; $(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,\($*\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
-
-$(TESTH):$(TESTSRC)
-	cd $(TEST_DIR);$(PYTHON) $(GENTEST)
-
--include $(wildcard $(DEP_DIR)/*.d)
-
+# PHONY targets
 help:
 	@echo \
 "Usage:\n\
 (all)	:	build the whole project.\n\
-count	:	count the lines, words and bytes of source files.\n\
 clean	:	remove the object files and the dependancy files.\n\
-remove	:	remove the binary file.\n\
-cleanall:	remove all the files created by make.\n\
-rebuild	:	clean all the files and rebuild the whole project."
+remove	:	remove the binary files and the library files.\n\
+cleanall:	clean and remove.\n\
+rebuild	:	cleanall and make.\n\
+help    :	show this message"
+
+clean:
+	rm -rf $(DBG_DIR)
 
 remove:
 	rm -rf $(BIN_DIR) $(LIB_DIR)
 
-clean:
-	rm -rf $(OBJ_DIR) $(DEP_DIR)
-
 cleanall:clean remove
 
 
-rebuild:cleanall all
-
+rebuild:cleanall
+	make
 
 test:
+	@echo $(TESTSRC)
+	@echo $(foreach dir, $(DIRS), $(wildcard $(dir)/*.d))
