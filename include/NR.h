@@ -36,12 +36,13 @@ struct _SODEsol;
 struct _ODEsol;
 
 /* manipulating the structures */
-SODEsol newSODEsol(int step, double *t, double **y);
 ODEsol newODEsol(int step, double *t, double *y);
 int      ODEsolGetStep(ODEsol sol);
 double*  ODEsolGetT(ODEsol sol);
 double*  ODEsolGetY(ODEsol sol);
 void     DisposeODEsol(ODEsol sol);
+
+SODEsol newSODEsol(int step, double *t, double **y);
 int      SODEsolGetStep(SODEsol sol);
 double*  SODEsolGetT(SODEsol sol);
 double** SODEsolGetY(SODEsol sol);
