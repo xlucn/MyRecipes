@@ -1,17 +1,21 @@
-
-#include <math.h>
-#include <stdio.h>
 #include "NR.h"
 
 
 /**
  * @brief Chasing method for solving tridiagonal equations.
+ * 
+ * - d0  c0   0  ...  0  -     - b1 -
+ * | a1  d1  c1  ...  0  |     | b2 |
+ * |  0  a2  d2  ... ... | x = | .. |
+ * | ... ... ... ... cN-1|     | .. |
+ * -  0   0  ... aN  dN  -     - bn -
+ * 
  * @param N the order of the matrix.
  * @param d the main diagonal,
  * @param c the line above d,
  * @param a the line below d,
  * @param b the constant vector.
- * @return the solution of the equation *x or NULL if the eqation has no solution.
+ * @returns the solution of the equation *x or NULL if the eqation has no solution.
  */
 double *Chasing(int N, double *d, double *c, double *a, double *b)
 {
