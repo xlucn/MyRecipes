@@ -1,58 +1,74 @@
-# custom names, something need to be customized
-## lib name, and the lib will be named lib$(LIBNAME).a
-LIBNAME=NR
-## binary file name
-BINNAME=MyRecipes
-## source dirs, dirs directly contain the source files
+#------------- custom names, something need to be customized -------------------
+
+## header dir, where the header files are
+MY_INC_DIR=include
+
+## source dirs, dirs DIRECTLY contain the source files
 MY_SRC_DIR=ODE Basic Integral Interpolation LeastSq LibFunction LinearEquations Solve
 
-#those things are not necessarily needed to change
+## (create) lib name, and the lib will be named lib$(LIBNAME).a
+LIBNAME=NR
+
+## (create) library file dir, library file will be created here
+MY_LIB_DIR=lib
+
+## (create) debug files dir, dependency files and object files will be here
+MY_DBG_DIR=debug
+
+
+#--------------- those things are not necessarily needed to change -------------
 #
 # names of directories
 SRC_DIR=$(MY_SRC_DIR)
-INC_DIR=include
-BIN_DIR=bin
-LIB_DIR=lib
-DBG_DIR=debug
+INC_DIR=$(MY_INC_DIR)
+# new dirs below
+LIB_DIR=$(MY_LIB_DIR)
+DBG_DIR=$(MY_DBG_DIR)
 OBJ_DIR=$(DBG_DIR)/obj
 DEP_DIR=$(DBG_DIR)/dep
 
 # names of files
 SRC=$(foreach dir,$(SRC_DIR),$(wildcard $(dir)/*.c))
+# new files below
 OBJ=$(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 DEP=$(addprefix $(DEP_DIR)/,$(SRC:.c=.d))
-BIN=$(BIN_DIR)/$(BINNAME)
 LIB=$(LIB_DIR)/lib$(LIBNAME).a
 
 # names of test-related files
 TEST_DIR=test
-TESTH=$(TEST_DIR)/Test.h
 TESTSRC=$(wildcard $(TEST_DIR)/*.c)
+GENTEST=$(TEST_DIR)/GenerateTest.py
+# new files below
+TESTH=$(TEST_DIR)/Test.h
+TESTBIN=$(TEST_DIR)/test
 TESTOBJ=$(addprefix $(OBJ_DIR)/,$(TESTSRC:.c=.o))
 TESTDEP=$(addprefix $(DEP_DIR)/,$(TESTSRC:.c=.d))
-GENTEST=$(TEST_DIR)/GenerateTest.py
-TESTIFLAGS=-I $(TEST_DIR)
 
-# compiler and parameters
+# shell config
+SHELL=/bin/bash
+.SHELLFLAGS = -c -e
+
+# executables and parameters
 CC=gcc
+PYTHON=python
 CFLAGS=-Wall -g -std=c99
 IFLAGS=-I $(INC_DIR)
 DFLAGS=-MM
 LFLAGS=-lm -lNR -L $(LIB_DIR)
-PYTHON=python
 
-# directories for new created files
-DIRS+=$(BIN_DIR) $(LIB_DIR) $(DBG_DIR)
+# directories for all new created files
+DIRS+=$(LIB_DIR) $(DBG_DIR) $(OBJ_DIR) $(DEP_DIR)
 DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(OBJ_DIR)/$(dir))
 DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(DEP_DIR)/$(dir))
 
 .PHONY:all help clean remove cleanall rebuild test
 
-all:$(DEP) $(TESTDEP) $(BIN)
- 
+
+all:$(DEP) $(TESTDEP) $(TESTBIN)
+
 include $(foreach dir, $(DIRS), $(wildcard $(dir)/*.d))
 
-$(DEP) $(TESTDEP) $(BIN): | $(DIRS)
+$(DEP) $(TESTDEP) $(TESTBIN): | $(DIRS)
 
 $(DIRS):
 	mkdir -p $(DIRS)
@@ -60,13 +76,8 @@ $(DIRS):
 $(TESTH):$(TESTSRC)
 	$(PYTHON) $(GENTEST)
 
-$(DEP):$(DEP_DIR)/%.d:%.c
-	set -e; rm -f $@; $(CC) $(DFLAGS) $(IFLAGS) $< | \
-	sed 's,\($(*F)\)\.o[ :]*,$(OBJ_DIR)/\1.o $@ : ,g' > $@
-
-$(TESTDEP):$(DEP_DIR)/%.d:%.c
-	set -e; rm -f $@; $(CC) $(DFLAGS) $(IFLAGS) $< | \
-	sed 's,\($(*F)\)\.o[ :]*,$(OBJ_DIR)/$(*D)/\1.o $@ : ,g' > $@
+$(DEP_DIR)/%.d:%.c
+	$(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,$(*F).o[ :]*,$(OBJ_DIR)/$*.o $@ : ,g' > $@
 
 $(OBJ_DIR)/%.o:%.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
@@ -74,16 +85,12 @@ $(OBJ_DIR)/%.o:%.c
 $(LIB):$(OBJ)
 	ar crv $@ $?
 
-$(BIN):$(LIB) $(TESTOBJ)
-	$(CC) $(CFLAGS) -o $(BIN) $(TESTOBJ) $(LFLAGS)
-	@echo \
-"**************************************************\n\
-Thank you for using MyRecipes!\n\
-You can see other 'make' usage by \"make help\"\n\
-**************************************************"
+$(TESTBIN):$(LIB) $(TESTOBJ)
+	$(CC) $(CFLAGS) -o $(TESTBIN) $(TESTOBJ) $(LFLAGS)
 
 
 # PHONY targets
+
 help:
 	@echo \
 "Usage:\n\
@@ -98,7 +105,7 @@ clean:
 	rm -rf $(DBG_DIR)
 
 remove:
-	rm -rf $(BIN_DIR) $(LIB_DIR)
+	rm -rf $(LIB_DIR) $(TESTBIN)
 
 cleanall:clean remove
 
@@ -107,5 +114,4 @@ rebuild:cleanall
 	make
 
 test:
-	@echo $(TESTSRC)
-	@echo $(foreach dir, $(DIRS), $(wildcard $(dir)/*.d))
+	@echo $(wildcard ^[A-Z]*)
