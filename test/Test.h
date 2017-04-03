@@ -19,6 +19,7 @@ int testAdaptiveSimpson();
 int testBisection();
 int testChasing();
 int testClassicRK();
+int testCrout();
 int testDividedDiff();
 int testGaussianEli();
 int testGaussianEliPP();
@@ -45,6 +46,7 @@ void testall();
 	testBisection,\
 	testChasing,\
 	testClassicRK,\
+	testCrout,\
 	testDividedDiff,\
 	testGaussianEli,\
 	testGaussianEliPP,\
@@ -70,6 +72,7 @@ void testall();
 	"testBisection",\
 	"testChasing",\
 	"testClassicRK",\
+	"testCrout",\
 	"testDividedDiff",\
 	"testGaussianEli",\
 	"testGaussianEliPP",\
@@ -89,6 +92,6 @@ void testall();
 }
 
 /* define the number of functions */
-#define FUNC_COUNT 21
+#define FUNC_COUNT 22
 
 #endif

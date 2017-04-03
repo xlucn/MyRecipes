@@ -54,7 +54,7 @@ double *ODEsolGetY(ODEsol sol)
  * @brief free a struct type ODEsol
  * @param sol a struct type ODEsol
  */
-void DisposeODEsol(ODEsol sol)
+void delODEsol(ODEsol sol)
 {
 	free(sol->t);
 	free(sol->y);
@@ -80,7 +80,7 @@ double **SODEsolGetY(SODEsol sol)
  * @brief free a struct type SODEsol
  * @param sol a struct type SODEsol
  */
-void DisposeSODEsol(SODEsol sol)
+void delSODEsol(SODEsol sol)
 {
 	free(sol->t);
 	for (int i = 0; i < sol->step; i++)

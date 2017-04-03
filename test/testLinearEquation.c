@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
 #include "NR.h"
 #include "Test.h"
@@ -41,7 +40,33 @@ int testChasing()
     return PASSED;
 }
 
+typedef struct _LinEqtest{
+    double *A;
+    double *b;
+    int N;
+    double *ans;
+    double eps;
+}LinEqtest;
 
+/**
+ * @brief 
+ * @returns 
+ */
+static int _testLinearEquation(double *(*testfunc)(int, double*, double*), LinEqtest t)
+{
+    double *res = testfunc(t.N, t.A, t.b);
+    for(int i = 0; i < t.N; i++)
+    {
+        printf("%lf\t", res[i]);
+        if (fabs(res[i] - t.ans[i]) > t.eps)
+        {
+            return FAILED;
+        }
+    }
+    printf("\n");
+    delArray1d(res);
+    return PASSED;
+}
 
 static double LinEqA1[] = {
     21, -38, 23,
@@ -50,7 +75,7 @@ static double LinEqA1[] = {
 };
 static double LinEqb1[] = {-26,49,-28};
 static double LinEqans1[] = {10.7143,12.5714,9.85714};
-static int LinEqN1 = 3;
+static LinEqtest t1 = {LinEqA1, LinEqb1, 3, LinEqans1, 1e-4};
 
 /**
  * @brief 
@@ -58,23 +83,7 @@ static int LinEqN1 = 3;
  */
 int testGaussianEli()
 {
-    double eps = 1e-3;
-
-    double *x1 = GaussEli(LinEqN1, LinEqA1, LinEqb1);
-    for(int i = 0; i < LinEqN1; i++)
-    {
-        printf("%lf\t", x1[i]);
-    }
-    printf("\n");
-    for(int i = 0; i < LinEqN1; i++)
-    {
-        if (fabs(x1[i] - LinEqans1[i]) > eps)
-        {
-            printf("Gauss elimination method failed\n");
-            return FAILED;
-        }
-    }
-    return PASSED;
+    return _testLinearEquation(GaussEli, t1);
 }
 
 /**
@@ -83,23 +92,7 @@ int testGaussianEli()
  */
 int testGaussianEliPP()
 {
-    double eps = 1e-2;
-    double *res = GaussEliPP(LinEqN1, LinEqA1, LinEqb1);
-    for(int i = 0; i < LinEqN1; i++)
-    {
-        printf("%lf\t", res[i]);
-    }
-    printf("\n");
-
-    for(int i = 0; i < LinEqN1; i ++)
-    {
-        if (fabs(res[i] - LinEqans1[i]) > eps)
-        {
-            printf("Gauss elimination method with partial pivoting failed\n");
-            return FAILED;
-        }
-    }
-    return PASSED;
+    return _testLinearEquation(GaussEliPP, t1);
 }
 
 /**
@@ -108,25 +101,10 @@ int testGaussianEliPP()
  */
 int testGaussianEliPPP()
 {
-    double eps = 1e-2;
-    double *res = GaussEliPPP(LinEqN1, LinEqA1, LinEqb1);
-    if(res == NULL)
-    {
-        return FAILED;
-    }
-    for(int i = 0; i < LinEqN1; i++)
-    {
-        printf("%lf\t", res[i]);
-    }
-    printf("\n");
+    return _testLinearEquation(GaussEliPPP, t1);
+}
 
-    for(int i = 0; i < LinEqN1; i ++)
-    {
-        if (fabs(res[i] - LinEqans1[i]) > eps)
-        {
-            printf("Gauss elimination method with partial pivoting failed\n");
-            return FAILED;
-        }
-    }
-    return PASSED;
+int testCrout()
+{
+    return _testLinearEquation(Crout, t1);
 }
