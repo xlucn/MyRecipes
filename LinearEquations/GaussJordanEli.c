@@ -1,15 +1,14 @@
 #include <math.h>
-#include <stdio.h>
 #include "NR.h"
-
 
 /**
  * @brief Gauss Jordan elimination method to solve a system of linear equations
  * @param N the rank of the equation
  * @param a the augmented matrix
  */
-double *GaussJordanEli(int N, double **a)
+double *GaussJordanEli(int N, double *A, double *b)
 {
+    double **Ab = AugmentedMatrix(A, b, N, N, 1);
     int* max = (int*)malloc_s(N * sizeof(int));
     double* x = (double*)malloc_s(N * sizeof(double));
 
@@ -28,12 +27,11 @@ double *GaussJordanEli(int N, double **a)
             }
             if (flag)
             {
-                max[k] = (fabs(a[max[k]][k]) < fabs(a[i][k])) ? i : max[k];
+                max[k] = (fabs(Ab[max[k]][k]) < fabs(Ab[i][k])) ? i : max[k];
             }
         }
-        if (fabs(a[max[k]][k]) < FLOAT_ZERO_LIM)
+        if (fabs(Ab[max[k]][k]) < FLOAT_ZERO_LIM)
         {
-            printf("A is singular\n");
             return NULL;
         }
 
@@ -41,10 +39,10 @@ double *GaussJordanEli(int N, double **a)
         {
             if (i != max[k])
             {
-                a[i][k] = a[i][k] / a[max[k]][k];
+                Ab[i][k] = Ab[i][k] / Ab[max[k]][k];
                 for (int j = k + 1; j < N + 1; j++)
                 {
-                    a[i][j] -= a[i][k] * a[max[k]][j];
+                    Ab[i][j] -= Ab[i][k] * Ab[max[k]][j];
                 }
             }
 
@@ -53,8 +51,10 @@ double *GaussJordanEli(int N, double **a)
 
     for (int k = 0; k < N; k++)
     {
-        x[k] = a[max[k]][N] / a[max[k]][k];
+        x[k] = Ab[max[k]][N] / Ab[max[k]][k];
     }
+    
     free(max);
+    delArray2d(Ab, N);
     return x;
 }

@@ -1,5 +1,4 @@
 #include <math.h>
-#include <stdio.h>
 #include "NR.h"
 
 /**
@@ -7,23 +6,12 @@
  * @param N The numbers of the variables
  * @param a The coefficient matrix in a 1-dimension array
  * @param b The constant vector
- * @return An array of numbers, NULL if the equation has no solution
+ * @returns An array of numbers, NULL if the equation has no solution
  */
 double *GaussEli(int N, double *a, double *b)
 {
-    /* copy into a new array */
-    double **A = (double**)malloc_s(N * sizeof(double*));
-    for (int i = 0; i < N; i++)
-    {
-        A[i] = (double*)malloc_s((N + 1) * sizeof(double));
-        for (int j = 0; j < N; j++)
-        {
-            A[i][j] = a[i * N + j];
-        }
-        A[i][N] = b[i];
-    }
-    
-    double *x = (double *)malloc_s(N * sizeof(double));
+    double **A = AugmentedMatrix(a, b, N, N, 1);
+    double *x = newArray1d(N);
     double l;
 
     for(int k = 0; k < N - 1; k++)
@@ -43,7 +31,6 @@ double *GaussEli(int N, double *a, double *b)
             }
             if(fabs(A[k][k]) < FLOAT_ZERO_LIM)
             {
-                fprintf(stderr, "GaussEli: A is singular.\n");
                 return NULL;
             }
         }
@@ -69,10 +56,6 @@ double *GaussEli(int N, double *a, double *b)
         x[k] = (A[k][N] - t) / A[k][k];
     }
 
-    for(int i = 0; i < N; i++)
-    {
-        free(A[i]);
-    }
-    free(A);
+    delArray2d(A, N);
     return x;
 }

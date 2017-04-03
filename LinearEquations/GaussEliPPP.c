@@ -85,6 +85,12 @@ double *GaussEliPPP(int N, double *a, double *b)
         }
         x[k] = (A[k][N] - t) / A[k][k];
     }
+    
+    for (int i = 0; i < N; i++)
+    {
+        free(A[i]);
+    }
+    free(A);
     free(max);
     return x;
 }

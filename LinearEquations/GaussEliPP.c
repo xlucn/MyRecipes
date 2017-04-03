@@ -1,5 +1,4 @@
 #include <math.h>
-#include <stdio.h>
 #include "NR.h"
 
 /**
@@ -11,24 +10,13 @@
  */
 double *GaussEliPP(int N, double *a, double *b)
 {
-    double **A = (double**)malloc_s(N * sizeof(double*));
-    for (int i = 0; i < N; i++)
-    {
-        A[i] = (double*)malloc_s((N + 1) * sizeof(double));
-        for (int j = 0; j < N; j++)
-        {
-            A[i][j] = a[i * N + j];
-        }
-        A[i][N] = b[i];
-    }
-    
-    int max;
-    double *x = (double*)malloc_s(N * sizeof(double));
+    double **A = AugmentedMatrix(a, b, N, N, 1);
+    double *x = newArray1d(N);
 
-    for (int k = 0; k < N - 1; k++)
+    for (int k = 0; k < N; k++)
     {
         /* find the pivot */
-        max = k;
+        int max = k;
         for (int i = k; i < N; i++)
         {
             if (fabs(A[i][k]) > fabs(A[max][k]))
@@ -39,11 +27,10 @@ double *GaussEliPP(int N, double *a, double *b)
         /* singular matrix */
         if (fabs(A[max][k]) < FLOAT_ZERO_LIM)
         {
-            fprintf(stderr, "GaussEliPP: A is singular\n");
             return NULL;
         }
         /* swap */
-        if (max != k) 
+        if (max != k)
         {
             double *temp = A[k];
             A[k] = A[max];
@@ -59,12 +46,6 @@ double *GaussEliPP(int N, double *a, double *b)
             }
         }
     }
-    /* singular matrix */
-    if (fabs(A[N - 1][N - 1]) < FLOAT_ZERO_LIM) 
-    {
-        fprintf(stderr, "GaussEliPP: A is singular\n");
-        return NULL;
-    }
     
     for (int k = N - 1; k >= 0; k--) 
     {
@@ -75,5 +56,7 @@ double *GaussEliPP(int N, double *a, double *b)
         }
         x[k] = (A[k][N] - t) / A[k][k];
     }
+    
+    delArray2d(A, N);
     return x;
 }
