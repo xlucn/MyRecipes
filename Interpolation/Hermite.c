@@ -1,6 +1,6 @@
-#include <stdlib.h>
 #include <math.h>
 #include "NR.h"
+#include "NRprivate.h"
 /**
  * @brief Hermite polynomial Interpolation
  * @param N number of Interpolation points,

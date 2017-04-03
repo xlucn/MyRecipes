@@ -1,4 +1,5 @@
 #include "NR.h"
+#include "NRprivate.h"
 
 double *newArray1d(int N)
 {

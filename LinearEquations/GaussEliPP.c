@@ -1,5 +1,7 @@
 #include <math.h>
 #include "NR.h"
+#include "NRprivate.h"
+#include "constants.h"
 
 /**
  * @brief Gauss elimination with partial pivoting

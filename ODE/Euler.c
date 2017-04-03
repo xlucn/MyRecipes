@@ -12,7 +12,7 @@ double* Euler(double(*f)(double, double), double a, double b, double y0, int N)
 {
     double h = (b - a) / N;
     double x = a;
-    double* y = (double*)malloc_s((N + 1) * sizeof(double));
+    double* y = newArray1d(N + 1);
     y[0] = y0;
 
     for(int i = 0; i < N; i++)

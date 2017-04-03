@@ -11,8 +11,8 @@
  */
 double *AdamsPECE(double(*f)(double, double), double a, double b, double dy0, double y0, int N)
 {
-    double *y = (double *)malloc_s((N + 1) * sizeof(double));
-    double *dy = (double *)malloc_s((N + 1) * sizeof(double));
+    double *y = newArray1d(N + 1);
+    double *dy = newArray1d(N + 1);
     double h = (b - a) / N;
     y[0] = y0;
     y[1] = ClassicRungeKutta(f, a, b, y0, N)[1];
@@ -26,7 +26,7 @@ double *AdamsPECE(double(*f)(double, double), double a, double b, double dy0, do
         y[i + 1] = y[i] + h / 2 * (dy[i] + dy[i + 1]);
         dy[i + 1] = f(a + (i + 1) * h, y[i + 1]);
     }
-    free(dy);
+    delArray1d(dy);
     return y;
 }
 

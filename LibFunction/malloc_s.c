@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "NR.h"
+#include "NRprivate.h"
 
 
 #undef malloc

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "NR.h"
+#include "NRprivate.h"
 /**
  * @brief Divided difference of function f on nodes x[n]
  * f[x] = f(x),

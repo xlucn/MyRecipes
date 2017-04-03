@@ -9,7 +9,7 @@ double *ClassicRungeKutta(double(*f)(double, double), double a, double b, double
     double h = (b - a) / N;
     double x = a;
     double y = y0;
-    double* result = (double*)malloc_s((N + 1) * sizeof(double));
+    double* result = newArray1d(N + 1);
     result[0] = y0;
 
     for(int i = 0; i < N; i++)

@@ -1,4 +1,5 @@
 #include "NR.h"
+#include "NRprivate.h"
 
 /**
  * Two stage Runge Kutta method
@@ -12,7 +13,7 @@ static double* TwoStageRungeKutta(int N, double y0, double a, double b, double(*
     double h = (b - a) / N;
     double x = a;
     double y = y0;
-    double* result = (double*)malloc_s(N * sizeof(double));
+    double* result = newArray1d(N);
 
     for(int i = 0; i < N; i++)
     {

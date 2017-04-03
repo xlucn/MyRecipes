@@ -1,6 +1,6 @@
 #include <math.h>
-#include <stdlib.h>
 #include "NR.h"
+#include "NRprivate.h"
 
 /**
  * @brief Gram-Schmidt method of POD(proper orthogonal decomposition).

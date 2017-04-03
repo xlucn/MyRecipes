@@ -1,5 +1,5 @@
 #include <math.h>
-#include <stdlib.h>
+#include "NRprivate.h"
 #include "NR.h"
 
 /**

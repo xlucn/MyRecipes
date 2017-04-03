@@ -1,5 +1,7 @@
 #include <math.h>
 #include "NR.h"
+#include "NRprivate.h"
+#include "constants.h"
 
 /**
  * @brief Gaussian elimination method to solve linear equation in the form of Ax=b.

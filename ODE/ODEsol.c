@@ -1,6 +1,7 @@
 #include "NR.h"
+#include "NRprivate.h"
 /**
- * @brief a struct type to contain the solution of a system of ODE.
+ * @brief a struct type to contain the solution of a system of ODEs.
  */
 struct _SODEsol{
 	int step; /**< the steps used in the integration. It is useful in variable step size methods.*/

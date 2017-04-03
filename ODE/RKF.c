@@ -1,6 +1,7 @@
-#include "NR.h"
 #include <math.h>
 #include <stdio.h>
+#include "NR.h"
+#include "constants.h"
 /**
  * @brief 
  * @param double 
@@ -25,12 +26,12 @@ static double *RKFmn(double(*f)(double,double), double a, double b, double y0, d
     double t = a;
     double y = y0;
     double h = hmax;
-    double *k = (double*)malloc_s(n * sizeof(double));
+    double *k = newArray1d(n);
     double R = 0;
     double delta;
     double *result;
     step++;
-    result = (double*)malloc_s((step * 3 + 1) * sizeof(double));
+    result = newArray1d(step * 3 + 1);
     result[1] = t;
     result[2] = h;
     result[3] = y;

@@ -1,5 +1,3 @@
-#include <stdlib.h>
-#include <math.h>
 #include "NR.h"
 
 /**

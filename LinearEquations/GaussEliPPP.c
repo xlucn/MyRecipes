@@ -1,6 +1,7 @@
 #include <math.h>
 #include <stdio.h>
 #include "NR.h"
+#include "constants.h"
 
 /**
  * @brief Gauss elimination with partial pivoting proportionally

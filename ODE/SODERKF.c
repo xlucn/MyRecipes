@@ -1,7 +1,8 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
 #include "NR.h"
+#include "constants.h"
+#include "NRprivate.h"
 
 /**
  * @brief RKF method to solve a system of ODEs
@@ -36,17 +37,13 @@ SODEsol SODERKF(double *(*f)(double, double*), double *y0,
     int TOLflag; // to record if all the residuals are smaller than corresponding TOL
     double h = h0;
     double T = a;
-    double *delta = (double *)malloc_s(m * sizeof(double)); // a variable related to the ratio of residuals and TOL
-    double *w = (double *)malloc_s(m * sizeof(double)); // a vector for temporary use
-    double *R = (double *)malloc_s(m * sizeof(double)); // the residuals
-    double **k = (double**)malloc_s(n * sizeof(double*)); // the internal variables
-    for(int i = 0; i < n; i++)
-    {
-        *(k + i) = (double*)malloc_s(m * sizeof(double));
-    }
-    double *t = (double*)malloc_s(length * sizeof(double)); // the values of variable
+    double *delta = newArray1d(m); // a variable related to the ratio of residuals and TOL
+    double *w = newArray1d(m); // a vector for temporary use
+    double *R = newArray1d(m); // the residuals
+    double **k = newArray2d(n, m); // the internal variables
+    double *t = newArray1d(length); // the values of variable
     double **y = (double**)malloc_s(length * sizeof(double*)); // the values of the functions
-    y[0] = (double*)malloc_s(m * sizeof(double));
+    y[0] = newArray1d(m);
 
     // initialization
     t[0] = T;
@@ -155,14 +152,10 @@ SODEsol SODERKF(double *(*f)(double, double*), double *y0,
     }
 
     // free the memory allocated before
-    free(delta);
-    free(w);
-    free(R);
-    for(int i = 0; i < n; i++)
-    {
-        free(k[i]);
-    }
-    free(k);
+    delArray1d(delta);
+    delArray1d(w);
+    delArray1d(R);
+    delArray2d(k, n);
 
     // resize the arrays to suitable size -- number of steps
     y = (double**)realloc_s(y, step * sizeof(double*));

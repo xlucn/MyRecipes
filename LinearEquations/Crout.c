@@ -1,5 +1,7 @@
 #include <math.h>
 #include "NR.h"
+#include "NRprivate.h"
+#include "constants.h"
 /**
  * @brief Solve a system of linear equations with Crout method
  * @param N the numbers of the variables

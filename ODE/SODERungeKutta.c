@@ -1,4 +1,5 @@
 #include "NR.h"
+#include "NRprivate.h"
 /**
  * @brief Classic Runge-Kutta Method to solve a System of ODEs.
  * @param m the number of ODEs,
@@ -12,17 +13,9 @@ double **SODERungeKutta(double (**f)(double, double*), double a, double b, doubl
 {
     double h = (b - a) / N;
     double t = a;
-    double *w = (double *)malloc_s(m * sizeof(double));
-    double **y = (double**)malloc_s((N + 1) * sizeof(double*));
-    for(int i = 0; i < N + 1; i++)
-    {
-        *(y + i) = (double*)malloc_s(m * sizeof(double));
-    }
-    double **k = (double**)malloc_s(4 * sizeof(double*));
-    for(int i = 0; i < 4; i++)
-    {
-        *(k + i) = (double*)malloc_s(m * sizeof(double));
-    }
+    double *w = newArray1d(m);
+    double **y = newArray2d(N + 1, m);
+    double **k = newArray2d(4, m);
 
     for(int i = 0; i < m; i++)
     {
@@ -53,13 +46,8 @@ double **SODERungeKutta(double (**f)(double, double*), double a, double b, doubl
         }
         t += h;
     }
-    free(w);
-    for(int i = 0; i < 4; i ++)
-    {
-        free(k[i]);
-    }
-    free(k);
-
+    delArray1d(w);
+    delArray2d(4, N);
     return y;
 }
 

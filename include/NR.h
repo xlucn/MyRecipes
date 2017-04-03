@@ -1,19 +1,5 @@
-﻿/**
- * @file NR.h
- * @note encoding : utf-8
- * @author Lu Xu(oliver_lew@outlook.com)
- * @brief 这里是根据林成森《数值计算方法》一书编写的计算程序。
- */
-#ifndef _NR_H_
+﻿#ifndef _NR_H_
 #define _NR_H_
-
-#include "constants.h"
-#include <stdlib.h>
-
-#define malloc
-#define realloc
-void* malloc_s(size_t size);
-void* realloc_s(void* ptr, size_t size);
 
 /*------------------------- Basic functions ----------------------------------*/
 double DividedDiff(double(*f)(double), double *x, int N);
