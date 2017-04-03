@@ -14,10 +14,6 @@ static double c[] = {1, 1, 1, 1, 0};
 static double d[] = {2, 4, 4, 4, 4};
 static double ans[] = {1, -1, 1, -1, 1};
 
-/**
- * @brief 
- * @returns 
- */
 int testChasing()
 {
     double *x;
@@ -26,7 +22,6 @@ int testChasing()
 
     if(x == NULL)
     {
-        fprintf(stderr, "testChasing: Method failed.");
         return FAILED;
     }
     for(int i = 0; i < N; i++)
@@ -77,31 +72,24 @@ static double LinEqb1[] = {-26,49,-28};
 static double LinEqans1[] = {10.7143,12.5714,9.85714};
 static LinEqtest t1 = {LinEqA1, LinEqb1, 3, LinEqans1, 1e-4};
 
-/**
- * @brief 
- * @returns 
- */
 int testGaussianEli()
 {
     return _testLinearEquation(GaussEli, t1);
 }
 
-/**
- * @brief 
- * @returns 
- */
 int testGaussianEliPP()
 {
     return _testLinearEquation(GaussEliPP, t1);
 }
 
-/**
- * @brief 
- * @returns 
- */
 int testGaussianEliPPP()
 {
     return _testLinearEquation(GaussEliPPP, t1);
+}
+
+int testGaussJordanEli()
+{
+    return _testLinearEquation(GaussJordanEli, t1);
 }
 
 int testCrout()
