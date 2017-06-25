@@ -61,35 +61,16 @@ DIRS+=$(LIB_DIR) $(DBG_DIR) $(OBJ_DIR) $(DEP_DIR)
 DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(OBJ_DIR)/$(dir))
 DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(DEP_DIR)/$(dir))
 
-.PHONY:all help clean remove cleanall rebuild test
+.PHONY:all help clean remove cleanall rebuild doc test
 
 
 all:$(DEP) $(TESTDEP) $(TESTBIN)
 
-include $(foreach dir, $(DIRS), $(wildcard $(dir)/*.d))
 
-$(DEP) $(TESTDEP) $(TESTBIN): | $(DIRS)
+doc:
+	doxygen Doxyfile
 
-$(DIRS):
-	mkdir -p $(DIRS)
-
-$(TESTH):$(TESTSRC)
-	$(PYTHON) $(GENTEST)
-
-$(DEP_DIR)/%.d:%.c
-	$(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,$(*F).o[ :]*,$(OBJ_DIR)/$*.o $@ : ,g' > $@
-
-$(OBJ_DIR)/%.o:%.c
-	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
-
-$(LIB):$(OBJ)
-	ar crv $@ $?
-
-$(TESTBIN):$(LIB) $(TESTOBJ)
-	$(CC) $(CFLAGS) -o $(TESTBIN) $(TESTOBJ) $(LFLAGS)
-
-
-# PHONY targets
+# other PHONY targets
 
 help:
 	@echo \
@@ -115,3 +96,25 @@ rebuild:cleanall
 
 test:
 	@echo $(wildcard ^[A-Z]*)
+
+-include $(foreach dir, $(DIRS), $(wildcard $(dir)/*.d))
+
+$(DEP) $(TESTDEP) $(TESTBIN): | $(DIRS)
+
+$(DIRS):
+	mkdir -p $(DIRS)
+
+$(TESTH):$(TESTSRC)
+	$(PYTHON) $(GENTEST)
+
+$(DEP_DIR)/%.d:%.c
+	$(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,$(*F).o[ :]*,$(OBJ_DIR)/$*.o $@ : ,g' > $@
+
+$(OBJ_DIR)/%.o:%.c
+	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
+
+$(LIB):$(OBJ)
+	ar cr $@ $?
+
+$(TESTBIN):$(LIB) $(TESTOBJ)
+	$(CC) $(CFLAGS) -o $(TESTBIN) $(TESTOBJ) $(LFLAGS)
