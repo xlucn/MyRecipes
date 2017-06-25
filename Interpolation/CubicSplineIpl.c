@@ -1,12 +1,21 @@
+/** @file CubicSplineIpl.c */
 #include <math.h>
 #include "NR.h"
 #include "NRprivate.h"
 
 /**
  * @brief Cubic Spline Interpolation.
- * @note that the parameter *m is created by functions ...CubicSplineIplPara(...)
+ * @param N the number of data points
+ * @param f a function
+ * @param x variable value
+ * @param a data points
+ * @param m cubic spline parameters
+ * @returns the value of interpolation poly at x
+ *
+ * the parameter *m is created by functions LagrangeCubicSplineIplPara(),
+ * CompleteCubicSplineIplPara() and NatureCubicSplineIplPara().
  */
-static double CubicSplineIpl(int N, double(*f)(double), double x, double *a, double *m)
+static double CubicSplineIpl(int N, double (*f)(double), double x, double *a, double *m)
 {
     double *h = (double *)malloc_s(N * sizeof(double));
 
@@ -33,27 +42,26 @@ static double CubicSplineIpl(int N, double(*f)(double), double x, double *a, dou
 }
 
 /**
- * @brief Lagrange三次样条插值函数
- * @param N 分段区间数，即插值点数量为N + 1；
- * @param a 插值点数组指针；
- * @param f 函数；
- * @param x 变量值；
- * @return 返回样条插值函数值
+ * @brief Generate the parameters for Lagrange Cubic Spline Interpolation.
+ * @param N the nubmer of intervals
+ * @param a the array on interpolation points
+ * @param f the interpolation function
+ * @return the parameters for Lagrange Cubic Spline Interpolation.
  */
-static double *LagrangeCubicSplineIplPara(int N, double *a, double(*f)(double))
+static double *LagrangeCubicSplineIplPara(int N, double *a, double (*f)(double))
 {
-    double *h = (double *)malloc_s(N * sizeof(double));			/*插值点间距*/
-    double *d = (double *)malloc_s((N - 1) * sizeof(double));		/*方程组常数项*/
-    double *Matd = (double *)malloc_s((N - 1) * sizeof(double));	/*主对角线*/
-    double *Matc = (double *)malloc_s((N - 1) * sizeof(double));	/*主对角线上方对角线*/
-    double *Mata = (double *)malloc_s((N - 1) * sizeof(double));	/*主对角线下方对角线*/
+    double *h = (double *)malloc_s(N * sizeof(double));			/* step */
+    double *d = (double *)malloc_s((N - 1) * sizeof(double));		/* constant vector */
+    double *Matd = (double *)malloc_s((N - 1) * sizeof(double));	/* diagonal */
+    double *Matc = (double *)malloc_s((N - 1) * sizeof(double));	/* the line above diagonal */
+    double *Mata = (double *)malloc_s((N - 1) * sizeof(double));	/* the line below diagonal */
 
     for (int i = 0; i < N; i++)
     {
         h[i] = a[i + 1] - a[i];
     }
 
-    //d
+    /* d */
     d[0] = DividedDiff(f, a, 3) - (h[0] + h[1]) * DividedDiff(f, a, 4);
     for (int i = 1; i < N; i++)
     {
@@ -65,7 +73,7 @@ static double *LagrangeCubicSplineIplPara(int N, double *a, double(*f)(double))
         d[i] = d[i] * 6;
     }
 
-    //Matd
+    /* Matd */
     Matd[0] = 2;
     for (int i = 1; i < N; i++)
     {
@@ -73,7 +81,7 @@ static double *LagrangeCubicSplineIplPara(int N, double *a, double(*f)(double))
     }
     Matd[N] = 2;
 
-    //Mata
+    /* Mata */
     Mata[0] = 0;
     for (int i = 1; i < N; i++)
     {
@@ -81,7 +89,7 @@ static double *LagrangeCubicSplineIplPara(int N, double *a, double(*f)(double))
     }
     Mata[N] = 1;
 
-    //Matc
+    /* Matc */
     Matc[0] = 1;
     for (int i = 1; i < N; i++)
     {
@@ -89,7 +97,7 @@ static double *LagrangeCubicSplineIplPara(int N, double *a, double(*f)(double))
     }
     Matc[N] = 0;
 
-    //求解三对角方程组
+    /* solve the tridiagonal equations */
     double *result = Chasing(N + 1, Matd, Matc, Mata, d);
     free(Mata);
     free(Matc);
@@ -98,24 +106,22 @@ static double *LagrangeCubicSplineIplPara(int N, double *a, double(*f)(double))
     free(h);
     return result;
 }
-
 /**
- * @brief 完备三次样条插值函数
- * @param N 分段区间数，即插值点数量为N + 1；
- * @param a 插值点数组指针；
- * @param f 函数；
- * @param x 变量值；
+ * @brief Generate the parameters for complete Cubic Spline Interpolation.
+ * @param N the nubmer of intervals
+ * @param a the array on interpolation points
+ * @param f the interpolation function
  * @param df_a derivative at a
  * @param df_b derivative at b
- * @return 样条插值函数值
+ * @return the parameters for complete Cubic Spline Interpolation.
  */
-static double *CompleteCubicSplineIplPara(int N, double *a, double(*f)(double), double df_a, double df_b)
+static double *CompleteCubicSplineIplPara(int N, double *a, double (*f)(double), double df_a, double df_b)
 {
-    double *h = (double *)malloc_s(N * sizeof(double));			/*插值点间距*/
-    double *d = (double *)malloc_s((N - 1) * sizeof(double));		/*方程组常数项*/
-    double *Matd = (double *)malloc_s((N - 1) * sizeof(double));	/*主对角线*/
-    double *Matc = (double *)malloc_s((N - 1) * sizeof(double));	/*主对角线上方对角线*/
-    double *Mata = (double *)malloc_s((N - 1) * sizeof(double));	/*主对角线下方对角线*/
+    double *h = (double *)malloc_s(N * sizeof(double));			/* step */
+    double *d = (double *)malloc_s((N - 1) * sizeof(double));		/* constant vector */
+    double *Matd = (double *)malloc_s((N - 1) * sizeof(double));	/* diagonal */
+    double *Matc = (double *)malloc_s((N - 1) * sizeof(double));	/* the line above diagonal */
+    double *Mata = (double *)malloc_s((N - 1) * sizeof(double));	/* the line below diagonal */
 
     for (int i = 0; i < N; i++)
     {
@@ -152,7 +158,7 @@ static double *CompleteCubicSplineIplPara(int N, double *a, double(*f)(double), 
         d[i] = d[i] * 6;
     }
 
-    //求解三对角方程组
+    /* solve the tridiagonal equations */
     double *result = Chasing(N + 1, Matd, Matc, Mata, d);
     free(Mata);
     free(Matc);
@@ -163,25 +169,23 @@ static double *CompleteCubicSplineIplPara(int N, double *a, double(*f)(double), 
 }
 
 /**
- * @brief 自然三次样条插值函数
- * @param N 分段区间数，即插值点数量为N + 1；
- * @param a 插值点数组指针；
- * @param f 函数；
- * @param x 变量值；
+ * @brief Generate the parameters for nature Cubic Spline Interpolation.
+ * @param N the nubmer of intervals
+ * @param a the array on interpolation points
+ * @param f the interpolation function
  * @param ddf_a second order derivative at a
  * @param ddf_b second order derivative at b
- * @return 样条插值函数值
+ * @return the parameters for nature Cubic Spline Interpolation.
  */
-static double *NatureCubicSplineIplPara(int N, double *a, double(*f)(double), double ddf_a, double ddf_b)
+static double *NatureCubicSplineIplPara(int N, double *a, double (*f)(double), double ddf_a, double ddf_b)
 {
-    double *d = (double *)malloc_s((N - 1) * sizeof(double));		/*方程组常数项*/
-    double *Matd = (double *)malloc_s((N - 1) * sizeof(double));	/*主对角线*/
-    double *Matc = (double *)malloc_s((N - 1) * sizeof(double));	/*主对角线上方对角线*/
-    double *Mata = (double *)malloc_s((N - 1) * sizeof(double));	/*主对角线下方对角线*/
-    double *m = (double *)malloc_s((N + 1) * sizeof(double));		/*插值参数*/
+    double *m = (double *)malloc_s((N + 1) * sizeof(double));		/* interpolation params */
     double *temp = (double *)malloc_s((N - 1) * sizeof(double));
-    double *h = (double *)malloc_s(N * sizeof(double));
-
+    double *h = (double *)malloc_s(N * sizeof(double));			/* step */
+    double *d = (double *)malloc_s((N - 1) * sizeof(double));		/* constant vector */
+    double *Matd = (double *)malloc_s((N - 1) * sizeof(double));	/* diagonal */
+    double *Matc = (double *)malloc_s((N - 1) * sizeof(double));	/* the line above diagonal */
+    double *Mata = (double *)malloc_s((N - 1) * sizeof(double));	/* the line below diagonal */
     for (int i = 0; i < N; i++)
     {
         h[i] = a[i + 1] - a[i];
@@ -220,29 +224,29 @@ static double *NatureCubicSplineIplPara(int N, double *a, double(*f)(double), do
 }
 
 /**
- * @brief 自然三次样条插值函数
- * @param N 分段区间数，即插值点数量为N + 1
- * @param a：插值点数组
- * @param f：函数
- * @param x：变量值
- * @param ddf_a
- * @param ddf_b：两端二阶导数值
- * @return 样条插值函数值
-*/
+ * @brief nature Cubic Spline Interpolation.
+ * @param N the nubmer of intervals
+ * @param a the array on interpolation points
+ * @param f the interpolation function
+ * @param x the variable where the value of f will return
+ * @param ddf_a second order derivative at a
+ * @param ddf_b second order derivative at b
+ * @return the value of f at x for nature Cubic Spline Interpolation.
+ */
 double NatureCubicSplineIpl(double (*f)(double), double ddf_a, double ddf_b, double x, int N, double *a)
 {
     return CubicSplineIpl(N, f, x, a, NatureCubicSplineIplPara(N, a, f, ddf_a, ddf_b));
 }
 
 /**
- * @brief 完备三次样条插值函数
- * @param f 函数
- * @param df_a 两端导数值
- * @param df_b 
- * @param x 变量值
- * @param N 分段区间数，即插值点数量为N + 1
- * @param a 插值点数组指针
- * @returns 样条插值函数值
+ * @brief Complete Cubic Spline Interpolation.
+ * @param N the nubmer of intervals
+ * @param a the array on interpolation points
+ * @param f the interpolation function
+ * @param x the variable where the value of f will return
+ * @param df_a derivative at a
+ * @param df_b derivative at b
+ * @return the value of f at x for complete Cubic Spline Interpolation.
  */
 double CompleteCubicSplineIpl(double (*f)(double), double df_a, double df_b, double x, int N, double *a)
 {
@@ -250,12 +254,12 @@ double CompleteCubicSplineIpl(double (*f)(double), double df_a, double df_b, dou
 }
 
 /**
- * @brief Lagrange三次样条插值函数
- * @param f 函数
- * @param x 变量值
- * @param N 分段区间数，即插值点数量为N + 1
- * @param a 插值点数组指针
- * @returns 样条插值函数值
+ * @brief Lagrange Cubic Spline Interpolation.
+ * @param N the nubmer of intervals
+ * @param a the array on interpolation points
+ * @param f the interpolation function
+ * @param x the variable where the value of f will return
+ * @return the value of f at x for Lagrange Cubic Spline Interpolation.
  */
 double LagrangeCubicSplineIpl(double (*f)(double), double x, int N, double *a)
 {

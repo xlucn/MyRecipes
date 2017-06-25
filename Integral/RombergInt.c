@@ -1,15 +1,18 @@
+/** @file RombergInt.c */
 #include <math.h>
 #include "NR.h"
 #include "NRprivate.h"
 
 /**
- * @brief Romberg integration，
- * @param N 所设置的最多序列数,
- * @param [a,b] the interval,
- * @param eps the precision,
+ * @brief Romberg integration
  * @param f the integration function
+ * @param a the start point
+ * @param b the end point of interval,
+ * @param N max steps,
+ * @param eps the precision,
+ * @return the integral
  */
-double RombergInt(double(*f)(double), double a, double b, int N, double eps)
+double RombergInt(double (*f)(double), double a, double b, int N, double eps)
 {
     double result;
     double h = b - a;

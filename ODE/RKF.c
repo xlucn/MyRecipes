@@ -3,23 +3,22 @@
 #include "NR.h"
 #include "constants.h"
 /**
- * @brief 
- * @param double 
- * @param double 
- * @param a 
- * @param b 
- * @param y0 
- * @param TOL 
- * @param hmax 
- * @param hmin 
- * @param A 
- * @param B 
- * @param Bstar 
- * @param C 
- * @param n 
- * @returns 
+ * @brief RKF method(Ronge Kutta Fehlberg method)
+ * @param f right function of ODE
+ * @param a lower limit of interval
+ * @param b upper limit of interval
+ * @param y0 initial value of f
+ * @param TOL tolerance
+ * @param hmax max step size
+ * @param hmin min step size
+ * @param A the paramaters in A matrix of RKF method
+ * @param B the paramaters in B vector of RKF method
+ * @param Bstar the paramaters in Bstar vector of RKF method
+ * @param C the paramaters in C vector of RKF method
+ * @param n the size of A matrix, or the length of B, Bstar and C
+ * @returns integral
  */
-static double *RKFmn(double(*f)(double,double), double a, double b, double y0, double TOL, double hmax, double hmin,
+static ODEsol RKFmn(double (*f)(double,double), double a, double b, double y0, double TOL, double hmax, double hmin,
     const double* A, const double* B, const double* Bstar, const double* C, int n)
 {
     int step = 0; //the total steps
@@ -82,14 +81,33 @@ static double *RKFmn(double(*f)(double,double), double a, double b, double y0, d
     return result;
 }
 /**
- * @brief Runge-Kutta-Fehlberg Method
+ * @brief RKF method(Ronge Kutta Fehlberg method) of orders 8 and 7
+ * @param f right function of ODE
+ * @param a lower limit of interval
+ * @param b upper limit of interval
+ * @param y0 initial value of f
+ * @param TOL tolerance
+ * @param hmax max step size
+ * @param hmin min step size
+ * @returns the integral
  */
-double *RKF78(double(*f)(double,double), double a, double b, double y0, double TOL, double hmax, double hmin)
+ODEsol RKF78(double(*f)(double,double), double a, double b, double y0, double TOL, double hmax, double hmin)
 {
     return RKFmn(f, a, b, y0, TOL, hmax, hmin, A78, B78, Bstar78, C78, 13);
 }
 
-double *RKF45(double(*f)(double,double), double a, double b, double y0, double TOL, double hmax, double hmin)
+/**
+ * @brief RKF method(Ronge Kutta Fehlberg method) with orders 5 and 4
+ * @param f right function of ODE
+ * @param a lower limit of interval
+ * @param b upper limit of interval
+ * @param y0 initial value of f
+ * @param TOL tolerance
+ * @param hmax max step size
+ * @param hmin min step size
+ * @returns the integral
+ */
+ODEsol RKF45(double(*f)(double,double), double a, double b, double y0, double TOL, double hmax, double hmin)
 {
     return RKFmn(f, a, b, y0, TOL, hmax, hmin, A45, B45, Bstar45, C45, 6);
 }
