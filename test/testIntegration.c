@@ -1,3 +1,4 @@
+/** @file testIntegration.c */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -5,14 +6,14 @@
 #include "Test.h"
 
 typedef struct _IntTest{
-	double (*integrand)(double);
-	double (*integral)(double);
-	double a;
-	double b;
-	double TOL;
-	double h;
-	double hmin;
-	double hmax;
+    double (*integrand)(double);
+    double (*integral)(double);
+    double a;
+    double b;
+    double TOL;
+    double h;
+    double hmin;
+    double hmax;
 }IntTest;
 
 static double integrand1(double x)
@@ -36,46 +37,41 @@ static double integral2(double x)
 }
 
 static IntTest inttest[] = {
-	{integrand1, integral1, 0, 3, 1e-4},
-	{integrand2, integral2, 0, 3, 1e-4}
+    {integrand1, integral1, 0, 3, 1e-10},
+    {integrand2, integral2, 0, 3, 1e-10},
+    {NULL}
 };
 
-int _testAdaptiveSimpson(IntTest item)
+int _testInt(double (*f)(IntTest), IntTest t)
 {
-    double res = AdaptiveSimpsonInt(item.integrand, item.a, item.b, item.TOL);
-	double ans = item.integral(item.b) - item.integral(item.a);
-	printf("T=%.12f\nI=%.12f\ndelta=%.12f\n", res, ans, fabs(res - ans));
-	return (fabs(res - ans) > item.TOL) ? FAILED : PASSED;
+    double res = f(t);
+    double ans = t.integral(t.b) - t.integral(t.a);
+    printf("T=%16.12f\tI=%16.12f\tdelta=%16.12f\n", res, ans, fabs(res - ans));
+    return (fabs(res - ans) > t.TOL) ? FAILED : PASSED;
 }
 
-int _testRomberg(IntTest item)
+double _testAdaptiveSimpson(IntTest t)
 {
-    int N = 100;
-    double TOL = 1e-10;
-	double res = RombergInt(item.integrand, item.a, item.b, N, TOL);
-	double ans = item.integral(item.b) - item.integral(item.a);
-	printf("T=%.12f\nI=%.12f\ndelta=%.12f\n", res, ans, fabs(res - ans));
-	return (fabs(res - ans) > TOL) ? FAILED : PASSED;
+    return AdaptiveSimpsonInt(t.integrand, t.a, t.b, t.TOL);
 }
 
+double _testRomberg(IntTest t)
+{
+    return RombergInt(t.integrand, t.a, t.b, 100, t.TOL);
+}
 
-/**
- * @brief test adaptive Simpson method
- * @returns PASSED or FAILED
- */
 int testAdaptiveSimpson()
 {
-	return _testAdaptiveSimpson(inttest[0])
-		|| _testAdaptiveSimpson(inttest[1]);
+    for(int i = 0; inttest[i].integrand; i++)
+        if(_testInt(_testAdaptiveSimpson, inttest[i]) == FAILED)
+            return FAILED;
+    return PASSED;
 }
 
-
-/**
- * @brief test Romberg method
- * @returns PASSED or FAILED
- */
 int testRomberg()
 {
-	return _testRomberg(inttest[0])
-		|| _testRomberg(inttest[1]);
+    for(int i = 0; inttest[i].integrand; i++)
+        if(_testInt(_testRomberg, inttest[i]) == FAILED)
+            return FAILED;
+    return PASSED;
 }

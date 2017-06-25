@@ -1,79 +1,43 @@
-/**
- * @file 
- * @brief test solving ODEs
- */
+/** @file testODE.c */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include "NR.h"
 #include "Test.h"
+#include "constants.h"
 
-typedef struct _ODETest{
+typedef struct ODETest{
     double (*f)(double, double);
     double (*y)(double);
     double a;
     double b;
+    int    N;
     double TOL;
     double h;
     double hmin;
     double hmax;
 }ODETest;
 
-typedef struct _SODETest{
-    double* (*f)(double, double);
-    double (*y)(double);
-    double a;
-    double b;
-    double TOL;
-    double h;
-    double hmin;
-    double hmax;
-}SODETest;
-
-static double f1(double t, double y)
-{
-    return (y * y + y) / t;
-}
-
-static double y1(double t)
-{
-    return 2 * t / (1 - 2 * t);
-}
-
-static double f2(double t, double y)
-{
-    return -y + t + 1;
-}
-
-static double y2(double t)
-{
-    return exp(-t) + t;
-}
-
-static double f3(double t, double y)
-{
-    return - y + t * t + 1;
-}
-
-static double y3(double t)
-{
-    return - 2 / exp(t) + 3 - 2 * t + t * t;
-}
+static double f1(double t, double y){ return (y * y + y) / t;}
+static double y1(double t){ return 2 * t / (1 - 2 * t);}
+static double f2(double t, double y){ return -y + t + 1;}
+static double y2(double t){ return exp(-t) + t;}
+static double f3(double t, double y){ return - y + t * t + 1;}
+static double y3(double t){ return - 2 / exp(t) + 3 - 2 * t + t * t;}
 
 static ODETest odetest[] = {
-    {f1, y1, 1.0, 3.0, 0.01, 0.5},
-    {f2, y2, 1.0, 2.0, 0.01, 0.2},
-    {f3, y3, 0.0, 1.0, 0.01, 0.2},
+/*    f,  y,   a,   b,  N,  TOL,   h, hmin, hmax */
+    {f1, y1, 1.0, 3.0, 20, 1e-2, 0.1            },
+    {f2, y2, 1.0, 2.0, 10, 1e-2, 0.1            },
+    {f3, y3, 0.0, 1.0, 10, 1e-2, 0.1, 1e-6, 1e-2},
     {NULL}
 };
 
-static int _testClassicRK(ODETest t)
+static int _testODE(double *(*f)(ODETest), ODETest t)
 {
-    printf("Testing Classic Runge-Kutta method\n");
     double real_y;
-    int N = (int)((t.b - t.a) / t.h + 0.5);
-    double *result = ClassicRungeKutta(t.f, t.a, t.b, t.y(t.a), N);
-    for(int i = 0; i < N + 1; i ++)
+    double *result = f(t);
+    for(int i = 0; i <= t.N; i ++)
     {
         real_y = t.y(t.a + i * t.h);
         printf("%lf\t%lf\n", result[i], real_y);
@@ -85,72 +49,43 @@ static int _testClassicRK(ODETest t)
     return PASSED;
 }
 
+static double* _testClassicRK(ODETest t)
+{
+    return ClassicRungeKutta(t.f, t.a, t.b, t.y(t.a), t.N);
+}
+
 int testClassicRK()
 {
     for(int i = 0; odetest[i].f; i++)
-        if(_testClassicRK(odetest[i]) == FAILED)
+        if(_testODE(_testClassicRK, odetest[i]) == FAILED)
             return FAILED;
     return PASSED;
 }
 
-static int _testAdamsPECE(double a, double b, int N, double f(double, double), double y(double), double eps)
+static double* _testAdamsPECE(ODETest t)
 {
-    double y0 = y(a);
-    double dy0 = f(a, y0);
-    double *ans = (double*)malloc_s((N + 1) * sizeof(double));
-    for(int i = 0; i < N + 1; i++)
-    {
-        ans[i] = y(a + (b - a) * i / N);
-    }
-
-    double *result = AdamsPECE(f, a, b, dy0, y0, N);
-    printf("Testing Adams PECE\n");
-    for(int i = 0; i < N + 1; i ++)
-    {
-        printf("%lf\t%lf\n", result[i], ans[i]);
-        if(fabs(result[i] - ans[i]) > eps)
-        {
-            return FAILED;
-        }
-    }
-    return PASSED;
+    return AdamsPECE(t.f, t.a, t.b, t.f(t.a, t.y(t.a)), t.y(t.a), t.N);
 }
 
-/**
- * @brief 
- * @returns 
- */
 int testAdamsPECE()
 {
-    double eps = 1e-3;
-    return _testAdamsPECE(0, 1, 10, f2, y2, eps)
-        || _testAdamsPECE(1, 2, 20, f1, y1, eps)
-        || _testAdamsPECE(0, 1, 10, f3, y3, eps);
+    for(int i = 0; odetest[i].f; i++)
+        if(_testODE(_testAdamsPECE, odetest[i]) == FAILED)
+            return FAILED;
+    return PASSED;
 }
 
-static int _testRKF(double a, double b, double TOL, double hmax, double hmin, double f(double, double), double y(double))
+static int _testRKF(ODETest t)
 {
-    double y0 = y(a);
-    double *result;
-
-    printf("Testing RKF Method\n");
-    result = RKF78(f, a, b, y0, TOL, hmax, hmin);
-    if(result == NULL)
+    ODEsol sol = RKF78(t.f, t.a, t.b, t.y(t.a), 1e-5, t.hmax, t.hmin);
+    int step = ODEsolGetStep(sol);
+    double *ts = ODEsolGetT(sol);
+    double *ys = ODEsolGetY(sol);
+    printf("t\t\ty\t\treal_y\n");
+    for(int i = 0; i < step; i ++)
     {
-        fprintf(stderr, "RKF method got NULL result.\n");
-        return FAILED;
-    }
-    printf("t\t\th\t\ty\t\treal_y\n");
-    for(int i = 0; i < result[0]; i ++)
-    {
-        for(int j = 0; j < 3; j++)
-        {
-            printf("%lf\t", result[i * 3 + j + 1]);
-        }
-        printf("%lf\n", y(result[i * 3 + 1]));
-
-        // Check the results
-        if (fabs(result[i * 3 + 3] - y(result[i * 3 + 1])) > 1e-5)
+        printf("%lf\t%lf\t%lf\n", ts[i], ys[i], t.y(ts[i]));
+        if (fabs(ys[i] - t.y(ts[i])) > 1e-5)
         {
             return FAILED;
         }
@@ -158,20 +93,14 @@ static int _testRKF(double a, double b, double TOL, double hmax, double hmin, do
     return PASSED;
 }
 
-/**
- * @brief 
- * @returns 
- * 
- * 
- */
 int testRKF()
 {
-    return _testRKF(0, 1, 1e-5, 1e-2, 1e-6, f3, y3);
+    return _testRKF(odetest[2]);
 }
 
 static double *Sf1(double t, double *y)
 {
-    static double f[2];
+    double *f = newArray1d(2);
     f[0] = -4 * y[0] - 2 * y[1] + cos(t) + 4 * sin(t);
     f[1] = 3 * y[0] + y[1] - 3 * sin(t);
     return f;
@@ -179,52 +108,92 @@ static double *Sf1(double t, double *y)
 
 static double *Sy1(double x)
 {
-	static double y[2];
+	double *y = newArray1d(2);
     y[0] = exp(-2 * x) * (-2 + 2 * exp(x) + exp(2 * x) * sin(x));
     y[1] = -exp(-2 * x) * (3 * exp(x) - 2);
     return y;
 }
 
-/**
- * @brief 
- * @returns 
- */
-int testSODERungeKutta()
-{
-    double *(*f)(double,double*) = Sf1;
-    double *(*y)(double) = Sy1;
-    double a = 0;
-    double b = 1;
-    double y0[] = {0, -1};
-    //int N = 10;
-    int m = 2;
-    SODEsol sol = SODERKF(f, y0, a, b, m, 0.1, 1e-8, 1e4, 1e-4, 13);
-    //SODERungeKutta(f, a, b, y0, m, N);
+typedef struct SODETest{
+    double* (*f)(double, double*);
+    double* (*y)(double);
+    double a;
+    double b;
+    int    N;
+    int    m;
+    double TOL;
+    double h;
+    double hmin;
+    double hmax;
+}SODETest;
 
-    double *t = SODEsolGetT(sol);
-    double **res = SODEsolGetY(sol);
+static SODETest sodetest[] = {
+/*     f,   y,   a,   b,  N,  m,       TOL,   h, hmin, hmax */
+    {Sf1, Sy1, 0.0, 1.0, 10,  2,      1e-8, 0.1, 1e-4, 1.0},
+    {Sf1, Sy1, 0.0, 1.0, 10,  2, FLOAT_NAN, 0.1, 1e-4, 1.0},
+    {NULL}
+};
+
+/**
+ * @brief
+ * @returns
+ */
+int _testSODE(SODEsol (*f)(SODETest t), SODETest t)
+{
+    SODEsol sol = f(t);
+    //SODERungeKutta(t.f, t.a, t.b, t.y(t.a), t.m, t.N);
+
+    double *ts = SODEsolGetT(sol);
+    double **ys = SODEsolGetY(sol);
     int steps = SODEsolGetStep(sol);
 
-
-    printf("Testing Runge-Kutta Method for a System of ODEs\n");
     printf("%8s%16s%16s%16s%16s\n", "t", "result1", "y1", "result2", "y2");
-    for(int i = 0; i < steps; i ++)
+    for(int i = 1; i < steps; i ++)
     {
-		double *ans = y(t[i]);
-        printf("%8.2lf", t[i]);
-        for(int j = 0 ; j < m; j++)
+		double *ans = t.y(ts[i]);
+        printf("%8.4lf", ts[i]);
+        for(int j = 0 ; j < t.m; j++)
         {
-            printf("%16lf%16lf", res[i][j], ans[j]);
+            printf("%16.11f%16.11f", ys[i][j], ans[j]);
+            if(t.TOL != FLOAT_NAN && fabs(ys[i][j] - ans[j])/(ts[i] - ts[i - 1]) > t.TOL * i)
+            {
+                return FAILED;
+            }
         }
         printf("\n");
+        delArray1d(ans);
     }
-    free(t);
-    for (int i = 0; i < steps; i++)
-	{
-		free(res[i]);
-	}
-	free(res);
-	
+    delArray1d(ts);
+    delArray2d(ys, steps);
     return PASSED;
 }
 
+SODEsol _testSODERKF78(SODETest t)
+{
+    return SODERKF78(t.f, t.y(t.a), t.a, t.b, t.m, t.h, t.TOL, t.hmax, t.hmin);
+}
+
+SODEsol _testSODERKF45(SODETest t)
+{
+    return SODERKF45(t.f, t.y(t.a), t.a, t.b, t.m, t.h, t.TOL, t.hmax, t.hmin);
+}
+
+SODEsol _testSODERungeKutta(SODETest t)
+{
+    return SODERungeKutta(t.f, t.a, t.b, t.y(t.a), t.m, t.N);
+}
+
+int testSODERKF78()
+{
+    return _testSODE(_testSODERKF78, sodetest[0]);
+}
+
+int testSODERKF45()
+{
+    return _testSODE(_testSODERKF45, sodetest[0]);
+}
+
+int testSODERungeKutta()
+{
+    return _testSODE(_testSODERungeKutta, sodetest[1]);
+}
