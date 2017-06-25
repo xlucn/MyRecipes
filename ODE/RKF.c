@@ -1,6 +1,8 @@
+/** @file RKF.c */
 #include <math.h>
 #include <stdio.h>
 #include "NR.h"
+#include "NRprivate.h"
 #include "constants.h"
 /**
  * @brief RKF method(Ronge Kutta Fehlberg method)
@@ -22,24 +24,24 @@ static ODEsol RKFmn(double (*f)(double,double), double a, double b, double y0, d
     const double* A, const double* B, const double* Bstar, const double* C, int n)
 {
     int step = 0; //the total steps
+    int length = 1024;
     double t = a;
     double y = y0;
     double h = hmax;
     double *k = newArray1d(n);
     double R = 0;
     double delta;
-    double *result;
     step++;
-    result = newArray1d(step * 3 + 1);
-    result[1] = t;
-    result[2] = h;
-    result[3] = y;
+    double *ts = newArray1d(length);
+    double *ys = newArray1d(length);
+    ts[0] = t;
+    ys[0] = y;
 
     while (t < b)
     {
         for(int i = 0; i < n; i++)
         {
-            y = result[3 * step];
+            y = ys[step - 1];
             for(int j = 0; j < i; j++)
             {
                 y += A[i * n + j] * k[j];
@@ -47,7 +49,7 @@ static ODEsol RKFmn(double (*f)(double,double), double a, double b, double y0, d
             k[i] = h * f(t + C[i] * h, y);
             R += (B[i] - Bstar[i]) * k[i] / h;
         }
-        y = result[3 * step];
+        y = ys[step - 1];
         R = fabs(R);
         delta = pow((TOL / R / 2.0), 0.25);
 
@@ -59,10 +61,14 @@ static ODEsol RKFmn(double (*f)(double,double), double a, double b, double y0, d
                 y += B[i] * k[i];
             }
             step++;
-            result = (double*)realloc_s(result, (step * 3 + 1) * sizeof(double));
-            result[step * 3 - 2] = t;
-            result[step * 3 - 1] = h;
-            result[step * 3] = y;
+            if(step == length)
+            {
+                length += 1024;
+                ts = Array1dResize(ts, length);
+                ys = Array1dResize(ys, length);
+            }
+            ts[step - 1] = t;
+            ys[step - 1] = y;
         }
 
         h = delta < 0.1 ? 0.1 * h : (delta > 4 ? 4 * h: delta * h);
@@ -77,9 +83,10 @@ static ODEsol RKFmn(double (*f)(double,double), double a, double b, double y0, d
             return NULL;
         }
     }
-    result[0] = step;
-    return result;
+    ODEsol sol = newODEsol(step, ts, ys);
+    return sol;
 }
+
 /**
  * @brief RKF method(Ronge Kutta Fehlberg method) of orders 8 and 7
  * @param f right function of ODE

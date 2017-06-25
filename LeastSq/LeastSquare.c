@@ -17,9 +17,9 @@ double *LeastSquare(int m, int n, double **A, double *b)
         return NULL;
     }
 
-    double *res = (double*)malloc_s(n * sizeof(double));
-    double *Ab = (double*)malloc_s(n * sizeof(double));
-    double *AA = (double*)malloc_s(n * n * sizeof(double));
+    double *res = newArray1d(n);
+    double *Ab = newArray1d(n);
+    double *AA = newArray1d(n * n);
 
     // A.T times A
     for (int i = 0; i < n; i++)
@@ -48,7 +48,7 @@ double *LeastSquare(int m, int n, double **A, double *b)
     res = GaussEli(n, AA, Ab);
 
     //free the memory space allocated before
-    free(AA);
-    free(Ab);
+    delArray1d(AA);
+    delArray1d(Ab);
     return res;
 }

@@ -13,12 +13,11 @@
  */
 double Hermite(int N, double *a, double *f, double *df, double x)
 {
-    double *A = (double *)malloc_s(N * sizeof(double));
-    double *B = (double *)malloc_s(N * sizeof(double));
-    double *L = (double *)malloc_s(N * sizeof(double));
+    double *A = newArray1d(N);
+    double *B = newArray1d(N);
+    double *L = LagrangePoly(a, x, N);
     double H = 0;
 
-    L = LagrangePoly(a, x, N);
     for (int i = 0; i < N; i++)
     {
         A[i] = 0;
@@ -36,8 +35,8 @@ double Hermite(int N, double *a, double *f, double *df, double x)
 
         H += f[i] * A[i] + df[i] * B[i];
     }
-    free(A);
-    free(B);
-    free(L);
+    delArray1d(A);
+    delArray1d(B);
+    delArray1d(L);
     return H;
 }

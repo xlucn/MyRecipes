@@ -16,31 +16,22 @@
  */
 double *Chasing(int N, double *d, double *c, double *a, double *b)
 {
-    double *p = (double *)malloc_s(N * sizeof(double));
-    double *q = (double *)malloc_s(N * sizeof(double));
-    double *x = (double *)malloc_s(N * sizeof(double));
-    double *y = (double *)malloc_s(N * sizeof(double));
+    double *p = newArray1d(N);
+    double *q = newArray1d(N);
+    double *x = newArray1d(N);
+    double *y = newArray1d(N);
 
-    if(d[0] == 0)
-    {
-        return NULL;
-    }
+    if(fabs(d[0]) < FLOAT_ZERO_LIM){ return NULL; }
     p[0] = d[0];
     q[0] = c[0] / d[0];
     for(int i = 1; i < N - 1; i++)
     {
         p[i] = d[i] - a[i] * q[i - 1];
-        if(p[i] == 0)
-        {
-            return NULL;
-        }
+        if(fabs(p[i]) < FLOAT_ZERO_LIM) { return NULL; }
         q[i] = c[i] / p[i];
     }
     p[N - 1] = d[N - 1] - a[N - 1] * q[N - 2];
-    if(p[N - 1] == 0)
-    {
-        return NULL;
-    }
+    if(fabs(p[N - 1]) < FLOAT_ZERO_LIM){ return NULL; }
     y[0] = b[0] / p[0];
     for(int i = 1; i < N; i++)
     {
@@ -51,8 +42,8 @@ double *Chasing(int N, double *d, double *c, double *a, double *b)
     {
         x[i] = y[i] - q[i] * x[i + 1];
     }
-    free(p);
-    free(q);
-    free(y);
+    delArray1d(p);
+    delArray1d(q);
+    delArray1d(y);
     return x;
 }

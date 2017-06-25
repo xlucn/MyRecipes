@@ -14,22 +14,17 @@ double ***ImprovedGramSchmidtQR(int m, int n, double **A)
 {
     double temp;
     double ***QR = (double***)malloc_s(2 * sizeof(double**));
-    double **Q = (double**)malloc_s(m * sizeof(double*));
+    double **Q = newArray2d(m, n);
+    double **R = newArray2d(n, n);
+    QR[0] = Q;
+    QR[1] = R;
     for(int i = 0; i < m; i ++)
     {
-        Q[i] = (double*)malloc_s(n * sizeof(double));
         for(int j = 0; j < n; j++)
         {
             Q[i][j] = A[i][j];
         }
     }
-    double **R = (double**)malloc_s(n * sizeof(double*));
-    for(int i = 0; i < n; i ++)
-    {
-        R[i] = (double*)malloc_s(n * sizeof(double));
-    }
-    QR[0] = Q;
-    QR[1] = R;
 
     for(int k = 0; k < n; k++)
     {

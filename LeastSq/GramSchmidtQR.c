@@ -12,16 +12,8 @@
  */
 double ***GramSchmidtQR(int m, int n, double **A)
 {
-    double **Q = (double**)malloc_s(m * sizeof(double*));
-    for(int i = 0; i < m; i ++)
-    {
-        Q[i] = (double*)malloc_s(n * sizeof(double));
-    }
-    double **R = (double**)malloc_s(n * sizeof(double*));
-    for(int i = 0; i < n; i ++)
-    {
-        R[i] = (double*)malloc_s(n * sizeof(double));
-    }
+    double **Q = newArray2d(m, n);
+    double **R = newArray2d(n, n);
     double ***QR = (double***)malloc_s(2 * sizeof(double**));
     QR[0] = Q;
     QR[1] = R;
