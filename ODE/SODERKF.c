@@ -10,9 +10,9 @@ static SODEsol SODERKF(double *(*f)(double, double*), double *y0,
 {
     const double *A, *B, *Bstar, *C;
     if(n == 13)
-        A = A78; B = B78; Bstar = Bstar78; C = C78;
+        A = A78, B = B78, Bstar = Bstar78, C = C78;
     else if(n == 6)
-        A = A45; B = B45; Bstar = Bstar45; C = C45;
+        A = A45, B = B45, Bstar = Bstar45, C = C45;
 
     if (a > b)
     {
