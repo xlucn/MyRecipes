@@ -1,11 +1,12 @@
+/**
+ * @file testLinearEquation.c
+ * @brief test solving linear equations
+ */
+
 #include <stdio.h>
 #include <math.h>
 #include "NR.h"
 #include "Test.h"
-
-/**
- * @brief test solving linear equations
- */
 
 static int N = 5;
 static double a[] = {0, 1, 1, 1, 1};
@@ -35,6 +36,8 @@ int testChasing()
     return PASSED;
 }
 
+/*--------------------- test general equations -------------------------------*/
+
 typedef struct _LinEqtest{
     double *A;
     double *b;
@@ -43,10 +46,6 @@ typedef struct _LinEqtest{
     double eps;
 }LinEqtest;
 
-/**
- * @brief 
- * @returns 
- */
 static int _testLinearEquation(double *(*testfunc)(int, double*, double*), LinEqtest t)
 {
     double *res = testfunc(t.N, t.A, t.b);

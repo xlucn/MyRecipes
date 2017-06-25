@@ -1,10 +1,19 @@
+/**
+ * @file SteffensenIteration.c
+ * @brief Accelerate iteration using PicardIteration
+ */
 #include <math.h>
 #include "NR.h"
+#include "constants.h"
 
 /**
- * @brief Accelerate iteration of PicardIteration
+ * @brief Accelerate iteration using PicardIteration
+ * @param g function as in x = g(x)
+ * @param x the initial point
+ * @param eps the allows tolerance
+ * @returns the root of the function
  */
-double SteffensenIteration(double(*g)(double), double x, double eps)
+double SteffensenIteration(double (*g)(double), double x, double eps)
 {
     double y = g(x);
     double z = g(y);

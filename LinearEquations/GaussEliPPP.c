@@ -1,6 +1,8 @@
+/** @file GaussEliPPP.c */
 #include <math.h>
 #include <stdio.h>
 #include "NR.h"
+#include "NRprivate.h"
 #include "constants.h"
 
 /**
@@ -22,7 +24,7 @@ double *GaussEliPPP(int N, double *a, double *b)
         }
         A[i][N] = b[i];
     }
-    
+
     double *max = (double*)malloc_s(N * sizeof(double));
     double *x = (double*)malloc_s(N * sizeof(double));
 
@@ -76,17 +78,17 @@ double *GaussEliPPP(int N, double *a, double *b)
         printf("A is singular\n");
         return NULL;
     }
-    
-    for (int k = N - 1; k >= 0; k--) 
+
+    for (int k = N - 1; k >= 0; k--)
     {
         double t = 0;
-        for (int j = k + 1; j < N; j++) 
+        for (int j = k + 1; j < N; j++)
         {
             t += A[k][j] * x[j];
         }
         x[k] = (A[k][N] - t) / A[k][k];
     }
-    
+
     for (int i = 0; i < N; i++)
     {
         free(A[i]);

@@ -1,10 +1,21 @@
+/**
+ * @file TwoStageRungeKutta.c
+ * Two stage Runge Kutta method
+ */
 #include "NR.h"
 #include "NRprivate.h"
 
 /**
- * Two stage Runge Kutta method
+ * @brief Two stage Runge Kutta method
+ * @param N step number
+ * @param y0 initial values
+ * @param f derivative function. dy/dt=f(t,y)
+ * @param a lower limit of interval
+ * @param b upper limit of interval
+ * @param param parameter that determines value of c1 and c2
+ * @returns
  */
-static double* TwoStageRungeKutta(int N, double y0, double a, double b, double(*f)(double, double), double para)
+static double* TwoStageRungeKutta(int N, double y0, double a, double b, double (*f)(double, double), double para)
 {
     double c1 = 1 -  0.5 / para;
     double c2 = 1 - c1;
@@ -27,22 +38,42 @@ static double* TwoStageRungeKutta(int N, double y0, double a, double b, double(*
 }
 /**
  * @brief Improved Euler Method
+ * @param N step number
+ * @param y0 initial values
+ * @param f derivative function. dy/dt=f(t,y)
+ * @param a lower limit of interval
+ * @param b upper limit of interval
+ * @returns
  */
-double* ImprovedEuler(double(*f)(double, double), double a, double b, double y0, int N)
+double* ImprovedEuler(double (*f)(double, double), double a, double b, double y0, int N)
 {
     return TwoStageRungeKutta(N, y0, a, b, f, 1);
 }
+
 /**
  * @brief Midpoint method.
+ * @param N step number
+ * @param y0 initial values
+ * @param f derivative function. dy/dt=f(t,y)
+ * @param a lower limit of interval
+ * @param b upper limit of interval
+ * @returns
  */
-double* MID(double(*f)(double, double), double a, double b, double y0, int N)
+double* MID(double (*f)(double, double), double a, double b, double y0, int N)
 {
     return TwoStageRungeKutta(N, y0, a, b, f, 1 / 2);
 }
+
 /**
  * @brief Heun Method
+ * @param N step number
+ * @param y0 initial values
+ * @param f derivative function. dy/dt=f(t,y)
+ * @param a lower limit of interval
+ * @param b upper limit of interval
+ * @returns
  */
-double* Heun(double(*f)(double, double), double a, double b, double y0, int N)
+double* Heun(double (*f)(double, double), double a, double b, double y0, int N)
 {
     return TwoStageRungeKutta(N, y0, a, b, f, 2 / 3);
 }

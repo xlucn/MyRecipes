@@ -1,9 +1,16 @@
+/** @file ClassicRungeKutta.c */
 #include "NR.h"
 
 /**
  * @brief Classic Runge-Kutta Method
+ * @param f right function of ODE
+ * @param a lower limit of interval
+ * @param b upper limit of interval
+ * @param y0 initial value of f
+ * @param N number of subintervals
+ * @return array of ys
  */
-double *ClassicRungeKutta(double(*f)(double, double), double a, double b, double y0, int N)
+double *ClassicRungeKutta(double (*f)(double, double), double a, double b, double y0, int N)
 {
     double k[4];
     double h = (b - a) / N;

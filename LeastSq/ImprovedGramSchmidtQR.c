@@ -1,9 +1,14 @@
+/** @file ImprovedGramSchmidtQR.c */
 #include <math.h>
 #include "NRprivate.h"
 #include "NR.h"
 
 /**
  * @brief Improved version of Gram-Schmidt method.
+ * @param m length of first axis of A
+ * @param n length of second axis of A
+ * @param A matrix of shape m * n (m > n) and rank(A) = n
+ * @returns a three demension array which contains two 2-d arrays [Q,R].
  */
 double ***ImprovedGramSchmidtQR(int m, int n, double **A)
 {

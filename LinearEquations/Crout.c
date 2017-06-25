@@ -1,6 +1,7 @@
+/** @file Crout.c */
 #include <math.h>
 #include "NR.h"
-#include "NRprivate.h"
+#include <stdlib.h>
 #include "constants.h"
 /**
  * @brief Solve a system of linear equations with Crout method
@@ -13,7 +14,7 @@ double *Crout(int N, double *a, double *b)
 {
     double **LU = AugmentedMatrix(a, b, N, N, 1);
     double *x = newArray1d(N);
-    
+
     for(int k = 0; k < N; k++)
     {
         /* the kth col of L */
@@ -24,7 +25,7 @@ double *Crout(int N, double *a, double *b)
                 LU[i][k] -= LU[i][r] * LU[r][k];
             }
         }
-        
+
         /* choose the pivot */
         int pivot = k;
         for(int i = k; i < N; i++)
@@ -44,7 +45,7 @@ double *Crout(int N, double *a, double *b)
             LU[k] = LU[pivot];
             LU[pivot] = temp;
         }
-        
+
         /* the kth row of U and solve Ly=b for y at the same time*/
         for(int j = k + 1; j <= N; j++)
         {
@@ -55,7 +56,7 @@ double *Crout(int N, double *a, double *b)
             LU[k][j] /= LU[k][k];
         }
     }
-    
+
     /* solve Ux=y for x */
     for(int k = N - 1; k >= 0; k--)
     {
@@ -65,7 +66,7 @@ double *Crout(int N, double *a, double *b)
             x[k] -= LU[k][r] * x[r];
         }
     }
-    
+
     delArray2d(LU, N);
     return x;
 }

@@ -1,3 +1,4 @@
+/** @file testLeastSq.c */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -5,16 +6,8 @@
 #include "NRprivate.h"
 #include "Test.h"
 
-/**
- * testing orthogonal decomposition
- */
+/* testing orthogonal decomposition */
 
-/**
- * @brief 
- * @returns 
- * 
- * 
- */
 int testLeastSq()
 {
     int m = 4;
@@ -40,12 +33,6 @@ int testLeastSq()
     return PASSED;
 }
 
-/**
- * @brief 
- * @returns 
- * 
- * 
- */
 int testQR()
 {
     int m = 4;

@@ -1,12 +1,17 @@
+/** @file SecentMethod.c */
 #include <math.h>
 #include "NR.h"
+#include "constants.h"
 
 /**
- * @brief Secent method to solve a equation
+ * @brief Secent method to solve a equation f = 0
+ * @param f the function to be solved
  * @param x0 the first point
  * @param x1 the second point
+ * @param eps the allowed tolerance
+ * @returns the root of f = 0
  */
-double SecentMethod(double(*f)(double), double x0, double x1, double eps)
+double SecentMethod(double (*f)(double), double x0, double x1, double eps)
 {
     double y0 = f(x0);
     double y1 = f(x1);

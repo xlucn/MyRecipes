@@ -1,3 +1,4 @@
+/** @file GaussJordanEli.c */
 #include <math.h>
 #include "NR.h"
 #include "NRprivate.h"
@@ -44,7 +45,7 @@ double *GaussJordanEli(int N, double *A, double *b)
     {
         x[k] = Ab[k][N];
     }
-    
+
     delArray2d(Ab, N);
     return x;
 }

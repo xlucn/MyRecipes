@@ -1,3 +1,4 @@
+/** @file GaussEliPP.c */
 #include <math.h>
 #include "NR.h"
 #include "NRprivate.h"
@@ -39,26 +40,26 @@ double *GaussEliPP(int N, double *a, double *b)
             A[max] = temp;
         }
         /* elimination */
-        for (int i = k + 1; i < N; i++) 
+        for (int i = k + 1; i < N; i++)
         {
             A[i][k] = A[i][k] / A[k][k];
-            for (int j = k + 1; j < N + 1; j++) 
+            for (int j = k + 1; j < N + 1; j++)
             {
                 A[i][j] -= A[i][k] * A[k][j];
             }
         }
     }
-    
-    for (int k = N - 1; k >= 0; k--) 
+
+    for (int k = N - 1; k >= 0; k--)
     {
         double t = 0;
-        for (int j = k + 1; j < N; j++) 
+        for (int j = k + 1; j < N; j++)
         {
             t += A[k][j] * x[j];
         }
         x[k] = (A[k][N] - t) / A[k][k];
     }
-    
+
     delArray2d(A, N);
     return x;
 }

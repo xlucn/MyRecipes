@@ -1,9 +1,10 @@
+/** @file Hermite.c */
 #include <math.h>
 #include "NR.h"
 #include "NRprivate.h"
 /**
  * @brief Hermite polynomial Interpolation
- * @param N number of Interpolation points,
+ * @param N number of Interpolation intervals,
  * @param a[N] the Interpolation points,
  * @param x variable
  * @param f[N] function,
@@ -18,7 +19,6 @@ double Hermite(int N, double *a, double *f, double *df, double x)
     double H = 0;
 
     L = LagrangePoly(a, x, N);
-
     for (int i = 0; i < N; i++)
     {
         A[i] = 0;

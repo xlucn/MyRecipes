@@ -1,3 +1,4 @@
+/** @file Euler.c */
 #include "NR.h"
 /**
  * @brief Euler method to solve initial value problem(IVP) of ODE
@@ -6,9 +7,10 @@
  * @param b upper limit of interval
  * @param y0 initial value
  * @param N number of subintervals
+ * @return
  * @note you have to free the returning pointer after usage
  */
-double* Euler(double(*f)(double, double), double a, double b, double y0, int N)
+double* Euler(double (*f)(double, double), double a, double b, double y0, int N)
 {
     double h = (b - a) / N;
     double x = a;

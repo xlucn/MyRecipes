@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include "NRprivate.h"
 
-
 #undef malloc
 /**
  * @brief safer malloc function with null pointer check

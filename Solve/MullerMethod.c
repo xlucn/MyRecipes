@@ -1,10 +1,19 @@
+/** @file MullerMethod.c */
 #include <math.h>
 #include "NR.h"
+#include "constants.h"
 
 /**
- * @brief Muller method
+ * @brief solve a equation with Muller method
+ * @param f the function in equation f = 0
+ * @param x0 the first initial point
+ * @param x1 the second initial point
+ * @param x2 the third initial point
+ * @param eps the tolerance allowed
+ * @returns the root of the function, macro #FLOAT_NAN will be returned if the
+ *  limit of iteration #ITER_LIM is reached.
  */
-double MullerMethod(double(*f)(double), double x0, double x1, double x2, double eps)
+double MullerMethod(double (*f)(double), double x0, double x1, double x2, double eps)
 {
     double b;
     double d;

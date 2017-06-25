@@ -1,11 +1,10 @@
+
 #include "NR.h"
-
-
 
 /**
  * @brief Three stage Heun method.
  */
-double *ThreeStageHeun(int N, double y0, double a, double b, double(*f)(double, double))
+double *ThreeStageHeunMethod(int N, double y0, double a, double b, double(*f)(double, double))
 {
     return 0;
 }

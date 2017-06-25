@@ -1,16 +1,12 @@
+/** @file Chasing.c */
+#include <math.h>
+#include "constants.h"
 #include "NR.h"
 #include "NRprivate.h"
 
 
 /**
  * @brief Chasing method for solving tridiagonal equations.
- * 
- * - d0  c0   0  ...  0  -     - b1 -
- * | a1  d1  c1  ...  0  |     | b2 |
- * |  0  a2  d2  ... ... | x = | .. |
- * | ... ... ... ... cN-1|     | .. |
- * -  0   0  ... aN  dN  -     - bn -
- * 
  * @param N the order of the matrix.
  * @param d the main diagonal,
  * @param c the line above d,

@@ -1,9 +1,15 @@
+/** @file CompositeSimpsonInt.c */
 #include "NR.h"
 
 /**
- * @brief Composite Simpson integration，N is the number of the subintervals
+ * @brief Composite Simpson integration
+ * @param f the integrand function
+ * @param a the start point
+ * @param b the end point
+ * @param N the number of the subintervals
+ * @returns the integral
  */
-double CompositeSimpsonInt(double(*f)(double), double a, double b, int N)
+double CompositeSimpsonInt(double (*f)(double), double a, double b, int N)
 {
     double Integral = 0;
     double h = (b - a) / N / 2;

@@ -1,3 +1,4 @@
+/** @file AdamsPECE.c */
 #include "NR.h"
 /**
  * @brief One-step Adams correlation PECE method. Use classic Runge-Kutta method for the initial value.
@@ -9,7 +10,7 @@
  * @param N number of subintervals
  * @return array of ys
  */
-double *AdamsPECE(double(*f)(double, double), double a, double b, double dy0, double y0, int N)
+double *AdamsPECE(double (*f)(double, double), double a, double b, double dy0, double y0, int N)
 {
     double *y = newArray1d(N + 1);
     double *dy = newArray1d(N + 1);

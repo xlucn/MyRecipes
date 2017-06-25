@@ -1,3 +1,4 @@
+/** @file GaussEli.c */
 #include <math.h>
 #include "NR.h"
 #include "NRprivate.h"

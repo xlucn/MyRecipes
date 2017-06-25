@@ -1,9 +1,14 @@
-#include <math.h>
-#include "NRprivate.h"
+/** @file LeastSquare.c */
+#include <stdlib.h>
 #include "NR.h"
 
 /**
  * @brief solve the leastsquare solution for a system of linear equations.
+ * @param m length of first axis of A
+ * @param n length of second axis of A
+ * @param A matrix of shape m * n (m >= n)
+ * @param b constant vector
+ * @returns least square solution of A x = b
  */
 double *LeastSquare(int m, int n, double **A, double *b)
 {
