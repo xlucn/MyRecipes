@@ -16,7 +16,7 @@ double AdaptiveSimpsonInt(double (*f)(double), double a, double b, double TOL)
     double Sleft  = SimpsonInt(f, a, (a + b) / 2);
     double Sright = SimpsonInt(f, (a + b) / 2, b);
 
-    if (fabs(Stotal - Sleft - Sright) > 15 * TOL)
+    if (fabs(Stotal - Sleft - Sright) > 10 * TOL)
     {
         Sleft = AdaptiveSimpsonInt(f, a, (a + b) / 2, TOL / 2);
         Sright = AdaptiveSimpsonInt(f, (a + b) / 2, b, TOL / 2);

@@ -17,28 +17,19 @@
  */
 static double CubicSplineIpl(int N, double (*f)(double), double x, double *a, double *m)
 {
-    double *h = (double *)malloc_s(N * sizeof(double));
-
-    for (int m = 0; m < N; m++)
-    {
-        h[m] = a[m + 1] - a[m];
-    }
-
     int i = 0;
     for (int j = 0; j < N; j++)
-    {
         if (x < a[j + 1] && x >= a[j])
         {
             i = j;
+            break;
         }
-    }
 
-    double temp;
-    temp = 1 / h[i] * (m[i] / 6 * pow(a[i + 1] - x, 3) + m[i + 1] / 6 * pow(x - a[i], 3)) +
+    double h = a[i + 1] - a[i];
+
+    return 1 / h * (m[i] / 6 * pow(a[i + 1] - x, 3) + m[i + 1] / 6 * pow(x - a[i], 3)) +
            f(a[i]) + DividedDiff(f, a + i, 2) * (x - a[i]) -
-           h[i] * h[i] / 6 * ((m[i + 1] - m[i]) * (x - a[i]) / h[i] + m[i]);
-    free(h);
-    return temp;
+           h * h / 6 * ((m[i + 1] - m[i]) * (x - a[i]) / h + m[i]);
 }
 
 /**

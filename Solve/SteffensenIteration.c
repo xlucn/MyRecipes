@@ -15,15 +15,17 @@
  */
 double SteffensenIteration(double (*g)(double), double x, double eps)
 {
-    double y = g(x);
-    double z = g(y);
-    double p = x - (y - x) * (y - x) / (z - 2 * y + x);
-    while(fabs(p - x) > eps)
+    double y, z, p;
+    for(int i = 0; i < ITER_LIM; i++)
     {
-        x = p;
         y = g(x);
         z = g(y);
         p = x - (y - x) * (y - x) / (z - 2 * y + x);
+        if(fabs(p - x) < eps)
+        {
+            return p;
+        }
+        x = p;
     }
-    return p;
+    return FLOAT_NAN;
 }

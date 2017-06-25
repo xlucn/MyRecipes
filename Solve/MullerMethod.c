@@ -15,33 +15,30 @@
  */
 double MullerMethod(double (*f)(double), double x0, double x1, double x2, double eps)
 {
-    double b;
-    double d;
-    double e;
-    double h;
+    double b, d, e, h;
+    double f0, f1, f2, f01, f12, f012;
+    f0 = f(x0);f1 = f(x1);
 
-    double f0 = f(x0);
-    double f1 = f(x1);
-    double f2 = f(x2);
-    double f01 = (f1 - f0) / (x1 - x0);
-    double f12 = (f2 - f1) / (x2 - x1);
-    double f012  = (f12 - f01) / (x2 - x0);
-
-    do{
-        b = f12 + f012 * (x2 - x1);
-        d = sqrt(b * b - 4 * f2 * f012);
-        e = fabs(b - d) > fabs(b + d) ? b + d : b - d;
-        h = -2 * f2 / e;
-        x0 = x1;
-        x1 = x2;
-        x2 += h;
-        f0 = f1;
-        f1 = f2;
+    for(int i = 0; i < ITER_LIM; i++)
+    {
         f2 = f(x2);
         f01 = (f1 - f0) / (x1 - x0);
         f12 = (f2 - f1) / (x2 - x1);
         f012  = (f12 - f01) / (x2 - x0);
-    }while(fabs(h) < eps);
+        b = f12 + f012 * (x2 - x1);
+        d = sqrt(b * b - 4 * f2 * f012);
+        e = fabs(b - d) < fabs(b + d) ? b + d : b - d;
+        h = -2 * f2 / e;
+        if(fabs(h) < eps)
+        {
+            return x2;
+        }
+        x0 = x1;
+        f0 = f1;
+        x1 = x2;
+        f1 = f2;
+        x2 += h;
+    }
 
-    return x2;
+    return FLOAT_NAN;
 }
