@@ -34,6 +34,8 @@ int testQR();
 int testRKF();
 int testRomberg();
 int testSecent();
+int testSODERKF45();
+int testSODERKF78();
 int testSODERungeKutta();
 int testSplineIpl();
 int testSteffensen();
@@ -62,6 +64,8 @@ void testall();
 	testRKF,\
 	testRomberg,\
 	testSecent,\
+	testSODERKF45,\
+	testSODERKF78,\
 	testSODERungeKutta,\
 	testSplineIpl,\
 	testSteffensen \
@@ -89,12 +93,14 @@ void testall();
 	"testRKF",\
 	"testRomberg",\
 	"testSecent",\
+	"testSODERKF45",\
+	"testSODERKF78",\
 	"testSODERungeKutta",\
 	"testSplineIpl",\
 	"testSteffensen" \
 }
 
 /* define the number of functions */
-#define FUNC_COUNT 23
+#define FUNC_COUNT 25
 
 #endif
