@@ -50,7 +50,7 @@ SHELL=/bin/bash
 
 # executables and parameters
 CC=gcc
-PYTHON=python
+PYTHON=python2
 CFLAGS=-Wall -g -std=c99
 IFLAGS=-I $(INC_DIR)
 DFLAGS=-MM
