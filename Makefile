@@ -3,8 +3,8 @@
 ## header dir, where the header files are
 MY_INC_DIR=include
 
-## source dirs, dirs DIRECTLY contain the source files
-MY_SRC_DIR=ODE Basic Integral Interpolation LeastSq LibFunction LinearEquations Solve
+## dir containing the source dirs
+MY_SRC_DIR=.
 
 ## (create) lib name, and the lib will be named lib$(LIBNAME).a
 LIBNAME=NR
@@ -19,7 +19,7 @@ MY_DBG_DIR=debug
 #--------------- those things are not necessarily needed to change -------------
 #
 # names of directories
-SRC_DIR=$(MY_SRC_DIR)
+SRC_DIR=$(shell find $(MY_SRC_DIR) -maxdepth 1 -type d -name "[A-Z]*")
 INC_DIR=$(MY_INC_DIR)
 # new dirs below
 LIB_DIR=$(MY_LIB_DIR)
