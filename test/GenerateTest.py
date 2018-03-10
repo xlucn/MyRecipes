@@ -67,10 +67,10 @@ def main():
     testh = os.path.join(testdir, 'Test.h')
     testc = [os.path.join(testdir, f) for f in os.listdir(testdir) 
                 if f.startswith('test') and f.endswith('.c')]
+    
     funclist = readfuncs(testc)
-    if not os.path.exists(testh) or funclist != readfuncs([testh]):
-        gentest(funclist, testh)
-        print 'Test header file is (re)generated.'
+    gentest(funclist, testh)
+    print 'Test header file is (re)generated.'
 
 if __name__ == '__main__':
     main()
