@@ -104,7 +104,7 @@ $(DEP) $(TESTDEP) $(TESTBIN): | $(DIRS)
 $(DIRS):
 	mkdir -p $(DIRS)
 
-$(TESTH):$(TESTSRC)
+$(TESTH):$(TESTSRC) $(GENTEST)
 	$(PYTHON) $(GENTEST)
 
 $(DEP_DIR)/%.d:%.c
