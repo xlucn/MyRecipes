@@ -23,8 +23,9 @@ def readfuncs(filenames):
     Return:
     a list of sorted function names
     '''
-    p = re.compile(r'int\s+(test\w+)\s*\(\s*\)')
-    return sorted(sum([p.findall(open(f).read()) for f in filenames], []))
+    pattern = re.compile(r'int\s+(test\w+)\s*\(\s*\)')
+    raw_list = sum([pattern.findall(open(f).read()) for f in filenames], [])
+    return sorted(raw_list, key=str.lower)
 
 def gentest(funcs, testh):
     '''
