@@ -6,15 +6,22 @@ Generate the header files including all the declarations of test functions,
 a array of functions, a array of function names and the number of functions.
 
 The source files of which names start with "test" will be scanned.
-And the test functions must return int, take no arguments and the name also 
-start with "test".
+And the test functions must 
+  1. return int, 
+  2. take no arguments and 
+  3. the name also start with "test".
 '''
 import os, sys, re
 
 def readfuncs(filenames):
     '''
-    read files and find test function declarations or definitions.
-    return a list of sorted function names
+    Read files and find test function declarations or definitions.
+    
+    Input:
+    filenames: must be a list of filenames
+    
+    Return:
+    a list of sorted function names
     '''
     p = re.compile(r'int\s+(test\w+)\s*\(\s*\)')
     return sorted(sum([p.findall(open(f).read()) for f in filenames], []))
@@ -22,6 +29,10 @@ def readfuncs(filenames):
 def gentest(funcs, testh):
     '''
     generate test header file
+    
+    Input:
+    funcs: list of functions name.
+    testh: name of header file to be created.
     '''
     with open(testh, 'w') as header:
         header.write(
