@@ -1,4 +1,4 @@
-#------------- custom names, something need to be customized -------------------
+#------------- custom names, something can be customized -----------------------
 
 ## header dir, where the header files are
 MY_INC_DIR=include
@@ -34,6 +34,7 @@ OBJ=$(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 DEP=$(addprefix $(DEP_DIR)/,$(SRC:.c=.d))
 LIB=$(LIB_DIR)/lib$(LIBNAME).a
 
+#---------------------------------test------------------------------------------
 # names of test-related files
 TEST_DIR=test
 TESTSRC=$(wildcard $(TEST_DIR)/*.c)
@@ -60,6 +61,9 @@ LFLAGS=-lm -lNR -L $(LIB_DIR)
 DIRS+=$(LIB_DIR) $(DBG_DIR) $(OBJ_DIR) $(DEP_DIR)
 DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(OBJ_DIR)/$(dir))
 DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(DEP_DIR)/$(dir))
+
+
+#------------------Targets section----------------------------------------------
 
 .PHONY:all help clean remove cleanall rebuild doc test
 
@@ -95,7 +99,11 @@ rebuild:cleanall
 	make
 
 test:
-	@echo $(wildcard ^[A-Z]*)
+	@echo $(SRC_DIR)
+	@echo $(SRC)
+
+
+#------------------------------Dependencies section-----------------------------
 
 -include $(foreach dir, $(DIRS), $(wildcard $(dir)/*.d))
 
