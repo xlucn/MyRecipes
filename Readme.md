@@ -8,6 +8,6 @@ just an exercise implementing the algorithms from 《数值计算方法》，林
 Requirements:
 
 * make
-* gcc(just need versions comforming to c99)
-* awk
-* python
+* gcc(>= c99)
+* sed(for makefile dependencies)
+* python2
