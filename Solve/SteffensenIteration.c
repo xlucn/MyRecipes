@@ -27,5 +27,5 @@ double SteffensenIteration(double (*g)(double), double x, double eps)
         }
         x = p;
     }
-    return FLOAT_NAN;
+    return NAN;
 }

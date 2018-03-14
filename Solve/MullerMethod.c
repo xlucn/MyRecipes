@@ -10,7 +10,7 @@
  * @param x1 the second initial point
  * @param x2 the third initial point
  * @param eps the tolerance allowed
- * @returns the root of the function, macro #FLOAT_NAN will be returned if the
+ * @returns the root of the function, macro NAN will be returned if the
  *  limit of iteration #ITER_LIM is reached.
  */
 double MullerMethod(double (*f)(double), double x0, double x1, double x2, double eps)
@@ -40,5 +40,5 @@ double MullerMethod(double (*f)(double), double x0, double x1, double x2, double
         x2 += h;
     }
 
-    return FLOAT_NAN;
+    return NAN;
 }

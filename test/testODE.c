@@ -128,9 +128,9 @@ typedef struct SODETest{
 }SODETest;
 
 static SODETest sodetest[] = {
-/*     f,   y,   a,   b,  N,  m,       TOL,   h, hmin, hmax */
-    {Sf1, Sy1, 0.0, 1.0, 10,  2,      1e-8, 0.1, 1e-4, 1.0},
-    {Sf1, Sy1, 0.0, 1.0, 10,  2, FLOAT_NAN, 0.1, 1e-4, 1.0},
+/*     f,   y,   a,   b,  N,  m,  TOL,   h, hmin, hmax */
+    {Sf1, Sy1, 0.0, 1.0, 10,  2, 1e-8, 0.1, 1e-4, 1.0},
+    {Sf1, Sy1, 0.0, 1.0, 10,  2, NAN , 0.1, 1e-4, 1.0},
     {NULL}
 };
 
@@ -141,7 +141,6 @@ static SODETest sodetest[] = {
 int _testSODE(SODEsol (*f)(SODETest t), SODETest t)
 {
     SODEsol sol = f(t);
-    //SODERungeKutta(t.f, t.a, t.b, t.y(t.a), t.m, t.N);
 
     double *ts = SODEsolGetT(sol);
     double **ys = SODEsolGetY(sol);
@@ -155,7 +154,8 @@ int _testSODE(SODEsol (*f)(SODETest t), SODETest t)
         for(int j = 0 ; j < t.m; j++)
         {
             printf("%16.11f%16.11f", ys[i][j], ans[j]);
-            if(t.TOL != FLOAT_NAN && fabs(ys[i][j] - ans[j])/(ts[i] - ts[i - 1]) > t.TOL * i)
+            if(!isnan(t.TOL) && 
+             && fabs(ys[i][j] - ans[j])/(ts[i] - ts[i - 1]) > t.TOL * i)
             {
                 return FAILED;
             }

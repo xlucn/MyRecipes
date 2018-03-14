@@ -1,6 +1,6 @@
 /** @file constants.h */
 #include <float.h>
-#include <math.h>
+#include <math.h> /* NAN */
 
 #ifndef _CONST_H_
 #define _CONST_H_
@@ -10,9 +10,6 @@
 
 /** iteration limit, the maximum steps any iteration alg will execute */
 #define ITER_LIM 1000
-
-/** if a function returning double need to return a NAN, use this macro */
-#define FLOAT_NAN NAN
 
 /**
  * @brief the A matrix for RKF method with orders 8 and 7

@@ -28,5 +28,5 @@ double SecentMethod(double (*f)(double), double x0, double x1, double eps)
         y0 = y1;
         y1= f(x1);
     }
-    return FLOAT_NAN;
+    return NAN;
 }
