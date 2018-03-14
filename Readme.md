@@ -11,3 +11,33 @@ Requirements:
 * gcc(>= c99)
 * sed(for makefile dependencies)
 * python2
+
+## How test files are compiled
+
+Test folder structure:
+
+    test
+    |-- Test.c
+    |-- Test.h
+    |-- GenerateTest.py
+    |-- test*.c
+
+- All the test functions are written in **test\*.c** files. Every test function 
+must return `int` type, have no argumemts and be named as 'test*' in order to be
+collected automatically.
+
+- **GenerateTest.py** is a python script that scans through **test\*.c** files, 
+looks for functions that meet the conditions mentioned above and generate a 
+header file **Test.h** which contains declarations, (macro)list of function 
+variables, (macro)list of function names and (macro)the number of all the test 
+functions.
+
+- **Test.c** is a short C file that includes **Test.h**, uses the macros in it 
+to call every test function and print the summary infomation of the test.
+
+To show the flow in a chart:
+
+               GenerateTest.py
+    test*.c -----------------> Test.h \
+                                      |---> test binary
+                               Test.c /
