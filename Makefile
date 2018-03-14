@@ -1,69 +1,79 @@
-#------------- custom names, something can be customized -----------------------
+#----------------- custom names, which can be customized -----------------------
 
-## header dir, where the header files are
+## (existing) header dir, where the header files are
 MY_INC_DIR=include
 
-## dir containing the source dirs
+## (existing) dir containing the source dirs
 MY_SRC_DIR=.
 
-## (create) lib name, and the lib will be named lib$(LIBNAME).a
+## (created) lib name, and the lib will be named lib$(LIBNAME).a
 LIBNAME=NR
 
-## (create) library file dir, library file will be created here
+## (created) library file dir, library file will be created here
 MY_LIB_DIR=lib
 
-## (create) debug files dir, dependency files and object files will be here
+## (created) debug files dir, dependency files and object files will be here
 MY_DBG_DIR=debug
 
 
-#--------------- those things are not necessarily needed to change -------------
-#
-# names of directories
+#--------------------------Names of files and folders---------------------------
+
+# Names of existing directories
 SRC_DIR=$(shell find $(MY_SRC_DIR) -maxdepth 1 -type d -name "[A-Z]*")
 INC_DIR=$(MY_INC_DIR)
-# new dirs below
+
+# Names of new dirs
 LIB_DIR=$(MY_LIB_DIR)
 DBG_DIR=$(MY_DBG_DIR)
 OBJ_DIR=$(DBG_DIR)/obj
 DEP_DIR=$(DBG_DIR)/dep
 
-# names of files
+# Names of source files
 SRC=$(foreach dir,$(SRC_DIR),$(wildcard $(dir)/*.c))
-# new files below
+
+# New files
 OBJ=$(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 DEP=$(addprefix $(DEP_DIR)/,$(SRC:.c=.d))
 LIB=$(LIB_DIR)/lib$(LIBNAME).a
 
-#---------------------------------test------------------------------------------
-# names of test-related files
+# Directories for all newly created files
+DIRS+=$(LIB_DIR) $(DBG_DIR) $(OBJ_DIR) $(DEP_DIR)
+
+
+#---------------------------------Tests-----------------------------------------
+
+# Names of test-related files
 TEST_DIR=test
 TESTSRC=$(wildcard $(TEST_DIR)/*.c)
 GENTEST=$(TEST_DIR)/GenerateTest.py
-# new files below
+
+# New files
 TESTH=$(TEST_DIR)/Test.h
 TESTBIN=$(TEST_DIR)/test
 TESTOBJ=$(addprefix $(OBJ_DIR)/,$(TESTSRC:.c=.o))
 TESTDEP=$(addprefix $(DEP_DIR)/,$(TESTSRC:.c=.d))
 
-# shell config
-SHELL=/bin/bash
-.SHELLFLAGS = -c -e
+# Directories for all newly created files
+DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(OBJ_DIR)/$(dir))
+DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(DEP_DIR)/$(dir))
 
-# executables and parameters
+#---------------------------Commands and flags----------------------------------
+
+# Executables
 CC=gcc
 PYTHON=python2
+# Shell config
+SHELL=/bin/bash
+# GCC flags
 CFLAGS=-Wall -g -std=c99 -fpic
 IFLAGS=-I $(INC_DIR)
 DFLAGS=-MM
 LFLAGS=-lm -lNR -L $(LIB_DIR)
-
-# directories for all new created files
-DIRS+=$(LIB_DIR) $(DBG_DIR) $(OBJ_DIR) $(DEP_DIR)
-DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(OBJ_DIR)/$(dir))
-DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(DEP_DIR)/$(dir))
+# Shell flags
+.SHELLFLAGS = -c -e
 
 
-#------------------Targets section----------------------------------------------
+#---------------------------Targets---------------------------------------------
 
 .PHONY:all help clean remove cleanall rebuild doc test
 
@@ -74,26 +84,20 @@ all:$(DEP) $(TESTDEP) $(TESTBIN)
 doc:
 	doxygen Doxyfile
 
-# other PHONY targets
-
 help:
 	@echo \
 "Usage:\n\
 (all)	:	build the whole project.\n\
 clean	:	remove the object files and the dependancy files.\n\
-remove	:	remove the binary files and the library files.\n\
-cleanall:	clean and remove.\n\
-rebuild	:	cleanall and make.\n\
+remove	:	remove all generated files.\n\
+rebuild	:	remove and make.\n\
 help    :	show this message"
 
 clean:
 	rm -rf $(DBG_DIR)
 
-remove:
+remove:clean
 	rm -rf $(LIB_DIR) $(TESTBIN)
-
-cleanall:clean remove
-
 
 rebuild:cleanall
 	make
@@ -103,7 +107,7 @@ test:
 	@echo $(SRC)
 
 
-#------------------------------Dependencies section-----------------------------
+#------------------------------Dependencies-------------------------------------
 
 -include $(foreach dir, $(DIRS), $(wildcard $(dir)/*.d))
 
