@@ -52,7 +52,7 @@ SHELL=/bin/bash
 # executables and parameters
 CC=gcc
 PYTHON=python2
-CFLAGS=-Wall -g -std=c99
+CFLAGS=-Wall -g -std=c99 -fpic
 IFLAGS=-I $(INC_DIR)
 DFLAGS=-MM
 LFLAGS=-lm -lNR -L $(LIB_DIR)
