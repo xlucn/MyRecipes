@@ -5,9 +5,6 @@
 #include "Test.h"
 #include "constants.h"
 
-/** tolerance allowed for the functions */
-#define TOL 1e-8
-
 static double f1(double x) {return x * x * x - x - 1;}
 static double f2(double x) {return (x + 2) * x * x - 4;}
 static double g2(double x) {return x - f2(x) / (3 * x + 4) / x;}
@@ -24,14 +21,15 @@ typedef struct SolveTest{
     double x1;
     double x2;
     double x3;
+    double TOL;
 }SolveTest;
 
 static SolveTest solvetests[] = {
-    {f1,   NULL, NULL, 1.32471795724475, 1.0, 2.0      , FLOAT_NAN},
-    {f2,   g2,   NULL, 1.130395435,      1.0, FLOAT_NAN, FLOAT_NAN},
-    {f2,   g3,   NULL, 1.130395435,      1.5, FLOAT_NAN, FLOAT_NAN},
-    {f4,   NULL, df4,  1.368808108,      1.0, FLOAT_NAN, FLOAT_NAN},
-    {f5,   NULL, NULL, 1.672981647854,   2.0, 1.0      , 1.5      },
+    {f1, NULL, NULL, 1.32471795724475, 1.0, 2.0, NAN, 1e-13},
+    {f2, g2,   NULL, 1.130395435,      1.0, NAN, NAN, 1e-8 },
+    {f2, g3,   NULL, 1.130395435,      1.5, NAN, NAN, 1e-8 },
+    {f4, NULL, df4,  1.368808108,      1.0, NAN, NAN, 1e-8 },
+    {f5, NULL, NULL, 1.672981647854,   2.0, 1.0, 1.5, 1e-11},
     {NULL}
 };
 
@@ -39,7 +37,7 @@ static int _testSolve(double (*f)(SolveTest), SolveTest t)
 {
     double p = f(t);
     printf("%lf\n", p);
-    if(fabs(p - t.root) > TOL)
+    if(fabs(p - t.root) > t.TOL)
     {
         return FAILED;
     }
@@ -49,7 +47,7 @@ static int _testSolve(double (*f)(SolveTest), SolveTest t)
 /*--------------------------- Bisection Method -------------------------------*/
 static double _testBisection(SolveTest t)
 {
-    return Bisection(t.f, t.x1, t.x2, TOL);
+    return Bisection(t.f, t.x1, t.x2, t.TOL);
 }
 
 int testBisection()
@@ -65,7 +63,7 @@ int testBisection()
 /*---------------------------- Picard Recurtion-------------------------------*/
 static double _testPicardRecurtion(SolveTest t)
 {
-    return PicardIteration(t.g, t.x1, TOL);
+    return PicardIteration(t.g, t.x1, t.TOL);
 }
 
 int testPicardRecurtion()
@@ -81,7 +79,7 @@ int testPicardRecurtion()
 /*------------------------ Steffensen iteration-------------------------------*/
 static double _testSteffensen(SolveTest t)
 {
-    return SteffensenIteration(t.g, t.x1, TOL);
+    return SteffensenIteration(t.g, t.x1, t.TOL);
 }
 
 int testSteffensen()
@@ -97,7 +95,7 @@ int testSteffensen()
 /*---------------------------- Newton Method ---------------------------------*/
 static double _testNewtonMethod(SolveTest t)
 {
-    return NewtonMethod(f4, df4, t.x1, TOL);
+    return NewtonMethod(t.f, t.df, t.x1, t.TOL);
 }
 
 int testNewtonMethod()
@@ -113,7 +111,7 @@ int testNewtonMethod()
 /*---------------------------- Secent Method ---------------------------------*/
 static double _testSecent(SolveTest t)
 {
-    return SecentMethod(t.f, t.x1, t.x2, TOL);
+    return SecentMethod(t.f, t.x1, t.x2, t.TOL);
 }
 
 int testSecent()
@@ -129,7 +127,7 @@ int testSecent()
 /*---------------------------- Muller Method ---------------------------------*/
 static double _testMuller(SolveTest t)
 {
-    return MullerMethod(t.f, t.x1, t.x2, t.x3, TOL);
+    return MullerMethod(t.f, t.x1, t.x2, t.x3, t.TOL);
 }
 
 int testMuller()
