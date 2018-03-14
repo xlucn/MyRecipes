@@ -1,16 +1,22 @@
-#! /usr/bin/env python
+#! /usr/bin/env python2
 '''
-Author: Lu Xu
+Author: Lu Xu(oliver_lew@outlook.com)
 
-Generate the header files including all the declarations of test functions,
-a array of functions, a array of function names and the number of functions.
+What does this script do:
+  Generate the header files including all the declarations of test functions,
+an array of test functions, an array of test function names and the number of 
+test functions.
 
-The source files of which names start with "test" will be scanned.
-And the test functions must 
+Where to look for test functions:
+  The source files in the current folder of which the names start with "test"
+will be scanned.
+
+And the test functions must match the following description:
   1. return int, 
   2. take no arguments and 
   3. the name also start with "test".
 '''
+
 import os, sys, re
 
 def readfuncs(filenames):
@@ -21,7 +27,7 @@ def readfuncs(filenames):
     filenames: must be a list of filenames
     
     Return:
-    a list of sorted function names
+    a list of sorted(case insensitive) function names
     '''
     pattern = re.compile(r'int\s+(test\w+)\s*\(\s*\)')
     raw_list = sum([pattern.findall(open(f).read()) for f in filenames], [])
@@ -72,15 +78,15 @@ def gentest(funcs, testh):
 
 def main():
     '''
-    If the header file exists and the functions in it are the same as those in
-    source files, then it is up to date. Otherwise update the header file
+    Update the header file
     '''
     testdir = sys.path[0]
-    testh = os.path.join(testdir, 'Test.h')
+
     testc = [os.path.join(testdir, f) for f in os.listdir(testdir) 
                 if f.startswith('test') and f.endswith('.c')]
-    
     funclist = readfuncs(testc)
+
+    testh = os.path.join(testdir, 'Test.h')
     gentest(funclist, testh)
     print 'Test header file is (re)generated.'
 
