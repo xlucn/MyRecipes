@@ -54,7 +54,7 @@ static double _testBisection(SolveTest t)
 
 int testBisection()
 {
-    for(int i = 0; solvetests[i].f; i++) if(solvetests[i].x2 != FLOAT_NAN)
+    for(int i = 0; solvetests[i].f; i++) if(!isnan(solvetests[i].x2))
     {
         if(_testSolve(_testBisection, solvetests[i]) == FAILED)
             return FAILED;
@@ -118,7 +118,7 @@ static double _testSecent(SolveTest t)
 
 int testSecent()
 {
-    for(int i = 0; solvetests[i].f; i++) if(solvetests[i].x2 != FLOAT_NAN)
+    for(int i = 0; solvetests[i].f; i++) if(!isnan(solvetests[i].x2))
     {
         if(_testSolve(_testSecent, solvetests[i]) == FAILED)
             return FAILED;
@@ -134,7 +134,7 @@ static double _testMuller(SolveTest t)
 
 int testMuller()
 {
-    for(int i = 0; solvetests[i].f; i++) if(solvetests[i].x3 != FLOAT_NAN)
+    for(int i = 0; solvetests[i].f; i++) if(!isnan(solvetests[i].x3))
     {
         if(_testSolve(_testMuller, solvetests[i]) == FAILED)
             return FAILED;
