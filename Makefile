@@ -25,19 +25,17 @@ INC_DIR=$(MY_INC_DIR)
 # Names of new dirs
 LIB_DIR=$(MY_LIB_DIR)
 DBG_DIR=$(MY_DBG_DIR)
-OBJ_DIR=$(DBG_DIR)/obj
-DEP_DIR=$(DBG_DIR)/dep
 
 # Names of source files
 SRC=$(foreach dir,$(SRC_DIR),$(wildcard $(dir)/*.c))
 
 # New files
-OBJ=$(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
-DEP=$(addprefix $(DEP_DIR)/,$(SRC:.c=.d))
+OBJ=$(addprefix $(DBG_DIR)/,$(SRC:.c=.o))
+DEP=$(addprefix $(DBG_DIR)/,$(SRC:.c=.d))
 LIB=$(LIB_DIR)/lib$(LIBNAME).a
 
 # Directories for all newly created files
-DIRS+=$(LIB_DIR) $(DBG_DIR) $(OBJ_DIR) $(DEP_DIR)
+DIRS+=$(LIB_DIR) $(DBG_DIR)
 
 
 #---------------------------------Tests-----------------------------------------
@@ -50,12 +48,11 @@ GENTEST=$(TEST_DIR)/GenerateTest.py
 # New files
 TESTH=$(TEST_DIR)/Test.h
 TESTBIN=$(TEST_DIR)/test
-TESTOBJ=$(addprefix $(OBJ_DIR)/,$(TESTSRC:.c=.o))
-TESTDEP=$(addprefix $(DEP_DIR)/,$(TESTSRC:.c=.d))
+TESTOBJ=$(addprefix $(DBG_DIR)/,$(TESTSRC:.c=.o))
+TESTDEP=$(addprefix $(DBG_DIR)/,$(TESTSRC:.c=.d))
 
 # Directories for all newly created files
-DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(OBJ_DIR)/$(dir))
-DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(DEP_DIR)/$(dir))
+DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(DBG_DIR)/$(dir))
 
 #---------------------------Commands and flags----------------------------------
 
@@ -99,7 +96,7 @@ clean:
 remove:clean
 	rm -rf $(LIB_DIR) $(TESTBIN)
 
-rebuild:cleanall
+rebuild:remove
 	make
 
 test:
@@ -119,10 +116,10 @@ $(DIRS):
 $(TESTH):$(TESTSRC) $(GENTEST)
 	$(PYTHON) $(GENTEST)
 
-$(DEP_DIR)/%.d:%.c
-	$(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,$(*F).o[ :]*,$(OBJ_DIR)/$*.o $@ : ,g' > $@
+$(DBG_DIR)/%.d:%.c
+	$(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,$(*F).o[ :]*,$(DBG_DIR)/$*.o $@ : ,g' > $@
 
-$(OBJ_DIR)/%.o:%.c
+$(DBG_DIR)/%.o:%.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
 $(LIB):$(OBJ)
