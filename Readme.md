@@ -12,6 +12,20 @@ Requirements:
 * sed(for makefile dependencies)
 * python2
 
+## Project structure
+
+    Myrecipes
+    |
+    |-- (created) debug: intermediate files
+    |
+    |-- include: header files
+    |
+    |-- (created) lib: static library files
+    |
+    |-- test: test files
+    |
+    |-- other(start with capital letter): source files
+
 ## How test files are compiled
 
 Test folder structure:
