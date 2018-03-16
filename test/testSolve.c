@@ -25,6 +25,7 @@ typedef struct SolveTest{
 }SolveTest;
 
 static SolveTest solvetests[] = {
+/*   f   g     df    root              x1   x2   x3   TOL   */
     {f1, NULL, NULL, 1.32471795724475, 1.0, 2.0, NAN, 1e-13},
     {f2, g2,   NULL, 1.130395435,      1.0, NAN, NAN, 1e-8 },
     {f2, g3,   NULL, 1.130395435,      1.5, NAN, NAN, 1e-8 },
