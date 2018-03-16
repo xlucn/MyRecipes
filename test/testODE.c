@@ -154,7 +154,7 @@ int _testSODE(SODEsol (*f)(SODETest t), SODETest t)
         for(int j = 0 ; j < t.m; j++)
         {
             printf("%16.11f%16.11f", ys[i][j], ans[j]);
-            if(!isnan(t.TOL) && 
+            if(!isnan(t.TOL)
              && fabs(ys[i][j] - ans[j])/(ts[i] - ts[i - 1]) > t.TOL * i)
             {
                 return FAILED;
