@@ -81,6 +81,9 @@ all:$(DEP) $(TESTDEP) $(TESTBIN)
 doc:
 	doxygen Doxyfile
 
+tags:
+	ctags --exclude=.ccls-cache/* --exclude=docs/* --exclude=compile_commands.json -R .
+
 help:
 	@echo \
 "Usage:\n\
