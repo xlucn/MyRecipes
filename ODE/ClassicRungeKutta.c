@@ -1,4 +1,5 @@
 /** @file ClassicRungeKutta.c */
+#include <stdlib.h>
 #include "NR.h"
 
 /**
@@ -16,7 +17,7 @@ double *ClassicRungeKutta(double (*f)(double, double), double a, double b, doubl
     double h = (b - a) / N;
     double x = a;
     double y = y0;
-    double* result = newArray1d(N + 1);
+    double* result = malloc((N + 1) * sizeof(double));
     result[0] = y0;
 
     for(int i = 0; i < N; i++)

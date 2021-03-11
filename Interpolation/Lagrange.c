@@ -1,6 +1,7 @@
 /** @file Lagrange.c */
+#include <stdlib.h>
 #include "NR.h"
-#include "NRprivate.h"
+
 /**
  * @brief Lagrange polynomial
  * @param a interpolation points
@@ -10,7 +11,7 @@
  */
 double *LagrangePoly(double *a, double x, int N)
 {
-    double *l = newArray1d(N);
+    double *l = malloc(N * sizeof(double));
     for(int i = 0; i < N; i++)
     {
         l[i] = 1;

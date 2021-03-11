@@ -9,9 +9,6 @@ double **DividedDiffMatrix(double (*f)(double), double *x, int N);
 double *LagrangePoly(double *a, double x, int N);
 
 /*--------------------------Array manipulations ------------------------------*/
-double*  newArray1d(int N);
-void     delArray1d(double *array);
-double*  Array1dResize(double *array, int M);
 double** newArray2d(int N1, int N2);
 void     delArray2d(double **array, int N1);
 double** AugmentedMatrix(double *mat1, double *mat2, int N, int M1, int M2);

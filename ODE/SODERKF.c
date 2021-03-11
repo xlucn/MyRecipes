@@ -1,9 +1,9 @@
 /** @file SODERKF.c */
+#include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 #include "NR.h"
 #include "constants.h"
-#include "NRprivate.h"
 
 static SODEsol SODERKF(double *(*f)(double, double*), double *y0,
      double a, double b, int m, double h, double TOL, double hmax, double hmin, int n)
@@ -21,16 +21,16 @@ static SODEsol SODERKF(double *(*f)(double, double*), double *y0,
     }
     int length = 1024;
     int step = 0;
-    double *delta = newArray1d(m);
-    double *w = newArray1d(m); // a vector for temporary use
-    double *R = newArray1d(m); // the residuals
-    double **k = (double**)malloc_s(n * sizeof(double*));
+    double *delta = malloc(m * sizeof(double));
+    double *w = malloc(m * sizeof(double)); // a vector for temporary use
+    double *R = malloc(m * sizeof(double)); // the residuals
+    double **k = malloc(n * sizeof(double*));
 
-    double *t = newArray1d(length);
-    double **y = (double**)malloc_s(length * sizeof(double*));
+    double *t = malloc(length * sizeof(double));
+    double **y = malloc(length * sizeof(double*));
     /* initialization */
     t[0] = a;
-    y[0] = newArray1d(m);
+    y[0] = malloc(m * sizeof(double));
     for(int i = 0; i < m; i++)
     {
         y[0][i] = y0[i];
@@ -85,10 +85,10 @@ static SODEsol SODERKF(double *(*f)(double, double*), double *y0,
             if(step == length)
             {
                 length += 1024;
-                t = (double*)realloc_s(t, length * sizeof(double));
-                y = (double**)realloc_s(y, length * sizeof(double*));
+                t = (double*)realloc(t, length * sizeof(double));
+                y = (double**)realloc(y, length * sizeof(double*));
             }
-            y[step] = newArray1d(m);
+            y[step] = malloc(m * sizeof(double));
             /* calculate the new numbers */
             for(int im = 0; im < m; im++)
             {
@@ -111,14 +111,14 @@ static SODEsol SODERKF(double *(*f)(double, double*), double *y0,
     }
 
     // free the memory allocated before
-    delArray1d(delta);
-    delArray1d(w);
-    delArray1d(R);
+    free(delta);
+    free(w);
+    free(R);
     free(k);
 
     // resize the arrays to suitable size -- number of steps
-    y = (double**)realloc_s(y, step * sizeof(double*));
-    t = Array1dResize(t, step);
+    y = (double**)realloc(y, step * sizeof(double*));
+    t = realloc(t, step * sizeof(double));
     SODEsol sol = newSODEsol(step, t, y);
     return sol;
 }

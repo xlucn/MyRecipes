@@ -100,7 +100,7 @@ int testRKF()
 
 static double *Sf1(double t, double *y)
 {
-    double *f = newArray1d(2);
+    double *f = malloc(2 * sizeof(double));
     f[0] = -4 * y[0] - 2 * y[1] + cos(t) + 4 * sin(t);
     f[1] = 3 * y[0] + y[1] - 3 * sin(t);
     return f;
@@ -108,7 +108,7 @@ static double *Sf1(double t, double *y)
 
 static double *Sy1(double x)
 {
-	double *y = newArray1d(2);
+	double *y = malloc(2 * sizeof(double));
     y[0] = exp(-2 * x) * (-2 + 2 * exp(x) + exp(2 * x) * sin(x));
     y[1] = -exp(-2 * x) * (3 * exp(x) - 2);
     return y;
@@ -161,9 +161,9 @@ int _testSODE(SODEsol (*f)(SODETest t), SODETest t)
             }
         }
         printf("\n");
-        delArray1d(ans);
+        free(ans);
     }
-    delArray1d(ts);
+    free(ts);
     delArray2d(ys, steps);
     return PASSED;
 }

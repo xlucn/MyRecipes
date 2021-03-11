@@ -1,7 +1,7 @@
 /** @file GaussJordanEli.c */
+#include <stdlib.h>
 #include <math.h>
 #include "NR.h"
-#include "NRprivate.h"
 #include "constants.h"
 
 /**
@@ -14,7 +14,7 @@
 double *GaussJordanEli(int N, double *A, double *b)
 {
     double **Ab = AugmentedMatrix(A, b, N, N, 1);
-    double* x = newArray1d(N);
+    double* x = malloc(N * sizeof(double));
 
     for (int k = 0; k < N; k++)
     {

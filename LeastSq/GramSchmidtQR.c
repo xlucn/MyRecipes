@@ -1,7 +1,7 @@
 /** @file GramSchmidtQR.c */
+#include <stdlib.h>
 #include <math.h>
 #include "NR.h"
-#include "NRprivate.h"
 
 /**
  * @brief Gram-Schmidt method of POD(proper orthogonal decomposition).
@@ -14,7 +14,7 @@ double ***GramSchmidtQR(int m, int n, double **A)
 {
     double **Q = newArray2d(m, n);
     double **R = newArray2d(n, n);
-    double ***QR = (double***)malloc_s(2 * sizeof(double**));
+    double ***QR = malloc(2 * sizeof(double**));
     QR[0] = Q;
     QR[1] = R;
 

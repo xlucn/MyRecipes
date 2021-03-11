@@ -1,4 +1,5 @@
 /** @file AdamsPECE.c */
+#include <stdlib.h>
 #include "NR.h"
 /**
  * @brief One-step Adams correlation PECE method. Use classic Runge-Kutta method for the initial value.
@@ -12,8 +13,8 @@
  */
 double *AdamsPECE(double (*f)(double, double), double a, double b, double dy0, double y0, int N)
 {
-    double *y = newArray1d(N + 1);
-    double *dy = newArray1d(N + 1);
+    double *y = malloc((N + 1) * sizeof(double));
+    double *dy = malloc((N + 1) * sizeof(double));
     double h = (b - a) / N;
     y[0] = y0;
     y[1] = ClassicRungeKutta(f, a, b, y0, N)[1];
@@ -27,7 +28,7 @@ double *AdamsPECE(double (*f)(double, double), double a, double b, double dy0, d
         y[i + 1] = y[i] + h / 2 * (dy[i] + dy[i + 1]);
         dy[i + 1] = f(a + (i + 1) * h, y[i + 1]);
     }
-    delArray1d(dy);
+    free(dy);
     return y;
 }
 

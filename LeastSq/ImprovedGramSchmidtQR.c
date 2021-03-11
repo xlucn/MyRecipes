@@ -1,6 +1,6 @@
 /** @file ImprovedGramSchmidtQR.c */
+#include <stdlib.h>
 #include <math.h>
-#include "NRprivate.h"
 #include "NR.h"
 
 /**
@@ -13,7 +13,7 @@
 double ***ImprovedGramSchmidtQR(int m, int n, double **A)
 {
     double temp;
-    double ***QR = (double***)malloc_s(2 * sizeof(double**));
+    double ***QR = malloc(2 * sizeof(double**));
     double **Q = newArray2d(m, n);
     double **R = newArray2d(n, n);
     QR[0] = Q;

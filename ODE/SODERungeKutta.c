@@ -1,6 +1,7 @@
 /** @file SODERungeKutta.c */
+#include <stdlib.h>
 #include "NR.h"
-#include "NRprivate.h"
+
 /**
  * @brief Classic Runge-Kutta Method to solve a System of ODEs.
  * @param f a pointer to an array of functions.
@@ -14,10 +15,10 @@
 SODEsol SODERungeKutta(double *(*f)(double, double*), double a, double b, double *y0, int m, int N)
 {
     double h = (b - a) / N;
-    double *t = newArray1d(N + 1);
-    double *w = newArray1d(m);
+    double *t = malloc((N + 1) * sizeof(double));
+    double *w = malloc(m * sizeof(double));
     double **y = newArray2d(N + 1, m);
-    double **k = (double**)malloc_s(4 * sizeof(double*));
+    double **k = malloc(4 * sizeof(double*));
 
     t[0] = a;
     for(int i = 0; i < m; i++)
@@ -53,12 +54,12 @@ SODEsol SODERungeKutta(double *(*f)(double, double*), double a, double b, double
         }
 
         t[i + 1] = t[i] + h;
-        delArray1d(k[0]);
-        delArray1d(k[1]);
-        delArray1d(k[2]);
-        delArray1d(k[3]);
+        free(k[0]);
+        free(k[1]);
+        free(k[2]);
+        free(k[3]);
     }
-    delArray1d(w);
+    free(w);
     free(k);
     return newSODEsol(N + 1, t, y);
 }

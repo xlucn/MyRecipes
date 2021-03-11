@@ -1,7 +1,8 @@
 /** @file Hermite.c */
+#include <stdlib.h>
 #include <math.h>
 #include "NR.h"
-#include "NRprivate.h"
+
 /**
  * @brief Hermite polynomial Interpolation
  * @param N number of Interpolation intervals,
@@ -13,8 +14,8 @@
  */
 double Hermite(int N, double *a, double *f, double *df, double x)
 {
-    double *A = newArray1d(N);
-    double *B = newArray1d(N);
+    double *A = malloc(N * sizeof(double));
+    double *B = malloc(N * sizeof(double));
     double *L = LagrangePoly(a, x, N);
     double H = 0;
 
@@ -35,8 +36,8 @@ double Hermite(int N, double *a, double *f, double *df, double x)
 
         H += f[i] * A[i] + df[i] * B[i];
     }
-    delArray1d(A);
-    delArray1d(B);
-    delArray1d(L);
+    free(A);
+    free(B);
+    free(L);
     return H;
 }

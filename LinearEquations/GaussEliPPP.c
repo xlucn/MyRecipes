@@ -1,8 +1,8 @@
 /** @file GaussEliPPP.c */
+#include <stdlib.h>
 #include <math.h>
 #include <stdio.h>
 #include "NR.h"
-#include "NRprivate.h"
 #include "constants.h"
 
 /**
@@ -14,10 +14,10 @@
  */
 double *GaussEliPPP(int N, double *a, double *b)
 {
-    double **A = (double**)malloc_s(N * sizeof(double*));
+    double **A = malloc(N * sizeof(double*));
     for (int i = 0; i < N; i++)
     {
-        A[i] = (double*)malloc_s((N + 1) * sizeof(double));
+        A[i] = malloc((N + 1) * sizeof(double));
         for (int j = 0; j < N; j++)
         {
             A[i][j] = a[i * N + j];
@@ -25,8 +25,8 @@ double *GaussEliPPP(int N, double *a, double *b)
         A[i][N] = b[i];
     }
 
-    double *max = (double*)malloc_s(N * sizeof(double));
-    double *x = (double*)malloc_s(N * sizeof(double));
+    double *max = malloc(N * sizeof(double));
+    double *x = malloc(N * sizeof(double));
 
     /* get the largest number of each line */
     for (int i = 0; i < N; i++)

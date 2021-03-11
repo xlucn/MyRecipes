@@ -1,7 +1,7 @@
 /** @file GaussEliPP.c */
+#include <stdlib.h>
 #include <math.h>
 #include "NR.h"
-#include "NRprivate.h"
 #include "constants.h"
 
 /**
@@ -14,7 +14,7 @@
 double *GaussEliPP(int N, double *a, double *b)
 {
     double **A = AugmentedMatrix(a, b, N, N, 1);
-    double *x = newArray1d(N);
+    double *x = malloc(N * sizeof(double));
 
     for (int k = 0; k < N; k++)
     {

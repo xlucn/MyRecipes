@@ -2,7 +2,7 @@
  * @file testLinearEquation.c
  * @brief test solving linear equations
  */
-
+#include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 #include "NR.h"
@@ -58,7 +58,7 @@ static int _testLinearEquation(double *(*testfunc)(int, double*, double*), LinEq
         }
     }
     printf("\n");
-    delArray1d(res);
+    free(res);
     return PASSED;
 }
 

@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include "NR.h"
-#include "NRprivate.h"
 #include "Test.h"
 
 /* testing orthogonal decomposition */
@@ -13,7 +12,7 @@ int testLeastSq()
     int m = 4;
     int n = 3;
     double temp[4][3] = {{1, -2, 1},{0, 1, -1},{2, -4, 3},{4, -7, 4}};
-    double **A = (double**)malloc_s(m * sizeof(double));
+    double **A = malloc(m * sizeof(double));
     for (int i = 0; i < m; i++)
     {
         A[i] = temp[i];
@@ -39,7 +38,7 @@ int testQR()
     int n = 3;
     double eps = 1e-6;
     double temp[4][3] = {{1,-1,1},{0,-2,-1},{1,1,1},{0,2,1}};
-    double **A = (double**)malloc_s(m * sizeof(double*));
+    double **A = malloc(m * sizeof(double*));
     for(int i = 0; i < m; i++)
     {
         A[i] = temp[i];

@@ -1,9 +1,8 @@
 /** @file Chasing.c */
+#include <stdlib.h>
 #include <math.h>
 #include "constants.h"
 #include "NR.h"
-#include "NRprivate.h"
-
 
 /**
  * @brief Chasing method for solving tridiagonal equations.
@@ -16,10 +15,10 @@
  */
 double *Chasing(int N, double *d, double *c, double *a, double *b)
 {
-    double *p = newArray1d(N);
-    double *q = newArray1d(N);
-    double *x = newArray1d(N);
-    double *y = newArray1d(N);
+    double *p = malloc(N * sizeof(double));
+    double *q = malloc(N * sizeof(double));
+    double *x = malloc(N * sizeof(double));
+    double *y = malloc(N * sizeof(double));
 
     if(fabs(d[0]) < FLOAT_ZERO_LIM){ return NULL; }
     p[0] = d[0];
@@ -42,8 +41,8 @@ double *Chasing(int N, double *d, double *c, double *a, double *b)
     {
         x[i] = y[i] - q[i] * x[i + 1];
     }
-    delArray1d(p);
-    delArray1d(q);
-    delArray1d(y);
+    free(p);
+    free(q);
+    free(y);
     return x;
 }

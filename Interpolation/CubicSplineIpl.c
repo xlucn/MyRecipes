@@ -1,7 +1,7 @@
 /** @file CubicSplineIpl.c */
+#include <stdlib.h>
 #include <math.h>
 #include "NR.h"
-#include "NRprivate.h"
 
 /**
  * @brief Cubic Spline Interpolation.
@@ -41,11 +41,11 @@ static double CubicSplineIpl(int N, double (*f)(double), double x, double *a, do
  */
 static double *LagrangeCubicSplineIplPara(int N, double *a, double (*f)(double))
 {
-    double *h = (double *)malloc_s(N * sizeof(double));			/* step */
-    double *d = (double *)malloc_s((N - 1) * sizeof(double));		/* constant vector */
-    double *Matd = (double *)malloc_s((N - 1) * sizeof(double));	/* diagonal */
-    double *Matc = (double *)malloc_s((N - 1) * sizeof(double));	/* the line above diagonal */
-    double *Mata = (double *)malloc_s((N - 1) * sizeof(double));	/* the line below diagonal */
+    double *h = malloc(N * sizeof(double));			/* step */
+    double *d = malloc((N - 1) * sizeof(double));		/* constant vector */
+    double *Matd = malloc((N - 1) * sizeof(double));	/* diagonal */
+    double *Matc = malloc((N - 1) * sizeof(double));	/* the line above diagonal */
+    double *Mata = malloc((N - 1) * sizeof(double));	/* the line below diagonal */
 
     for (int i = 0; i < N; i++)
     {
@@ -108,11 +108,11 @@ static double *LagrangeCubicSplineIplPara(int N, double *a, double (*f)(double))
  */
 static double *CompleteCubicSplineIplPara(int N, double *a, double (*f)(double), double df_a, double df_b)
 {
-    double *h = (double *)malloc_s(N * sizeof(double));			/* step */
-    double *d = (double *)malloc_s((N - 1) * sizeof(double));		/* constant vector */
-    double *Matd = (double *)malloc_s((N - 1) * sizeof(double));	/* diagonal */
-    double *Matc = (double *)malloc_s((N - 1) * sizeof(double));	/* the line above diagonal */
-    double *Mata = (double *)malloc_s((N - 1) * sizeof(double));	/* the line below diagonal */
+    double *h = malloc(N * sizeof(double));			/* step */
+    double *d = malloc((N - 1) * sizeof(double));		/* constant vector */
+    double *Matd = malloc((N - 1) * sizeof(double));	/* diagonal */
+    double *Matc = malloc((N - 1) * sizeof(double));	/* the line above diagonal */
+    double *Mata = malloc((N - 1) * sizeof(double));	/* the line below diagonal */
 
     for (int i = 0; i < N; i++)
     {
@@ -170,13 +170,13 @@ static double *CompleteCubicSplineIplPara(int N, double *a, double (*f)(double),
  */
 static double *NatureCubicSplineIplPara(int N, double *a, double (*f)(double), double ddf_a, double ddf_b)
 {
-    double *m = (double *)malloc_s((N + 1) * sizeof(double));		/* interpolation params */
-    double *temp = (double *)malloc_s((N - 1) * sizeof(double));
-    double *h = (double *)malloc_s(N * sizeof(double));			/* step */
-    double *d = (double *)malloc_s((N - 1) * sizeof(double));		/* constant vector */
-    double *Matd = (double *)malloc_s((N - 1) * sizeof(double));	/* diagonal */
-    double *Matc = (double *)malloc_s((N - 1) * sizeof(double));	/* the line above diagonal */
-    double *Mata = (double *)malloc_s((N - 1) * sizeof(double));	/* the line below diagonal */
+    double *m = malloc((N + 1) * sizeof(double));		/* interpolation params */
+    double *temp = malloc((N - 1) * sizeof(double));
+    double *h = malloc(N * sizeof(double));			/* step */
+    double *d = malloc((N - 1) * sizeof(double));		/* constant vector */
+    double *Matd = malloc((N - 1) * sizeof(double));	/* diagonal */
+    double *Matc = malloc((N - 1) * sizeof(double));	/* the line above diagonal */
+    double *Mata = malloc((N - 1) * sizeof(double));	/* the line below diagonal */
     for (int i = 0; i < N; i++)
     {
         h[i] = a[i + 1] - a[i];

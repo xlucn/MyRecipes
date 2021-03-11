@@ -3,40 +3,8 @@
  * @brief Array manipulation functions
  */
 
+#include <stdlib.h>
 #include "NR.h"
-#include "NRprivate.h"
-
-/*--------------------------- one dimension array ----------------------------*/
-/**
- * @brief create a one dim array with length n
- * @param N the length of the array
- * @returns a pointer to the array
- */
-double *newArray1d(int N)
-{
-    double *array = (double*)malloc_s(N * sizeof(double));
-    return array;
-}
-
-/**
- * @brief free the memory of 1d array
- * @param array the 1d array need to be deleted
- */
-void delArray1d(double *array)
-{
-    free(array);
-}
-
-/**
- * @brief resize the array
- * @param array array
- * @param M the new size, and it should be larger than the origin length
- * @returns a new array with length M,
- */
-double *Array1dResize(double *array, int M)
-{
-    return (double*)realloc_s((void*)array, M * sizeof(double));
-}
 
 /*--------------------------- two dimension array ----------------------------*/
 /**
@@ -48,9 +16,9 @@ double *Array1dResize(double *array, int M)
  */
 double **newArray2d(int N1, int N2)
 {
-    double **array = (double**)malloc_s(N1 * sizeof(double*));
+    double **array = malloc(N1 * sizeof(double*));
     for(int i = 0; i < N1; i++)
-        array[i] = (double*)malloc_s(N2 * sizeof(double));
+        array[i] = malloc(N2 * sizeof(double));
     return array;
 }
 

@@ -13,7 +13,7 @@
 double *Crout(int N, double *a, double *b)
 {
     double **LU = AugmentedMatrix(a, b, N, N, 1);
-    double *x = newArray1d(N);
+    double *x = malloc(N * sizeof(double));
 
     for(int k = 0; k < N; k++)
     {

@@ -1,8 +1,8 @@
 /** @file RKF.c */
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "NR.h"
-#include "NRprivate.h"
 #include "constants.h"
 /**
  * @brief RKF method(Ronge Kutta Fehlberg method)
@@ -28,12 +28,12 @@ static ODEsol RKFmn(double (*f)(double,double), double a, double b, double y0, d
     double t = a;
     double y = y0;
     double h = hmax;
-    double *k = newArray1d(n);
+    double *k = malloc(n * sizeof(double));
     double R = 0;
     double delta;
     step++;
-    double *ts = newArray1d(length);
-    double *ys = newArray1d(length);
+    double *ts = malloc(length * sizeof(double));
+    double *ys = malloc(length * sizeof(double));
     ts[0] = t;
     ys[0] = y;
 
@@ -64,8 +64,8 @@ static ODEsol RKFmn(double (*f)(double,double), double a, double b, double y0, d
             if(step == length)
             {
                 length += 1024;
-                ts = Array1dResize(ts, length);
-                ys = Array1dResize(ys, length);
+                ts = realloc(ts, length * sizeof(double));
+                ys = realloc(ys, length * sizeof(double));
             }
             ts[step - 1] = t;
             ys[step - 1] = y;

@@ -1,6 +1,7 @@
 /** @file ODEsol.c */
+#include <stdlib.h>
 #include "NR.h"
-#include "NRprivate.h"
+
 /**
  * @brief a struct type to contain the solution of a system of ODEs.
  */
@@ -42,7 +43,7 @@ struct _ODEsol{
  */
 SODEsol newSODEsol(int step, double *t, double **y)
 {
-	SODEsol s = (SODEsol)malloc_s(sizeof(struct _SODEsol));
+	SODEsol s = (SODEsol)malloc(sizeof(struct _SODEsol));
 	s->step = step;
 	s->t = t;
 	s->y = y;
@@ -58,7 +59,7 @@ SODEsol newSODEsol(int step, double *t, double **y)
  */
 ODEsol newODEsol(int step, double *t, double *y)
 {
-	ODEsol s = (ODEsol)malloc_s(sizeof(struct _ODEsol));
+	ODEsol s = (ODEsol)malloc(sizeof(struct _ODEsol));
 	s->step = step;
 	s->t = t;
 	s->y = y;

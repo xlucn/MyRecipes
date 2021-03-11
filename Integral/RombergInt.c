@@ -1,4 +1,5 @@
 /** @file RombergInt.c */
+#include <stdlib.h>
 #include <math.h>
 #include "NR.h"
 
@@ -14,12 +15,12 @@
 double RombergInt(double (*f)(double), double a, double b, int N, double eps)
 {
     double h = b - a;
-    double *T1 = newArray1d(1), *T2;
+    double *T1 = malloc(1 * sizeof(double)), *T2;
     T1[0] = (f(b) + f(a)) * h / 2;
 
     for (int i = 1; i < N; i++, h /= 2)
     {
-        T2 = newArray1d(i + 1);
+        T2 = malloc((i + 1) * sizeof(double));
         //T[i][0]
         T2[0] = T1[0];
         for (int k = 0; k < pow(2, i - 1) - 0.5; k++)
@@ -37,15 +38,15 @@ double RombergInt(double (*f)(double), double a, double b, int N, double eps)
         if (fabs(T2[i] - T2[i - 1]) <= eps)
         {
             double result = T2[i];
-            delArray1d(T1);
-            delArray1d(T2);
+            free(T1);
+            free(T2);
             return result;
         }
 
-        delArray1d(T1);
+        free(T1);
         T1 = T2;
     }
     double result = T1[N - 1];
-    delArray1d(T1);
+    free(T1);
     return result;
 }
