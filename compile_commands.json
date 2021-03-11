@@ -1,0 +1,848 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Solve/Bisection.c",
+      "-o",
+      "debug/Solve/Bisection.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Solve/Bisection.c",
+    "output": "./debug/Solve/Bisection.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Solve/MullerMethod.c",
+      "-o",
+      "debug/Solve/MullerMethod.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Solve/MullerMethod.c",
+    "output": "./debug/Solve/MullerMethod.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Solve/NewtonMethod.c",
+      "-o",
+      "debug/Solve/NewtonMethod.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Solve/NewtonMethod.c",
+    "output": "./debug/Solve/NewtonMethod.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Solve/PicardIteration.c",
+      "-o",
+      "debug/Solve/PicardIteration.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Solve/PicardIteration.c",
+    "output": "./debug/Solve/PicardIteration.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Solve/SecentMethod.c",
+      "-o",
+      "debug/Solve/SecentMethod.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Solve/SecentMethod.c",
+    "output": "./debug/Solve/SecentMethod.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Solve/SteffensenIteration.c",
+      "-o",
+      "debug/Solve/SteffensenIteration.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Solve/SteffensenIteration.c",
+    "output": "./debug/Solve/SteffensenIteration.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "ODE/AdamsPECE.c",
+      "-o",
+      "debug/ODE/AdamsPECE.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./ODE/AdamsPECE.c",
+    "output": "./debug/ODE/AdamsPECE.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "ODE/ClassicRungeKutta.c",
+      "-o",
+      "debug/ODE/ClassicRungeKutta.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./ODE/ClassicRungeKutta.c",
+    "output": "./debug/ODE/ClassicRungeKutta.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "ODE/Euler.c",
+      "-o",
+      "debug/ODE/Euler.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./ODE/Euler.c",
+    "output": "./debug/ODE/Euler.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "ODE/ODEsol.c",
+      "-o",
+      "debug/ODE/ODEsol.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./ODE/ODEsol.c",
+    "output": "./debug/ODE/ODEsol.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "ODE/others.c",
+      "-o",
+      "debug/ODE/others.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./ODE/others.c",
+    "output": "./debug/ODE/others.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "ODE/RKF.c",
+      "-o",
+      "debug/ODE/RKF.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./ODE/RKF.c",
+    "output": "./debug/ODE/RKF.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "ODE/SODERKF.c",
+      "-o",
+      "debug/ODE/SODERKF.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./ODE/SODERKF.c",
+    "output": "./debug/ODE/SODERKF.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "ODE/SODERKF-standalone.c",
+      "-o",
+      "debug/ODE/SODERKF-standalone.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./ODE/SODERKF-standalone.c",
+    "output": "./debug/ODE/SODERKF-standalone.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "ODE/SODERungeKutta.c",
+      "-o",
+      "debug/ODE/SODERungeKutta.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./ODE/SODERungeKutta.c",
+    "output": "./debug/ODE/SODERungeKutta.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "ODE/TwoStageRungeKutta.c",
+      "-o",
+      "debug/ODE/TwoStageRungeKutta.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./ODE/TwoStageRungeKutta.c",
+    "output": "./debug/ODE/TwoStageRungeKutta.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "LinearEquations/Chasing.c",
+      "-o",
+      "debug/LinearEquations/Chasing.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./LinearEquations/Chasing.c",
+    "output": "./debug/LinearEquations/Chasing.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "LinearEquations/Cholesky.c",
+      "-o",
+      "debug/LinearEquations/Cholesky.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./LinearEquations/Cholesky.c",
+    "output": "./debug/LinearEquations/Cholesky.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "LinearEquations/Crout.c",
+      "-o",
+      "debug/LinearEquations/Crout.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./LinearEquations/Crout.c",
+    "output": "./debug/LinearEquations/Crout.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "LinearEquations/CroutPP.c",
+      "-o",
+      "debug/LinearEquations/CroutPP.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./LinearEquations/CroutPP.c",
+    "output": "./debug/LinearEquations/CroutPP.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "LinearEquations/GaussEli.c",
+      "-o",
+      "debug/LinearEquations/GaussEli.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./LinearEquations/GaussEli.c",
+    "output": "./debug/LinearEquations/GaussEli.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "LinearEquations/GaussEliPP.c",
+      "-o",
+      "debug/LinearEquations/GaussEliPP.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./LinearEquations/GaussEliPP.c",
+    "output": "./debug/LinearEquations/GaussEliPP.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "LinearEquations/GaussEliPPP.c",
+      "-o",
+      "debug/LinearEquations/GaussEliPPP.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./LinearEquations/GaussEliPPP.c",
+    "output": "./debug/LinearEquations/GaussEliPPP.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "LinearEquations/GaussJordanEli.c",
+      "-o",
+      "debug/LinearEquations/GaussJordanEli.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./LinearEquations/GaussJordanEli.c",
+    "output": "./debug/LinearEquations/GaussJordanEli.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "LinearEquations/LDLT.c",
+      "-o",
+      "debug/LinearEquations/LDLT.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./LinearEquations/LDLT.c",
+    "output": "./debug/LinearEquations/LDLT.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Basic/Array.c",
+      "-o",
+      "debug/Basic/Array.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Basic/Array.c",
+    "output": "./debug/Basic/Array.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Basic/malloc_s.c",
+      "-o",
+      "debug/Basic/malloc_s.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Basic/malloc_s.c",
+    "output": "./debug/Basic/malloc_s.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Basic/realloc_s.c",
+      "-o",
+      "debug/Basic/realloc_s.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Basic/realloc_s.c",
+    "output": "./debug/Basic/realloc_s.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Integral/AdaptiveSimpsonInt.c",
+      "-o",
+      "debug/Integral/AdaptiveSimpsonInt.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Integral/AdaptiveSimpsonInt.c",
+    "output": "./debug/Integral/AdaptiveSimpsonInt.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Integral/CompositeSimpsonInt.c",
+      "-o",
+      "debug/Integral/CompositeSimpsonInt.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Integral/CompositeSimpsonInt.c",
+    "output": "./debug/Integral/CompositeSimpsonInt.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Integral/RombergInt.c",
+      "-o",
+      "debug/Integral/RombergInt.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Integral/RombergInt.c",
+    "output": "./debug/Integral/RombergInt.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Integral/SimpsonInt.c",
+      "-o",
+      "debug/Integral/SimpsonInt.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Integral/SimpsonInt.c",
+    "output": "./debug/Integral/SimpsonInt.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Integral/TrapezoidalInt.c",
+      "-o",
+      "debug/Integral/TrapezoidalInt.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Integral/TrapezoidalInt.c",
+    "output": "./debug/Integral/TrapezoidalInt.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "LeastSq/GramSchmidtQR.c",
+      "-o",
+      "debug/LeastSq/GramSchmidtQR.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./LeastSq/GramSchmidtQR.c",
+    "output": "./debug/LeastSq/GramSchmidtQR.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "LeastSq/ImprovedGramSchmidtQR.c",
+      "-o",
+      "debug/LeastSq/ImprovedGramSchmidtQR.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./LeastSq/ImprovedGramSchmidtQR.c",
+    "output": "./debug/LeastSq/ImprovedGramSchmidtQR.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "LeastSq/LeastSquare.c",
+      "-o",
+      "debug/LeastSq/LeastSquare.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./LeastSq/LeastSquare.c",
+    "output": "./debug/LeastSq/LeastSquare.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Interpolation/CubicSplineIpl.c",
+      "-o",
+      "debug/Interpolation/CubicSplineIpl.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Interpolation/CubicSplineIpl.c",
+    "output": "./debug/Interpolation/CubicSplineIpl.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Interpolation/DividedDifference.c",
+      "-o",
+      "debug/Interpolation/DividedDifference.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Interpolation/DividedDifference.c",
+    "output": "./debug/Interpolation/DividedDifference.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Interpolation/Hermite.c",
+      "-o",
+      "debug/Interpolation/Hermite.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Interpolation/Hermite.c",
+    "output": "./debug/Interpolation/Hermite.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "Interpolation/Lagrange.c",
+      "-o",
+      "debug/Interpolation/Lagrange.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./Interpolation/Lagrange.c",
+    "output": "./debug/Interpolation/Lagrange.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "test/Test.c",
+      "-o",
+      "debug/test/Test.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./test/Test.c",
+    "output": "./debug/test/Test.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "test/testIntegration.c",
+      "-o",
+      "debug/test/testIntegration.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./test/testIntegration.c",
+    "output": "./debug/test/testIntegration.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "test/testInterpolation.c",
+      "-o",
+      "debug/test/testInterpolation.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./test/testInterpolation.c",
+    "output": "./debug/test/testInterpolation.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "test/testLeastSq.c",
+      "-o",
+      "debug/test/testLeastSq.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./test/testLeastSq.c",
+    "output": "./debug/test/testLeastSq.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "test/testLinearEquation.c",
+      "-o",
+      "debug/test/testLinearEquation.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./test/testLinearEquation.c",
+    "output": "./debug/test/testLinearEquation.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "test/testODE.c",
+      "-o",
+      "debug/test/testODE.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./test/testODE.c",
+    "output": "./debug/test/testODE.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-std=c99",
+      "-fpic",
+      "-c",
+      "test/testSolve.c",
+      "-o",
+      "debug/test/testSolve.o",
+      "-I",
+      "include"
+    ],
+    "directory": ".",
+    "file": "./test/testSolve.c",
+    "output": "./debug/test/testSolve.o"
+  }
+]
