@@ -1,12 +1,21 @@
+# Doxyfile 1.9.1
+
 PROJECT_NAME           = "My Recipes"
-PROJECT_NUMBER         = "v0.0.1"
+PROJECT_NUMBER         = v0.0.1
 PROJECT_BRIEF          = "Attempt to implement some numerical algorithms"
-OUTPUT_DIRECTORY       = "./docs"
+OUTPUT_DIRECTORY       = ./docs
 OPTIMIZE_OUTPUT_FOR_C  = YES
 SUBGROUPING            = NO
 NUM_PROC_THREADS       = 0
-FILE_PATTERNS          = *.c *.h *.py
+WARN_NO_PARAMDOC       = YES
+FILE_PATTERNS          = *.c \
+                         *.h \
+                         *.py \
+                         *.md
 RECURSIVE              = YES
+USE_MDFILE_AS_MAINPAGE = Readme.md
+SOURCE_BROWSER         = YES
 HTML_DYNAMIC_SECTIONS  = YES
 GENERATE_TREEVIEW      = YES
 SEARCHENGINE           = NO
+LATEX_HIDE_INDICES     = YES
