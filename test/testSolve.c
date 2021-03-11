@@ -13,15 +13,18 @@ static double f4(double x) {return ((x + 2) * x + 10) * x - 20;}
 static double df4(double x) {return (3 * x + 4) * x + 10;}
 static double f5(double x) {return (2 * x * x - 5) * x - 1;}
 
+/**
+ * @brief Solve test unit
+ */
 typedef struct SolveTest{
-    double (*f)(double);
-    double (*g)(double);
-    double (*df)(double);
-    double root;
-    double x1;
-    double x2;
-    double x3;
-    double TOL;
+    double (*f)(double); /**< empty */
+    double (*g)(double); /**< empty */
+    double (*df)(double); /**< empty */
+    double root; /**< empty */
+    double x1; /**< empty */
+    double x2; /**< empty */
+    double x3; /**< empty */
+    double TOL; /**< empty */
 }SolveTest;
 
 static SolveTest solvetests[] = {
@@ -51,6 +54,9 @@ static double _testBisection(SolveTest t)
     return Bisection(t.f, t.x1, t.x2, t.TOL);
 }
 
+/**
+ * @brief testBisection
+ */
 int testBisection()
 {
     for(int i = 0; solvetests[i].f; i++) if(!isnan(solvetests[i].x2))
@@ -67,6 +73,9 @@ static double _testPicardRecurtion(SolveTest t)
     return PicardIteration(t.g, t.x1, t.TOL);
 }
 
+/**
+ * @brief testPicardRecurtion
+ */
 int testPicardRecurtion()
 {
     for(int i = 0; solvetests[i].f; i++) if(solvetests[i].g != NULL)
@@ -83,6 +92,9 @@ static double _testSteffensen(SolveTest t)
     return SteffensenIteration(t.g, t.x1, t.TOL);
 }
 
+/**
+ * @brief Steffensen
+ */
 int testSteffensen()
 {
     for(int i = 0; solvetests[i].f; i++) if(solvetests[i].g != NULL)
@@ -99,6 +111,9 @@ static double _testNewtonMethod(SolveTest t)
     return NewtonMethod(t.f, t.df, t.x1, t.TOL);
 }
 
+/**
+ * @brief NewtonMethod
+ */
 int testNewtonMethod()
 {
     for(int i = 0; solvetests[i].f; i++) if(solvetests[i].df != NULL)
@@ -115,6 +130,9 @@ static double _testSecent(SolveTest t)
     return SecentMethod(t.f, t.x1, t.x2, t.TOL);
 }
 
+/**
+ * @brief Secent
+ */
 int testSecent()
 {
     for(int i = 0; solvetests[i].f; i++) if(!isnan(solvetests[i].x2))
@@ -131,6 +149,9 @@ static double _testMuller(SolveTest t)
     return MullerMethod(t.f, t.x1, t.x2, t.x3, t.TOL);
 }
 
+/**
+ * @brief Muller
+ */
 int testMuller()
 {
     for(int i = 0; solvetests[i].f; i++) if(!isnan(solvetests[i].x3))

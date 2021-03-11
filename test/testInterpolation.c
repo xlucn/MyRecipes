@@ -14,6 +14,9 @@ static double f3(double x)
     return 1 / (1 + x * x);
 }
 
+/**
+ * @brief testSplineIpl
+ */
 int testSplineIpl()
 {
     double x;
@@ -31,6 +34,9 @@ int testSplineIpl()
     return PASSED;
 }
 
+/**
+ * @brief testHermiteIpl
+ */
 int testHermiteIpl()
 {
     int N = 3;
@@ -54,6 +60,9 @@ static double f14(double x)
     return exp(x);
 }
 
+/**
+ * @brief testDividedDiff
+ */
 int testDividedDiff()
 {
     int N = 7;

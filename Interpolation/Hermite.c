@@ -6,10 +6,10 @@
 /**
  * @brief Hermite polynomial Interpolation
  * @param N number of Interpolation intervals,
- * @param a[N] the Interpolation points,
+ * @param a the Interpolation points,
  * @param x variable
- * @param f[N] function,
- * @param df[N] derivative of f with respect to variable x,
+ * @param f function,
+ * @param df derivative of f with respect to variable x,
  * @return approximate value using Hermite polynomial
  */
 double Hermite(int N, double *a, double *f, double *df, double x)

@@ -5,15 +5,18 @@
 #include "NR.h"
 #include "Test.h"
 
+/**
+ * @brief Integral test unit
+ */
 typedef struct _IntTest{
-    double (*integrand)(double);
-    double (*integral)(double);
-    double a;
-    double b;
-    double TOL;
-    double h;
-    double hmin;
-    double hmax;
+    double (*integrand)(double); /**< empty */
+    double (*integral)(double); /**< empty */
+    double a; /**< empty */
+    double b; /**< empty */
+    double TOL; /**< empty */
+    double h; /**< empty */
+    double hmin; /**< empty */
+    double hmax; /**< empty */
 }IntTest;
 
 static double integrand1(double x)
@@ -42,7 +45,7 @@ static IntTest inttest[] = {
     {NULL}
 };
 
-int _testInt(double (*f)(IntTest), IntTest t)
+static int _testInt(double (*f)(IntTest), IntTest t)
 {
     double res = f(t);
     double ans = t.integral(t.b) - t.integral(t.a);
@@ -50,16 +53,19 @@ int _testInt(double (*f)(IntTest), IntTest t)
     return (fabs(res - ans) > t.TOL) ? FAILED : PASSED;
 }
 
-double _testAdaptiveSimpson(IntTest t)
+static double _testAdaptiveSimpson(IntTest t)
 {
     return AdaptiveSimpsonInt(t.integrand, t.a, t.b, t.TOL);
 }
 
-double _testRomberg(IntTest t)
+static double _testRomberg(IntTest t)
 {
     return RombergInt(t.integrand, t.a, t.b, 100, t.TOL);
 }
 
+/**
+ * @brief testAdaptiveSimpson
+ */
 int testAdaptiveSimpson()
 {
     for(int i = 0; inttest[i].integrand; i++)
@@ -68,6 +74,9 @@ int testAdaptiveSimpson()
     return PASSED;
 }
 
+/**
+ * @brief testRomberg
+ */
 int testRomberg()
 {
     for(int i = 0; inttest[i].integrand; i++)

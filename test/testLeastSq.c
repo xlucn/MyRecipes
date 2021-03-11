@@ -7,6 +7,9 @@
 
 /* testing orthogonal decomposition */
 
+/**
+ * @brief testLeastSq
+ */
 int testLeastSq()
 {
     int m = 4;
@@ -32,6 +35,9 @@ int testLeastSq()
     return PASSED;
 }
 
+/**
+ * @brief testQR
+ */
 int testQR()
 {
     int m = 4;
@@ -79,5 +85,3 @@ int testQR()
     }
     return PASSED;
 }
-
-

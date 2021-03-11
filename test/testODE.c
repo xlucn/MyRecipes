@@ -6,16 +6,19 @@
 #include "Test.h"
 #include "constants.h"
 
+/**
+ * @brief ODE test unit
+ */
 typedef struct ODETest{
-    double (*f)(double, double);
-    double (*y)(double);
-    double a;
-    double b;
-    int    N;
-    double TOL;
-    double h;
-    double hmin;
-    double hmax;
+    double (*f)(double, double); /**< empty */
+    double (*y)(double); /**< empty */
+    double a; /**< empty */
+    double b; /**< empty */
+    int    N; /**< empty */
+    double TOL; /**< empty */
+    double h; /**< empty */
+    double hmin; /**< empty */
+    double hmax; /**< empty */
 }ODETest;
 
 static double f1(double t, double y){ return (y * y + y) / t;}
@@ -54,6 +57,9 @@ static double* _testClassicRK(ODETest t)
     return ClassicRungeKutta(t.f, t.a, t.b, t.y(t.a), t.N);
 }
 
+/**
+ * @brief testClassicRK
+ */
 int testClassicRK()
 {
     for(int i = 0; odetest[i].f; i++)
@@ -67,6 +73,9 @@ static double* _testAdamsPECE(ODETest t)
     return AdamsPECE(t.f, t.a, t.b, t.f(t.a, t.y(t.a)), t.y(t.a), t.N);
 }
 
+/**
+ * @brief testAdamsPECE
+ */
 int testAdamsPECE()
 {
     for(int i = 0; odetest[i].f; i++)
@@ -93,6 +102,9 @@ static int _testRKF(ODETest t)
     return PASSED;
 }
 
+/**
+ * @brief testRKF
+ */
 int testRKF()
 {
     return _testRKF(odetest[2]);
@@ -114,17 +126,20 @@ static double *Sy1(double x)
     return y;
 }
 
+/**
+ * @brief SODE test unit
+ */
 typedef struct SODETest{
-    double* (*f)(double, double*);
-    double* (*y)(double);
-    double a;
-    double b;
-    int    N;
-    int    m;
-    double TOL;
-    double h;
-    double hmin;
-    double hmax;
+    double* (*f)(double, double*); /**< empty */
+    double* (*y)(double); /**< empty */
+    double a; /**< empty */
+    double b; /**< empty */
+    int    N; /**< empty */
+    int    m; /**< empty */
+    double TOL; /**< empty */
+    double h; /**< empty */
+    double hmin; /**< empty */
+    double hmax; /**< empty */
 }SODETest;
 
 static SODETest sodetest[] = {
@@ -134,11 +149,7 @@ static SODETest sodetest[] = {
     {NULL}
 };
 
-/**
- * @brief
- * @returns
- */
-int _testSODE(SODEsol (*f)(SODETest t), SODETest t)
+static int _testSODE(SODEsol (*f)(SODETest t), SODETest t)
 {
     SODEsol sol = f(t);
 
@@ -168,31 +179,40 @@ int _testSODE(SODEsol (*f)(SODETest t), SODETest t)
     return PASSED;
 }
 
-SODEsol _testSODERKF78(SODETest t)
+static SODEsol _testSODERKF78(SODETest t)
 {
     return SODERKF78(t.f, t.y(t.a), t.a, t.b, t.m, t.h, t.TOL, t.hmax, t.hmin);
 }
 
-SODEsol _testSODERKF45(SODETest t)
+static SODEsol _testSODERKF45(SODETest t)
 {
     return SODERKF45(t.f, t.y(t.a), t.a, t.b, t.m, t.h, t.TOL, t.hmax, t.hmin);
 }
 
-SODEsol _testSODERungeKutta(SODETest t)
+static SODEsol _testSODERungeKutta(SODETest t)
 {
     return SODERungeKutta(t.f, t.a, t.b, t.y(t.a), t.m, t.N);
 }
 
+/**
+ * @brief testSODERKF78
+ */
 int testSODERKF78()
 {
     return _testSODE(_testSODERKF78, sodetest[0]);
 }
 
+/**
+ * @brief testSODERKF45
+ */
 int testSODERKF45()
 {
     return _testSODE(_testSODERKF45, sodetest[0]);
 }
 
+/**
+ * @brief testSODERungeKutta
+ */
 int testSODERungeKutta()
 {
     return _testSODE(_testSODERungeKutta, sodetest[1]);

@@ -11,14 +11,14 @@
 /**
  * @brief Test all the functions in this project
  *
- * This testall() function will test all the functions in this project. The test
+ * This will test all the functions in this project. The test
  * functions list is extracted from other source files in this folder. All the
  * function names matching the pattern "int test...()" will be included. Each
  * test function will test one function for a perticular algorithm, returning
  * PASSED(0) or FAILED(1). At last, a report will be printed after everything
  * is finished.
  */
-void testall()
+int main()
 {
     /*
      * Macros defined in "Test.h":
@@ -46,10 +46,4 @@ void testall()
         printf("%s No.%02d %s\n", (result[i] == PASSED) ?
             "\033[36m[passed]\033[0m" : "\033[31m[failed]\033[0m", i, names[i]);
     }
-}
-
-int main()
-{
-    testall();
-    return 0;
 }

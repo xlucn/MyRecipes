@@ -1,9 +1,9 @@
 /** @file constants.h */
-#include <float.h>
-#include <math.h> /* NAN */
-
 #ifndef _CONST_H_
 #define _CONST_H_
+
+#include <float.h>
+#include <math.h> /* NAN */
 
 /** the largest floating number which can be treated as 0 in calculation */
 #define FLOAT_ZERO_LIM (DBL_EPSILON * 10)
