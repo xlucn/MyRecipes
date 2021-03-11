@@ -3,7 +3,7 @@
  * information from source files.
  *
  * If you want to change the content of this file, go to GenerateTest.py and
- * modify the script. Or you can maintain this file by yourself after you delete
+ * modify the script. Or you can maintain this file manually after you delete
  * the related lines in the makefile.
  */
 
