@@ -1,4 +1,4 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python
 '''
 Author: Lu Xu(oliver_lew@outlook.com)
 

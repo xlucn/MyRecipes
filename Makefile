@@ -58,7 +58,7 @@ DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(DBG_DIR)/$(dir))
 
 # Executables
 CC=gcc
-PYTHON=python2
+PYTHON=python
 # Shell config
 SHELL=/bin/bash
 # GCC flags
