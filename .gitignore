@@ -1,5 +1,4 @@
 test/test
 debug/
 lib/
-doc/
-Doxyfile
+docs/
