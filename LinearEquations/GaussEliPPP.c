@@ -14,17 +14,7 @@
  */
 double *GaussEliPPP(int N, double *a, double *b)
 {
-    double **A = malloc(N * sizeof(double*));
-    for (int i = 0; i < N; i++)
-    {
-        A[i] = malloc((N + 1) * sizeof(double));
-        for (int j = 0; j < N; j++)
-        {
-            A[i][j] = a[i * N + j];
-        }
-        A[i][N] = b[i];
-    }
-
+    double **A = AugmentedMatrix(a, b, N, N, 1);
     double *max = malloc(N * sizeof(double));
     double *x = malloc(N * sizeof(double));
 
