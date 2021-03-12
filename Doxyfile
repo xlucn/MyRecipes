@@ -3,7 +3,7 @@
 PROJECT_NAME           = "My Recipes"
 PROJECT_NUMBER         = v0.0.1
 PROJECT_BRIEF          = "Attempt to implement some numerical algorithms"
-OUTPUT_DIRECTORY       = ./docs
+OUTPUT_DIRECTORY       = ./doxygen
 OPTIMIZE_OUTPUT_FOR_C  = YES
 SUBGROUPING            = NO
 NUM_PROC_THREADS       = 0

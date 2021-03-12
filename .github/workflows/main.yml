@@ -30,5 +30,10 @@ jobs:
         run: doxygen ./Doxyfile
       - name: test
         run: |
+          git checkout gh-pages
           pwd
           ls
+          rm -rf docs
+          mv doxygen docs
+          ls docs
+          git status
