@@ -27,7 +27,7 @@ jobs:
         run: sudo apt-get install -y doxygen
       # Runs a single command using the runners shell
       - name: Update docs
-        run: doxygen
+        run: doxygen ./Doxyfile
       - name: test
         run: |
           pwd
