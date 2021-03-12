@@ -10,7 +10,6 @@ NUM_PROC_THREADS       = 0
 WARN_NO_PARAMDOC       = YES
 FILE_PATTERNS          = *.c \
                          *.h \
-                         *.py \
                          *.md
 RECURSIVE              = YES
 USE_MDFILE_AS_MAINPAGE = Readme.md

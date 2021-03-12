@@ -59,6 +59,7 @@ static double* _testClassicRK(ODETest t)
 
 /**
  * @brief testClassicRK
+ * @return integer if test passed
  */
 int testClassicRK()
 {
@@ -75,6 +76,7 @@ static double* _testAdamsPECE(ODETest t)
 
 /**
  * @brief testAdamsPECE
+ * @return integer if test passed
  */
 int testAdamsPECE()
 {
@@ -104,6 +106,7 @@ static int _testRKF(ODETest t)
 
 /**
  * @brief testRKF
+ * @return integer if test passed
  */
 int testRKF()
 {
@@ -196,6 +199,7 @@ static SODEsol _testSODERungeKutta(SODETest t)
 
 /**
  * @brief testSODERKF78
+ * @return integer if test passed
  */
 int testSODERKF78()
 {
@@ -204,6 +208,7 @@ int testSODERKF78()
 
 /**
  * @brief testSODERKF45
+ * @return integer if test passed
  */
 int testSODERKF45()
 {
@@ -212,6 +217,7 @@ int testSODERKF45()
 
 /**
  * @brief testSODERungeKutta
+ * @return integer if test passed
  */
 int testSODERungeKutta()
 {

@@ -16,6 +16,7 @@ static double f3(double x)
 
 /**
  * @brief testSplineIpl
+ * @return integer if test passed
  */
 int testSplineIpl()
 {
@@ -36,6 +37,7 @@ int testSplineIpl()
 
 /**
  * @brief testHermiteIpl
+ * @return integer if test passed
  */
 int testHermiteIpl()
 {
@@ -62,6 +64,7 @@ static double f14(double x)
 
 /**
  * @brief testDividedDiff
+ * @return integer if test passed
  */
 int testDividedDiff()
 {

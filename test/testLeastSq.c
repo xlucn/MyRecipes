@@ -9,6 +9,7 @@
 
 /**
  * @brief testLeastSq
+ * @return integer if test passed
  */
 int testLeastSq()
 {
@@ -37,6 +38,7 @@ int testLeastSq()
 
 /**
  * @brief testQR
+ * @return integer if test passed
  */
 int testQR()
 {

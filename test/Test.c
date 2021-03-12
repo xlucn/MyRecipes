@@ -17,6 +17,8 @@
  * test function will test one function for a perticular algorithm, returning
  * PASSED(0) or FAILED(1). At last, a report will be printed after everything
  * is finished.
+ *
+ * @return if all tests passed
  */
 int main()
 {
@@ -28,7 +30,7 @@ int main()
      */
     int (*tests[FUNC_COUNT])() = FUNC_ARRAY;
     char *names[FUNC_COUNT] = NAME_ARRAY;
-    int result[FUNC_COUNT];
+    int result[FUNC_COUNT], result_all = PASSED;
 
     for(int i = 0; i < FUNC_COUNT; i++)
     {
@@ -39,11 +41,14 @@ int main()
         printf("\n===================================================\n\n");
     }
 
-	/* summary */
-
+    /* summary */
     for (int i = 0; i < FUNC_COUNT; i++)
     {
         printf("%s No.%02d %s\n", (result[i] == PASSED) ?
             "\033[36m[passed]\033[0m" : "\033[31m[failed]\033[0m", i, names[i]);
+        if (result[i] == FAILED)
+            result_all = FAILED;
     }
+
+    return result_all;
 }

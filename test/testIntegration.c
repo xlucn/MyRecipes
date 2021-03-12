@@ -65,6 +65,7 @@ static double _testRomberg(IntTest t)
 
 /**
  * @brief testAdaptiveSimpson
+ * @return integer if test passed
  */
 int testAdaptiveSimpson()
 {
@@ -76,6 +77,7 @@ int testAdaptiveSimpson()
 
 /**
  * @brief testRomberg
+ * @return integer if test passed
  */
 int testRomberg()
 {

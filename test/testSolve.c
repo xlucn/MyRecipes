@@ -56,6 +56,7 @@ static double _testBisection(SolveTest t)
 
 /**
  * @brief testBisection
+ * @return integer if test passed
  */
 int testBisection()
 {
@@ -75,6 +76,7 @@ static double _testPicardRecurtion(SolveTest t)
 
 /**
  * @brief testPicardRecurtion
+ * @return integer if test passed
  */
 int testPicardRecurtion()
 {
@@ -94,6 +96,7 @@ static double _testSteffensen(SolveTest t)
 
 /**
  * @brief Steffensen
+ * @return integer if test passed
  */
 int testSteffensen()
 {
@@ -113,6 +116,7 @@ static double _testNewtonMethod(SolveTest t)
 
 /**
  * @brief NewtonMethod
+ * @return integer if test passed
  */
 int testNewtonMethod()
 {
@@ -132,6 +136,7 @@ static double _testSecent(SolveTest t)
 
 /**
  * @brief Secent
+ * @return integer if test passed
  */
 int testSecent()
 {
@@ -151,6 +156,7 @@ static double _testMuller(SolveTest t)
 
 /**
  * @brief Muller
+ * @return integer if test passed
  */
 int testMuller()
 {

@@ -17,6 +17,7 @@ static double ans[] = {1, -1, 1, -1, 1};
 
 /**
  * @brief testChasing
+ * @return integer if test passed
  */
 int testChasing()
 {
@@ -79,6 +80,7 @@ static LinEqtest t1 = {LinEqA1, LinEqb1, 3, LinEqans1, 1e-4};
 
 /**
  * @brief testGaussianEli
+ * @return integer if test passed
  */
 int testGaussianEli()
 {
@@ -87,6 +89,7 @@ int testGaussianEli()
 
 /**
  * @brief testGaussianEliPP
+ * @return integer if test passed
  */
 int testGaussianEliPP()
 {
@@ -95,6 +98,7 @@ int testGaussianEliPP()
 
 /**
  * @brief testGaussianEliPPP
+ * @return integer if test passed
  */
 int testGaussianEliPPP()
 {
@@ -103,6 +107,7 @@ int testGaussianEliPPP()
 
 /**
  * @brief testGaussJordanEli
+ * @return integer if test passed
  */
 int testGaussJordanEli()
 {
@@ -111,6 +116,7 @@ int testGaussJordanEli()
 
 /**
  * @brief testCrout
+ * @return integer if test passed
  */
 int testCrout()
 {
