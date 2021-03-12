@@ -22,3 +22,4 @@ SEARCHENGINE           = NO
 GENERATE_LATEX         = NO
 LATEX_HIDE_INDICES     = YES
 CLASS_DIAGRAMS         = NO
+HAVE_DOT               = NO
