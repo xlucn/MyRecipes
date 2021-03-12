@@ -1,4 +1,8 @@
-/** @file GramSchmidtQR.c */
+/**
+ * @file GramSchmidtQR.c
+ * @brief GramSchmidtQR.c
+ */
+
 #include <stdlib.h>
 #include <math.h>
 #include "NR.h"

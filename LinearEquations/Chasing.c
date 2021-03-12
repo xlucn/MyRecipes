@@ -1,4 +1,8 @@
-/** @file Chasing.c */
+/**
+ * @file Chasing.c
+ * @brief Chasing.c
+ */
+
 #include <stdlib.h>
 #include <math.h>
 #include "constants.h"

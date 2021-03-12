@@ -1,4 +1,8 @@
-/** @file SODERungeKutta.c */
+/**
+ * @file SODERungeKutta.c
+ * @brief SODERungeKutta.c
+ */
+
 #include <stdlib.h>
 #include "NR.h"
 

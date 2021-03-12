@@ -1,4 +1,8 @@
-/** @file ODEsol.c */
+/**
+ * @file ODEsol.c
+ * @brief ODEsol.c
+ */
+
 #include <stdlib.h>
 #include "NR.h"
 

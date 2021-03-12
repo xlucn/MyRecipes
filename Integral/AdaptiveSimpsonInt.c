@@ -1,4 +1,8 @@
-/** @file AdaptiveSimpsonInt.c */
+/**
+ * @file AdaptiveSimpsonInt.c
+ * @brief AdaptiveSimpsonInt.c
+ */
+
 #include <math.h>
 #include "NR.h"
 

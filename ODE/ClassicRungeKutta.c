@@ -1,4 +1,8 @@
-/** @file ClassicRungeKutta.c */
+/**
+ * @file ClassicRungeKutta.c
+ * @brief ClassicRungeKutta.c
+ */
+
 #include <stdlib.h>
 #include "NR.h"
 

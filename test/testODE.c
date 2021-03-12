@@ -1,4 +1,8 @@
-/** @file testODE.c */
+/**
+ * @file testODE.c
+ * @brief testODE.c
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

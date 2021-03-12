@@ -1,4 +1,8 @@
-/** @file MullerMethod.c */
+/**
+ * @file MullerMethod.c
+ * @brief MullerMethod.c
+ */
+
 #include <math.h>
 #include "NR.h"
 #include "constants.h"

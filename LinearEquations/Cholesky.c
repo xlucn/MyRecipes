@@ -1,4 +1,8 @@
-/** @file Cholesky.c */
+/**
+ * @file Cholesky.c
+ * @brief Cholesky.c
+ */
+
 #include <math.h>
 #include "NR.h"
 

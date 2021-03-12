@@ -1,6 +1,11 @@
-/** @file AdamsPECE.c */
+/**
+ * @file AdamsPECE.c
+ * @brief AdamsPECE.c
+ */
+
 #include <stdlib.h>
 #include "NR.h"
+
 /**
  * @brief One-step Adams correlation PECE method. Use classic Runge-Kutta method for the initial value.
  * @param f right function of ODE

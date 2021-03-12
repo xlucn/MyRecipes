@@ -1,4 +1,8 @@
-/** @file GaussEliPPP.c */
+/**
+ * @file GaussEliPPP.c
+ * @brief GaussEliPPP.c
+ */
+
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h>

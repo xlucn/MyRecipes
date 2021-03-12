@@ -1,4 +1,8 @@
-/** @file testSolve.c */
+/**
+ * @file testSolve.c
+ * @brief testSolve.c
+ */
+
 #include <stdio.h>
 #include <math.h>
 #include "NR.h"

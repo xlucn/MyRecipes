@@ -1,4 +1,8 @@
-/** @file Crout.c */
+/**
+ * @file Crout.c
+ * @brief Crout.c
+ */
+
 #include <math.h>
 #include "NR.h"
 #include <stdlib.h>

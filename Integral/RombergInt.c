@@ -1,4 +1,8 @@
-/** @file RombergInt.c */
+/**
+ * @file RombergInt.c
+ * @brief RombergInt.c
+ */
+
 #include <stdlib.h>
 #include <math.h>
 #include "NR.h"

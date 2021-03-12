@@ -1,4 +1,8 @@
-/** @file SecentMethod.c */
+/**
+ * @file SecentMethod.c
+ * @brief SecentMethod.c
+ */
+
 #include <math.h>
 #include "NR.h"
 #include "constants.h"

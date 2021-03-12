@@ -2,6 +2,7 @@
  * @file SteffensenIteration.c
  * @brief Accelerate iteration using PicardIteration
  */
+
 #include <math.h>
 #include "NR.h"
 #include "constants.h"

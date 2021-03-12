@@ -1,4 +1,8 @@
-/** @file Lagrange.c */
+/**
+ * @file Lagrange.c
+ * @brief Lagrange.c
+ */
+
 #include <stdlib.h>
 #include "NR.h"
 

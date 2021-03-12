@@ -1,5 +1,10 @@
-/** @file DividedDifference.c */
+/**
+ * @file DividedDifference.c
+ * @brief DividedDifference.c
+ */
+
 #include "NR.h"
+
 /**
  * @brief Divided difference of function f on nodes x[n]
  * @param f function

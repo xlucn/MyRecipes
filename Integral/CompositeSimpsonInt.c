@@ -1,4 +1,8 @@
-/** @file CompositeSimpsonInt.c */
+/**
+ * @file CompositeSimpsonInt.c
+ * @brief CompositeSimpsonInt.c
+ */
+
 #include "NR.h"
 
 /**

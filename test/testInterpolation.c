@@ -1,4 +1,8 @@
-/** @file testInterpolation.c */
+/**
+ * @file testInterpolation.c
+ * @brief testInterpolation.c
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

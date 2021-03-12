@@ -1,9 +1,14 @@
-/** @file RKF.c */
+/**
+ * @file RKF.c
+ * @brief RKF.c
+ */
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "NR.h"
 #include "constants.h"
+
 /**
  * @brief RKF method(Ronge Kutta Fehlberg method)
  * @param f right function of ODE

@@ -1,4 +1,8 @@
-/** @file TrapezoidalInt.c */
+/**
+ * @file TrapezoidalInt.c
+ * @brief TrapezoidalInt.c
+ */
+
 #include "NR.h"
 
 /**

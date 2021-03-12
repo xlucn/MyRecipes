@@ -1,4 +1,8 @@
-/** @file Hermite.c */
+/**
+ * @file Hermite.c
+ * @brief Hermite.c
+ */
+
 #include <stdlib.h>
 #include <math.h>
 #include "NR.h"

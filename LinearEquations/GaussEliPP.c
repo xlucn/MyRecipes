@@ -1,4 +1,8 @@
-/** @file GaussEliPP.c */
+/**
+ * @file GaussEliPP.c
+ * @brief GaussEliPP.c
+ */
+
 #include <stdlib.h>
 #include <math.h>
 #include "NR.h"

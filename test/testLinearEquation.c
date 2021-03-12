@@ -2,6 +2,7 @@
  * @file testLinearEquation.c
  * @brief test solving linear equations
  */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>

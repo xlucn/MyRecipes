@@ -1,4 +1,8 @@
-/** @file testIntegration.c */
+/**
+ * @file testIntegration.c
+ * @brief testIntegration.c
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

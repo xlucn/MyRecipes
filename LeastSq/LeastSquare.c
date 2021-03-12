@@ -1,4 +1,8 @@
-/** @file LeastSquare.c */
+/**
+ * @file LeastSquare.c
+ * @brief LeastSquare.c
+ */
+
 #include <stdlib.h>
 #include "NR.h"
 

@@ -1,7 +1,8 @@
 /**
  * @file TwoStageRungeKutta.c
- * Two stage Runge Kutta method
+ * @brief Two stage Runge Kutta method
  */
+
 #include <stdlib.h>
 #include "NR.h"
 

@@ -1,4 +1,8 @@
-/** @file SimpsonInt.c */
+/**
+ * @file SimpsonInt.c
+ * @brief SimpsonInt.c
+ */
+
 #include "NR.h"
 
 /**

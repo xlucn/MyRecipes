@@ -1,4 +1,8 @@
-/** @file CubicSplineIpl.c */
+/**
+ * @file CubicSplineIpl.c
+ * @brief CubicSplineIpl.c
+ */
+
 #include <stdlib.h>
 #include <math.h>
 #include "NR.h"

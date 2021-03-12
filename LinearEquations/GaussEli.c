@@ -1,4 +1,8 @@
-/** @file GaussEli.c */
+/**
+ * @file GaussEli.c
+ * @brief GaussEli.c
+ */
+
 #include <stdlib.h>
 #include <math.h>
 #include "NR.h"

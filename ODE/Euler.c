@@ -1,6 +1,11 @@
-/** @file Euler.c */
+/**
+ * @file Euler.c
+ * @brief Euler.c
+ */
+
 #include <stdlib.h>
 #include "NR.h"
+
 /**
  * @brief Euler method to solve initial value problem(IVP) of ODE
  * @param f derivative function. dy/dt=f(t,y)

@@ -1,4 +1,8 @@
-/** @file Bisection.c */
+/**
+ * @file Bisection.c
+ * @brief Bisection.c
+ */
+
 #include <math.h>
 #include "NR.h"
 

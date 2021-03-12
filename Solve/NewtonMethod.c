@@ -1,4 +1,8 @@
-/** @file NewtonMethod.c */
+/**
+ * @file NewtonMethod.c
+ * @brief NewtonMethod.c
+ */
+
 #include <math.h>
 #include "NR.h"
 

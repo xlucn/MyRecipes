@@ -1,4 +1,8 @@
-/** @file PicardIteration.c */
+/**
+ * @file PicardIteration.c
+ * @brief PicardIteration.c
+ */
+
 #include <math.h>
 #include "NR.h"
 

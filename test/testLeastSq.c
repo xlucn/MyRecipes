@@ -1,4 +1,8 @@
-/** @file testLeastSq.c */
+/**
+ * @file testLeastSq.c
+ * @brief testLeastSq.c
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

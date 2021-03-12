@@ -1,4 +1,8 @@
-/** @file ImprovedGramSchmidtQR.c */
+/**
+ * @file ImprovedGramSchmidtQR.c
+ * @brief ImprovedGramSchmidtQR.c
+ */
+
 #include <stdlib.h>
 #include <math.h>
 #include "NR.h"

@@ -1,4 +1,8 @@
-/** @file GaussJordanEli.c */
+/**
+ * @file GaussJordanEli.c
+ * @brief GaussJordanEli.c
+ */
+
 #include <stdlib.h>
 #include <math.h>
 #include "NR.h"
