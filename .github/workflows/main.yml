@@ -39,6 +39,7 @@ jobs:
           git config user.email github-actions@github.com
           git checkout gh-pages
           git rm -rf docs
+          git add doxygen
           git mv doxygen docs
           git commit -m 'update documentation'
           git push
