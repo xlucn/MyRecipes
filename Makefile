@@ -1,30 +1,12 @@
-#----------------- custom names, which can be customized -----------------------
-
-## (existing) header dir, where the header files are
-MY_INC_DIR=include
-
-## (existing) dir containing the source dirs
-MY_SRC_DIR=.
-
-## (created) lib name, and the lib will be named lib$(LIBNAME).a
-LIBNAME=NR
-
-## (created) library file dir, library file will be created here
-MY_LIB_DIR=lib
-
-## (created) debug files dir, dependency files and object files will be here
-MY_DBG_DIR=debug
-
-
 #--------------------------Names of files and folders---------------------------
 
 # Names of existing directories
-SRC_DIR=$(shell find $(MY_SRC_DIR) -maxdepth 1 -type d -name "[A-Z]*")
-INC_DIR=$(MY_INC_DIR)
+SRC_DIR=$(shell find . -maxdepth 1 -type d -name "[A-Z]*")
+INC_DIR=include
 
 # Names of new dirs
-LIB_DIR=$(MY_LIB_DIR)
-DBG_DIR=$(MY_DBG_DIR)
+LIB_DIR=lib
+DBG_DIR=debug
 
 # Names of source files
 SRC=$(foreach dir,$(SRC_DIR),$(wildcard $(dir)/*.c))
@@ -32,7 +14,7 @@ SRC=$(foreach dir,$(SRC_DIR),$(wildcard $(dir)/*.c))
 # New files
 OBJ=$(addprefix $(DBG_DIR)/,$(SRC:.c=.o))
 DEP=$(addprefix $(DBG_DIR)/,$(SRC:.c=.d))
-LIB=$(LIB_DIR)/lib$(LIBNAME).a
+LIB=$(LIB_DIR)/libNR.a
 
 # Directories for all newly created files
 DIRS+=$(LIB_DIR) $(DBG_DIR)
@@ -60,7 +42,7 @@ DIRS+=$(foreach dir,$(SRC_DIR) $(TEST_DIR),$(DBG_DIR)/$(dir))
 CC=gcc
 PYTHON=python
 # Shell config
-SHELL=/bin/bash
+SHELL=/bin/sh
 # GCC flags
 CFLAGS=-Wall -g -std=c99 -fpic
 IFLAGS=-I $(INC_DIR)
@@ -72,10 +54,9 @@ LFLAGS=-lm -lNR -L $(LIB_DIR)
 
 #---------------------------Targets---------------------------------------------
 
-.PHONY:all help clean remove cleanall rebuild doc test
+.PHONY: all lib help clean remove cleanall rebuild doc test
 
-
-all:$(DEP) $(TESTDEP) $(TESTBIN)
+all: $(DIRS) $(LIB) $(DEP) $(TESTDEP) $(TESTBIN)
 
 
 doc:
@@ -85,24 +66,26 @@ tags:
 	ctags --exclude=.ccls-cache/* --exclude=docs/* --exclude=compile_commands.json -R .
 
 help:
-	@echo \
-"Usage:\n\
-(all)	:	build the whole project.\n\
-clean	:	remove the object files and the dependancy files.\n\
-remove	:	remove all generated files.\n\
-rebuild	:	remove and make.\n\
-help    :	show this message"
+	@echo "Usage:\n\
+	(all)	:	build the whole project.\n\
+	clean	:	remove the object files and the dependancy files.\n\
+	remove	:	remove all generated files.\n\
+	rebuild	:	remove and make.\n\
+	help    :	show this message"
 
 clean:
 	rm -rf $(DBG_DIR)
 
-remove:clean
+remove: clean
 	rm -rf $(LIB_DIR) $(TESTBIN)
 
-rebuild:remove
+rebuild: remove
 	make
 
-test:
+test: $(TESTDEP) $(TESTBIN)
+	$(TESTBIN)
+
+_test:
 	@echo $(SRC_DIR)
 	@echo $(SRC)
 
@@ -116,17 +99,17 @@ $(DEP) $(TESTDEP) $(TESTBIN): | $(DIRS)
 $(DIRS):
 	mkdir -p $(DIRS)
 
-$(TESTH):$(TESTSRC) $(GENTEST)
+$(TESTH): $(TESTSRC) $(GENTEST)
 	$(PYTHON) $(GENTEST)
 
-$(DBG_DIR)/%.d:%.c
+$(DBG_DIR)/%.d: %.c
 	$(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,$(*F).o[ :]*,$(DBG_DIR)/$*.o $@ : ,g' > $@
 
-$(DBG_DIR)/%.o:%.c
+$(DBG_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
-$(LIB):$(OBJ)
+$(LIB): $(OBJ)
 	ar cr $@ $?
 
-$(TESTBIN):$(LIB) $(TESTOBJ)
+$(TESTBIN): $(LIB) $(TESTOBJ)
 	$(CC) $(CFLAGS) -o $(TESTBIN) $(TESTOBJ) $(LFLAGS)
