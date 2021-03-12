@@ -22,6 +22,7 @@ double* GaussEliPP      (int N, double *a, double *b);
 double* GaussEliPPP     (int N, double *a, double *b);
 double* GaussJordanEli  (int N, double *a, double *b);
 double* Crout           (int N, double *a, double *b);
+void    Cholesky        (int N, double *a);
 
 /*--------------------------- Integration ------------------------------------*/
 double TrapezoidalInt(double (*f)(double), double a, double b);
