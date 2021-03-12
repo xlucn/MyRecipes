@@ -30,7 +30,6 @@ var NR_8h =
     [ "ImprovedGramSchmidtQR", "NR_8h.html#acedc7c73ac3b169f5e6f7503ea14273d", null ],
     [ "LagrangeCubicSplineIpl", "NR_8h.html#a9214c8e9f00cca17d5de8787d631ef83", null ],
     [ "LagrangePoly", "NR_8h.html#a8f1914ef182521cfa387a5ea649aadff", null ],
-    [ "LDLT", "NR_8h.html#a9b3200c5debcff6e9a410aed8882849b", null ],
     [ "LeastSquare", "NR_8h.html#a3314e7c5209c1087ac8d97e30bedc156", null ],
     [ "MID", "NR_8h.html#a4f6389758fda05b5424b273ffcd037eb", null ],
     [ "MullerMethod", "NR_8h.html#aeca943e83af144cf953ea7b00121078b", null ],
