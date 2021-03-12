@@ -25,12 +25,12 @@ typedef struct ODETest{
     double hmax; /**< empty */
 }ODETest;
 
-static double f1(double t, double y){ return (y * y + y) / t;}
-static double y1(double t){ return 2 * t / (1 - 2 * t);}
-static double f2(double t, double y){ return -y + t + 1;}
-static double y2(double t){ return exp(-t) + t;}
-static double f3(double t, double y){ return - y + t * t + 1;}
-static double y3(double t){ return - 2 / exp(t) + 3 - 2 * t + t * t;}
+static double f1(double t, double y) { return (y * y + y) / t; }
+static double y1(double t)           { return 2 * t / (1 - 2 * t); }
+static double f2(double t, double y) { return -y + t + 1; }
+static double y2(double t)           { return exp(-t) + t; }
+static double f3(double t, double y) { return - y + t * t + 1; }
+static double y3(double t)           { return - 2 / exp(t) + 3 - 2 * t + t * t; }
 
 static ODETest odetest[] = {
 /*    f,  y,   a,   b,  N,  TOL,   h, hmin, hmax */

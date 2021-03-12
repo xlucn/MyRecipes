@@ -9,13 +9,13 @@
 #include "Test.h"
 #include "constants.h"
 
-static double f1(double x) {return x * x * x - x - 1;}
-static double f2(double x) {return (x + 2) * x * x - 4;}
-static double g2(double x) {return x - f2(x) / (3 * x + 4) / x;}
-static double g3(double x) {return sqrt(4 / (2 + x));}
-static double f4(double x) {return ((x + 2) * x + 10) * x - 20;}
-static double df4(double x) {return (3 * x + 4) * x + 10;}
-static double f5(double x) {return (2 * x * x - 5) * x - 1;}
+static double f1(double x) { return x * x * x - x - 1; }
+static double f2(double x) { return (x + 2) * x * x - 4; }
+static double g2(double x) { return x - f2(x) / (3 * x + 4) / x; }
+static double g3(double x) { return sqrt(4 / (2 + x)); }
+static double f4(double x) { return ((x + 2) * x + 10) * x - 20; }
+static double df4(double x) { return (3 * x + 4) * x + 10; }
+static double f5(double x) { return (2 * x * x - 5) * x - 1; }
 
 /**
  * @brief Solve test unit

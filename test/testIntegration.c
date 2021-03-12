@@ -23,25 +23,10 @@ typedef struct _IntTest{
     double hmax; /**< empty */
 }IntTest;
 
-static double integrand1(double x)
-{
-    return x * sqrt(1 + x * x);
-}
-
-static double integral1(double x)
-{
-    return  pow(1 + x * x, 1.5) / 3;
-}
-
-static double integrand2(double x)
-{
-    return 1 / (1 + x);
-}
-
-static double integral2(double x)
-{
-    return log(x + 1);
-}
+static double integrand1(double x) { return x * sqrt(1 + x * x); }
+static double integral1(double x)  { return  pow(1 + x * x, 1.5) / 3; }
+static double integrand2(double x) { return 1 / (1 + x); }
+static double integral2(double x)  { return log(x + 1); }
 
 static IntTest inttest[] = {
     {integrand1, integral1, 0, 3, 1e-10},

@@ -5,8 +5,8 @@
 
 #include <stdlib.h>
 #include <math.h>
-#include "constants.h"
 #include "NR.h"
+#include "constants.h"
 
 /**
  * @brief Chasing method for solving tridiagonal equations.
