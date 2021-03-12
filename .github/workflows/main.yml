@@ -1,6 +1,4 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
+name: Doxygen Update
 
 # Controls when the action will run. 
 on:
@@ -26,17 +24,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Install doxygen in the system
       - name: Doxygen install
         run: sudo apt-get install -y doxygen
-      # Runs a single command using the runners shell
+
+      # Generate html files of the documentation with doxygen
       - name: Update docs
         run: doxygen ./Doxyfile
-      - name: test
+
+      # Move generated documentation files to gh-pages branch
+      - name: Move and commit
         run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git checkout gh-pages
-          pwd
-          ls
-          rm -rf docs
-          mv doxygen docs
-          ls docs
-          git status
+          git rm -rf docs
+          git mv doxygen docs
+          git commit -m 'update documentation'
+          git push
