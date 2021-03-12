@@ -56,8 +56,7 @@ LFLAGS=-lm -lNR -L $(LIB_DIR)
 
 .PHONY: all lib help clean remove cleanall rebuild doc test
 
-all: $(DIRS) $(LIB) $(DEP) $(TESTDEP) $(TESTBIN)
-
+all: $(LIB) $(DBG) $(TESTDEP) $(TESTBIN)
 
 doc:
 	doxygen Doxyfile
@@ -94,22 +93,20 @@ _test:
 
 -include $(foreach dir, $(DIRS), $(wildcard $(dir)/*.d))
 
-$(DEP) $(TESTDEP) $(TESTBIN): | $(DIRS)
-
 $(DIRS):
 	mkdir -p $(DIRS)
 
 $(TESTH): $(TESTSRC) $(GENTEST)
 	$(PYTHON) $(GENTEST)
 
-$(DBG_DIR)/%.d: %.c
+$(DBG_DIR)/%.d: %.c | $(DIRS)
 	$(CC) $(DFLAGS) $(IFLAGS) $< | sed 's,$(*F).o[ :]*,$(DBG_DIR)/$*.o $@ : ,g' > $@
 
-$(DBG_DIR)/%.o: %.c
+$(DBG_DIR)/%.o: %.c | $(DIRS)
 	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
-$(LIB): $(OBJ)
+$(LIB): $(OBJ) | $(DIRS)
 	ar cr $@ $?
 
-$(TESTBIN): $(LIB) $(TESTOBJ)
+$(TESTBIN): $(LIB) $(TESTOBJ) | $(DIRS)
 	$(CC) $(CFLAGS) -o $(TESTBIN) $(TESTOBJ) $(LFLAGS)
